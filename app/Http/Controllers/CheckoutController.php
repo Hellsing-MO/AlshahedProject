@@ -2,134 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ShippingLabelService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+use App\Models\Product;
+use Stripe\StripeClient;
 
 class CheckoutController extends Controller
 {
-    protected $shippingLabelService;
-
-    public function __construct(ShippingLabelService $shippingLabelService)
+    public function showCheckoutForm(Request $request)
     {
-        $this->shippingLabelService = $shippingLabelService;
+        $user = Auth::user();
+        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+
+        return view('checkout', compact('cartItems'));
     }
 
-    public function process(Request $request)
+    public function processCheckout(Request $request)
     {
-        try {
-            // Log the incoming request data
-            Log::info('Checkout process started', [
-                'shipping_data' => $request->shipping_data,
-                'address' => $request->address
-            ]);
+        $user = Auth::user();
 
-        // Validate the request
-        $validated = $request->validate([
-            'shipping_data' => 'required|array',
-            'address' => 'required|array',
+        $request->validate([
+            'name' => 'required',
+            'address1' => 'required',
+            'city' => 'required',
+            'province_code' => 'required',
+            'postal_code' => 'required',
+            'country_code' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email',
+            'shipping_cost' => 'required|numeric'
         ]);
 
-            $shippingData = is_string($request->shipping_data) ? json_decode($request->shipping_data, true) : $request->shipping_data;
-            $address = is_string($request->address) ? json_decode($request->address, true) : $request->address;
+        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+        $lineItems = [];
 
-            if (!$shippingData || !$address) {
-                throw new \Exception('Invalid shipping data or address format');
-            }
+        $cartTotal = 0;
 
-        // Create shipment array
-        $shipment = [
-            "to_address" => [
-                "name" => $address['name'],
-                "address1" => $address['address1'],
-                "city" => $address['city'],
-                "province_code" => $address['province_code'],
-                "postal_code" => $address['postal_code'],
-                "country_code" => $address['country_code'],
-                "is_residential" => true,
-                "phone" => $address['phone'],
-                "email" => $address['email']
-            ],
-            "weight" => $address['weight'],
-            "weight_unit" => "kg",
-            "length" => 30,
-            "width" => 25,
-            "height" => 10,
-            "size_unit" => "cm",
-            "package_type" => "Parcel",
-            "package_contents" => "Merchandise",
-            "region" => "ON"
-        ];
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            $unitAmount = floatval($product->price) * 100;
 
-            // Log the shipment data
-            Log::info('Shipment data prepared', ['shipment' => $shipment]);
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $product->title,
+                    ],
+                    'unit_amount' => intval($unitAmount),
+                ],
+                'quantity' => $item->quantity,
+            ];
 
-        // Generate shipping label
-        $label = $this->shippingLabelService->generateLabel($shipment, $shippingData);
-
-        if (isset($label['error'])) {
-                Log::error('Label generation failed', ['error' => $label['error']]);
-            return back()->withErrors(['shipping' => $label['error']]);
+            $cartTotal += floatval($product->price) * $item->quantity;
         }
 
-            // For testing, let's create a mock label if the service fails
-            if (!isset($label['label_url'])) {
-                $label = [
-                    'label_url' => '#',
-                    'tracking_number' => 'TEST' . time(),
-                    'tracking_url' => '#',
-                    'shipment_id' => 'TEST' . time()
-                ];
-            }
-
-        // Store order with shipping information
-            try {
-        $order = DB::table('orders')->insert([
-            'customer_name' => $address['name'],
-            'email' => $address['email'],
-            'phone' => $address['phone'],
-            'address' => $address['address1'],
-            'city' => $address['city'],
-            'province' => $address['province_code'],
-            'postal_code' => $address['postal_code'],
-            'carrier' => $shippingData['carrier'],
-            'service' => $shippingData['service'],
-            'amount' => $shippingData['cost'],
-            'tracking_number' => $label['tracking_number'],
-            'tracking_url' => $label['tracking_url'],
-            'label_url' => $label['label_url'],
-            'shipment_id' => $label['shipment_id'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-            } catch (\Exception $e) {
-                Log::error('Failed to store order', ['error' => $e->getMessage()]);
-            }
-
-        // Store shipping information in session for order confirmation
-        session([
-            'shipping_label' => $label,
-            'shipping_address' => $address
-        ]);
-
-        return view('checkout.confirmation', [
-            'label' => $label,
-            'address' => $address,
-            'shipping' => $shippingData
-        ]);
-
-        } catch (\Exception $e) {
-            Log::error('Checkout process failed', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return back()->withErrors(['error' => 'An error occurred during checkout. Please try again.']);
+        // Add shipping as a line item if it's not free
+        if ($cartTotal < 150 && $request->shipping_cost > 0) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Shipping',
+                    ],
+                    'unit_amount' => intval($request->shipping_cost * 100),
+                ],
+                'quantity' => 1,
+            ];
         }
+
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+
+        $session = $stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel'),
+        ]);
+
+        return redirect($session->url);
+    }
+
+    public function checkoutSuccess(Request $request)
+    {
+        $session_id = $request->get('session_id');
+        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $session = $stripe->checkout->sessions->retrieve($session_id);
+
+        Cart::where('user_id', Auth::id())->delete();
+
+        return view('success');
+    }
+
+    public function checkoutCancel()
+    {
+        return view('cancel');
     }
 }
-
-
-
-
-

@@ -44,4 +44,8 @@ return [
         'base' => env('STALLION_API_BASE')
     ],
 
+    'stripe'=>[
+        'key'=>env('STRIPE_KEY'),
+        'secret'=>env('STRIPE_SECRET'),
+    ]
 ];

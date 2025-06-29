@@ -175,7 +175,7 @@ public function getAllProducts()
                 ]);
             }
         }
-        return view('home.mycart', compact('count', 'cart'));
+        return view('home.shipping.form', compact('count', 'cart'));
     }
 
     public function about_us() {

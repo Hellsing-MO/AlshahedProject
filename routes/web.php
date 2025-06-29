@@ -21,7 +21,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
+    Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
+    Route::get('/checkout/success', [CheckoutController::class, 'checkoutSuccess'])->name('checkout.success');
+    Route::get('/checkout/cancel', [CheckoutController::class, 'checkoutCancel'])->name('checkout.cancel');
+    Route::get('/shipping', [ShippingController::class, 'showShippingForm'])->name('shipping');
+    Route::post('/shipping/calculate', [ShippingController::class, 'calculateShipping'])->name('shipping.calculate');
+    Route::post('/shipping/checkout', [ShippingController::class, 'calculateShippingAndPay'])->name('shipping.checkout');
 });
 
 require __DIR__.'/auth.php';
