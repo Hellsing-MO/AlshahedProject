@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    volumes:
+      - laravelproject:/var/www/html
+    ports:
+      - "52999:80"    # High random port for Apache
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3307
+      DB_DATABASE: laravel
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+    networks:
+      - laravelnet
+
+  db:
+    image: mysql:8
+    container_name: laravel_db
+    restart: always
+    volumes:
+      - laravelproject:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "53306:3306"  # Random port for MySQL
+    networks:
+      - laravelnet
+
+volumes:
+  laravelproject:
+
+networks:
+  laravelnet:
