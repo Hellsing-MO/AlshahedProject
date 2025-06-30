@@ -81,17 +81,6 @@ class ShippingController extends Controller
                 "email" => $request->email,
                 "is_residential" => true,
             ],
-            "return_address" => [
-                "name" => "Honey Warehouse",
-                "address1" => "123 Bee Lane",
-                "city" => "Toronto",
-                "province_code" => "ON",
-                "postal_code" => "M5V 2H1",
-                "country_code" => "CA",
-                "phone" => "0000000000",
-                "email" => "warehouse@example.com",
-                "is_residential" => false,
-            ],
             "is_return" => false,
             "weight_unit" => "lbs",
             "weight" => max($weight, 0.5),
@@ -112,6 +101,7 @@ class ShippingController extends Controller
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
+        dd($rateResponse);
         $shippingCost = $rateResponse['rates'][0]['amount'] ?? 0;
 
         if ($cartTotal < 150 && $shippingCost > 0) {
