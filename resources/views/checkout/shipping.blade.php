@@ -26,7 +26,7 @@
             </div>
         </div>
         
-        <form id="shippingForm" action="{{ route('checkout.calculate-shipping') }}" method="POST" class="p-6">
+        <form id="shippingForm" action="{{ secure_url('checkout.calculate-shipping') }}" method="POST" class="p-6">
             @csrf
             
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Shipping Information</h2>
