@@ -140,7 +140,6 @@ class CheckoutController extends Controller
                 'quantity' => 1,
             ];
         }
-dd(env('STRIPE_SECRET'));
         // Create Stripe session
         $stripe = new StripeClient(env('STRIPE_SECRET'));
         $session = $stripe->checkout->sessions->create([
