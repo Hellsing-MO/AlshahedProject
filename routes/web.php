@@ -77,7 +77,7 @@ route::get('add_cart/{id}', [HomeController::class, 'add_cart']);
 
 route::get('delete_cart/{id}', [HomeController::class, 'delete_cart']);
 
-route::get('mycart', [HomeController::class, 'mycart']);
+Route::get('mycart', [HomeController::class, 'mycart'])->middleware('auth')->name('cart');
 
 Route::get('/api/products/category/{id}', [HomeController::class, 'getByCategory']);
 

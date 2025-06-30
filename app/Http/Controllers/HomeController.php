@@ -149,34 +149,12 @@ public function getAllProducts()
         return redirect()->back();
     }
 
-    public function mycart() {
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-            $cart = Cart::where('user_id', $userid)->get();
-        } else {
-            // For guest users, get cart from session
-            $sessionCart = session()->get('cart', []);
-            $count = count($sessionCart);
-            $cart = collect();
-            
-            foreach($sessionCart as $id => $item) {
-                $cart->push((object)[
-                    'id' => $id,
-                    'product' => (object)[
-                        'id' => $item['product_id'],
-                        'title' => $item['title'],
-                        'price' => $item['price'],
-                        'image' => $item['image'],
-                        'Weight' => $item['Weight']
-                    ],
-                    'quantity' => $item['quantity']
-                ]);
-            }
-        }
-        return view('home.shipping.form', compact('count', 'cart'));
+    public function mycart()
+    {
+        $cartItems = Cart::with('product')->where('user_id', Auth::id())->get();
+        return view('cart', compact('cartItems'));
     }
+    
 
     public function about_us() {
         if (Auth::id()) {
