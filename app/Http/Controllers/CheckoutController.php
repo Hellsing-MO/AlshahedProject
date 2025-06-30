@@ -143,7 +143,6 @@ class CheckoutController extends Controller
 
         // Create Stripe session
         $stripe = new StripeClient(env('STRIPE_SECRET'));
-dd('hi');
         $session = $stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
