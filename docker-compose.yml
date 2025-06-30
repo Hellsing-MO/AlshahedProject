@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: laravel_app
     volumes:
-      - laravelproject:/var/www/html
+      - .:/var/www/html
     ports:
       - "52999:80"
     depends_on:
@@ -38,7 +38,6 @@ services:
       - laravelnet
 
 volumes:
-  laravelproject:
   mysql_data:
 
 networks:
