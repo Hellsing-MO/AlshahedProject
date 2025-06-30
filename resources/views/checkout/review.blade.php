@@ -55,7 +55,7 @@
       </div>
     </div>
     
-    <form action="{{ route('checkout.process-payment') }}" method="POST" style="text-align: center;">
+    <form action="{{ secure_url(route('checkout.process-payment')) }}" method="POST" style="text-align: center;">
       @csrf
       <input type="hidden" name="shipping_data" value="{{ json_encode($shippingData) }}">
       <input type="hidden" name="shipping_cost" value="{{ $shippingCost }}">

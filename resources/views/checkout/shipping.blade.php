@@ -5,7 +5,7 @@
   <div style="background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 30px;">
     <h2 style="color: #2c3e50; margin-bottom: 25px; text-align: center;">Shipping Information</h2>
     
-    <form action="{{ route('checkout.calculate-shipping') }}" method="POST" style="max-width: 600px; margin: 0 auto;">
+    <form action="{{ secure_url(route('checkout.calculate-shipping')) }}" method="POST" style="max-width: 600px; margin: 0 auto;">
       @csrf
       <div style="margin-bottom: 20px;">
         <label style="display: block; margin-bottom: 8px; color: #34495e; font-weight: 500;">Full Name</label>
