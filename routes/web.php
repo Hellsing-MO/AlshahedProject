@@ -11,7 +11,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StripePaymentController;
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::get('/dashboard', [HomeController::class, 'login_home'])
 ->middleware(['auth', 'verified'])->name('dashboard');;
