@@ -126,7 +126,7 @@
                     
                     <!-- Form Actions -->
                     <div class="flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center gap-4 pt-4">
-                        <a href="{{ route('home') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                        <a href="{{ secure_url(route('home')) }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
