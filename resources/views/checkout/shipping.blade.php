@@ -102,9 +102,6 @@
             </div>
             
             <div class="flex justify-between items-center mt-8">
-                <a href="{{ route('cart') }}" class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                    <i class="fas fa-arrow-left mr-2"></i> Return to Cart
-                </a>
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition duration-300 flex items-center">
                     Continue to Review <i class="fas fa-arrow-right ml-2"></i>
                 </button>
