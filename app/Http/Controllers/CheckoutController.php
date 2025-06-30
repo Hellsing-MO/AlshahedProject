@@ -92,11 +92,11 @@ class CheckoutController extends Controller
 
         Cart::where('user_id', Auth::id())->delete();
 
-        return view('success');
+        return view('checkout/success');
     }
 
     public function checkoutCancel()
     {
-        return view('cancel');
+        return view('checkout/cancel');
     }
 }
