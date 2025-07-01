@@ -59,6 +59,7 @@
       @csrf
       <input type="hidden" name="shipping_data" value="{{ json_encode($shippingData) }}">
       <input type="hidden" name="shipping_cost" value="{{ $shippingCost }}">
+      <input type="hidden" name="shipping_payload" value="{{ json_encode($shippingPayload) }}"> {{-- NEW --}}
       <button type="submit" 
               style="background-color: #2ecc71; color: white; padding: 15px 30px; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: inline-flex; align-items: center;">
         <svg style="width: 20px; height: 20px; margin-right: 10px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

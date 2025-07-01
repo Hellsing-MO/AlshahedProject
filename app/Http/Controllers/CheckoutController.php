@@ -105,7 +105,8 @@ class CheckoutController extends Controller
             'cartItems' => $cartItems,
             'cartTotal' => $cartTotal,
             'shippingCost' => $shippingCost,
-            'shippingData' => $validated
+            'shippingData' => $validated,
+            'shippingPayload' => $shippingPayload,
         ]);
     }
 
@@ -113,7 +114,8 @@ class CheckoutController extends Controller
     {
         $shippingData = json_decode($request->shipping_data, true);
         $shippingCost = $request->shipping_cost;
-        
+        $shippingPayload = json_decode($request->shipping_payload, true);
+
         $user = Auth::user();
         $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
 
@@ -164,7 +166,8 @@ class CheckoutController extends Controller
                 'shipping_province' => $shippingData['province_code'],
                 'shipping_postal_code' => $shippingData['postal_code'],
                 'shipping_country' => $shippingData['country_code'],
-                'shipping_phone' => $shippingData['phone']
+                'shipping_phone' => $shippingData['phone'],
+                'shipping_payload' => json_encode($shippingPayload),
             ],
             'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.cancel'),
@@ -173,7 +176,7 @@ class CheckoutController extends Controller
         return redirect($session->url);
     }
 
-    public function success(Request $request)
+    public function success(Request $request,StallionExpressService $stallion)
     {
         $sessionId = $request->query('session_id');
         
@@ -187,6 +190,8 @@ class CheckoutController extends Controller
         // Here you would typically create an order record in your database
         // Clear the user's cart
         Cart::where('user_id', Auth::id())->delete();
+        $shippingPayload = json_decode($session->metadata->shipping_payload, true);
+        $response = $stallion->createShipment($shippingPayload);
 
         return view('checkout.success', [
             'orderTotal' => $session->amount_total / 100,
