@@ -94,6 +94,13 @@ class CheckoutController extends Controller
         if ($rateResponse['rates'][0]['currency'] == 'CAD'){
             $shippingCost = $shippingCost*0.73;
         }
+        if($validated['country_code']=='CA' && $cartTotal >= 150){
+            $shippingCost = 0;
+        }
+        if($validated['country_code']=='US' && $cartTotal >= 200){
+            $shippingCost = 0;
+        }
+
         return view('checkout.review', [
             'cartItems' => $cartItems,
             'cartTotal' => $cartTotal,
