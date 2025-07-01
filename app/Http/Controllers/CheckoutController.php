@@ -90,8 +90,10 @@ class CheckoutController extends Controller
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
-        $shippingCost = $rateResponse['rates'][0]['amount'] ?? 0;
-dd($rateResponse);
+        $shippingCost = $rateResponse['rates'][0]['rate'];
+        if ($rateResponse['rates'][0]['currency'] == 'CAD'){
+            $shippingCost = $shippingCost*0.73;
+        }
         return view('checkout.review', [
             'cartItems' => $cartItems,
             'cartTotal' => $cartTotal,
