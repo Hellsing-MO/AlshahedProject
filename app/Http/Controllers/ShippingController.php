@@ -2,213 +2,130 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SmartShippingService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+use App\Services\StallionExpressService;
+use Stripe\StripeClient;
 
 class ShippingController extends Controller
 {
-    protected SmartShippingService $shippingService;
-
-    public function __construct(SmartShippingService $shippingService)
+    public function showShippingForm()
     {
-        $this->shippingService = $shippingService;
+        return view('shipping.form');
     }
 
-    public function showCalculator(Request $request)
+    public function calculateShippingAndPay(Request $request, StallionExpressService $stallion)
     {
-        $count = 0;
+        $request->validate([
+            'name' => 'required',
+            'address1' => 'required',
+            'city' => 'required',
+            'province_code' => 'required',
+            'postal_code' => 'required',
+            'country_code' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        $user = Auth::user();
+        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+
+        $cartTotal = 0;
         $weight = 0;
-        $orderValue = 0;
+        $lineItems = [];
+        $items = [];
 
-        if (Auth::check()) {
-            $count = DB::table('carts')
-                ->where('user_id', Auth::id())
-                ->count();
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            $price = floatval($product->price);
+            $cartTotal += $price * $item->quantity;
+            $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
 
-            // Get cart items with product details
-            $cartItems = DB::table('carts')
-                ->join('products', 'carts.product_id', '=', 'products.id')
-                ->where('carts.user_id', Auth::id())
-                ->select('products.Weight as weight', 'products.price', 'carts.quantity')
-                ->get();
-
-            // Calculate total weight and value
-            foreach ($cartItems as $item) {
-                $weight += floatval($item->weight) * $item->quantity;
-                $orderValue += floatval($item->price) * $item->quantity;
-            }
-        } else {
-            // For guest users, get cart from session
-            $sessionCart = session()->get('cart', []);
-            $count = count($sessionCart);
-            
-            foreach($sessionCart as $item) {
-                $weight += floatval($item['Weight']) * $item['quantity'];
-                $orderValue += floatval($item['price']) * $item['quantity'];
-            }
-        }
-
-        // Validate URL parameters if provided
-        if ($request->has('weight') || $request->has('order_value')) {
-            // Compare URL values with calculated values
-            if (abs(floatval($request->weight) - $weight) > 0.01 || 
-                abs(floatval($request->order_value) - $orderValue) > 0.01) {
-                return redirect()->route('shipping.calculator')
-                    ->with('error', 'Invalid shipping parameters detected.');
-            }
-        }
-        
-        return view('shipping.calculator', compact('count', 'weight', 'orderValue'));
-    }
-
-    public function calculate(Request $request)
-    {
-        $count = 0;
-        if (Auth::check()) {
-            $count = DB::table('carts')
-                ->where('user_id', Auth::id())
-                ->count();
-        } else {
-            $count = count(session()->get('cart', []));
-        }
-
-        try {
-            // Validate the request
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
-                'country_code' => 'required|string|size:2|in:CA,US',
-                'address1' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
-                'province_code' => 'required|string|max:10',
-                'postal_code' => 'required|string|max:10',
-                'weight' => 'required|numeric|min:0.1',
-                'order_value' => 'required|numeric|min:0',
-            ]);
-
-            // Determine currency based on country
-            $currency = $validated['country_code'] === 'CA' ? 'CAD' : 'USD';
-
-            // Create shipment array
-            $shipment = [
-                "to_address" => [
-                    "name" => $validated['name'],
-                    "address1" => $validated['address1'],
-                    "city" => $validated['city'],
-                    "province_code" => $validated['province_code'],
-                    "postal_code" => $validated['postal_code'],
-                    "country_code" => $validated['country_code'],
-                    "is_residential" => true,
-                    "phone" => $validated['phone'],
-                    "email" => $validated['email']
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => ['name' => $product->title],
+                    'unit_amount' => intval($price * 100),
                 ],
-                "items" => [
-                    [
-                    "description" => "Honey",
-                    "quantity" => 2,
-                    "value" => 10,
-                    "currency" => "CAD",
-                    ]
-                ],
-                "weight" => $validated['weight'],
-                "weight_unit" => "kg",
-                "length" => 30,
-                "is_return" => false,
-                "width" => 25,
-                "height" => 10,
-                "size_unit" => "cm",
-                "package_type" => "Parcel",
+                'quantity' => $item->quantity,
             ];
 
-            // Get shipping rates from Stallion Express
-            $rate = $this->shippingService->getSmartRate(
-                $shipment,
-                $validated['order_value'],
-                $currency
-            );
-
-            if (isset($rate['error'])) {
-                return back()->withErrors(['shipping' => $rate['error']]);
-            }
-
-            // Store shipping data in session for order processing
-            session([
-                'shipping_data' => $rate,
-                'shipping_address' => $validated
-            ]);
-
-            return view('shipping.rates', [
-                'rate' => $rate,
-                'address' => $validated
-            ], compact('count'));
-
-        } catch (\Exception $e) {
-            Log::error('Shipping calculation failed: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'An error occurred while calculating shipping rates. Please try again.']);
-        }
-    }
-
-    public function generateLabel(Request $request)
-    {
-        try {
-            $shippingData = session('shipping_data');
-            $shippingAddress = session('shipping_address');
-
-            if (!$shippingData || !$shippingAddress) {
-                return redirect()->route('shipping.calculator')
-                    ->with('error', 'Shipping information not found. Please calculate shipping rates again.');
-            }
-
-            $shipment = [
-                "to_address" => $shippingAddress,
-                "weight" => $request->weight,
-                "weight_unit" => "kg",
-                "length" => 30,
-                "width" => 25,
-                "height" => 10,
-                "size_unit" => "cm"
+            $items[] = [
+                "description" => $product->title,
+                "sku" => "SKU{$product->id}",
+                "quantity" => $item->quantity,
+                "value" => $price,
+                "currency" => "CAD",
+                "country_of_origin" => "CA",
+                "hs_code" => "123456",
+                "manufacturer_name" => "Honey Supplier",
+                "manufacturer_address1" => "123 Bee Lane",
+                "manufacturer_city" => "Toronto",
+                "manufacturer_province_code" => "ON",
+                "manufacturer_postal_code" => "M5V 2H1",
+                "manufacturer_country_code" => "CA",
             ];
-
-            $result = $this->shippingService->createShipment($shipment, $shippingData);
-
-            if (isset($result['error'])) {
-                return back()->withErrors(['shipping' => $result['error']]);
-            }
-
-            // Store label information in session
-            session(['shipping_label' => $result]);
-
-            return view('shipping.label', [
-                'label' => $result,
-                'address' => $shippingAddress
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Label generation failed: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'An error occurred while generating the shipping label. Please try again.']);
         }
-    }
 
-    public function trackShipment($trackingNumber)
-    {
-        try {
-            $trackingInfo = $this->shippingService->trackShipment($trackingNumber);
+        // Prepare Stallion request
+        $shippingPayload = [
+            "to_address" => [
+                "name" => $request->name,
+                "address1" => $request->address1,
+                "city" => $request->city,
+                "province_code" => $request->province_code,
+                "postal_code" => $request->postal_code,
+                "country_code" => $request->country_code,
+                "phone" => $request->phone,
+                "email" => $request->email,
+                "is_residential" => true,
+            ],
+            "is_return" => false,
+            "weight_unit" => "lbs",
+            "weight" => max($weight, 0.5),
+            "length" => 9,
+            "width" => 12,
+            "height" => 1,
+            "size_unit" => "cm",
+            "items" => $items,
+            "package_type" => "Parcel",
+            "signature_confirmation" => true,
+            "insured" => true,
+            "tax_identifier" => [
+                "tax_type" => "IOSS",
+                "number" => "IM1234567890",
+                "issuing_authority" => "GB"
+            ]
+        ];
 
-            if (isset($trackingInfo['error'])) {
-                return back()->withErrors(['tracking' => $trackingInfo['error']]);
-            }
+        // Get rate
+        $rateResponse = $stallion->getShippingRates($shippingPayload);
+        dd($rateResponse);
+        $shippingCost = $rateResponse['rates'][0]['amount'] ?? 0;
 
-            return view('shipping.tracking', [
-                'tracking' => $trackingInfo
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Tracking failed: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'An error occurred while tracking the shipment. Please try again.']);
+        if ($cartTotal < 150 && $shippingCost > 0) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => ['name' => 'Shipping'],
+                    'unit_amount' => intval($shippingCost * 100),
+                ],
+                'quantity' => 1,
+            ];
         }
+
+        // Create Stripe session
+        $stripe = new StripeClient(config('services.stripe.secret'));
+
+        $session = $stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel'),
+        ]);
+
+        return redirect($session->url);
     }
 }

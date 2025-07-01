@@ -489,7 +489,7 @@ body{
       justify-content: center;
     }
     
-    .nav-icons a[href*="mycart"] {
+    .nav-icons a[href*="shipping"] {
       display: none;
     }
     
@@ -858,7 +858,7 @@ body{
       display: none;
     }
     
-    .nav-icons a[href*="mycart"] {
+    .nav-icons a[href*="shipping"] {
       display: inline-block;
     }
   }

@@ -2,134 +2,216 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ShippingLabelService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+use App\Services\StallionExpressService;
+use Stripe\StripeClient;
+use App\Models\CheckoutSession;
 
 class CheckoutController extends Controller
 {
-    protected $shippingLabelService;
-
-    public function __construct(ShippingLabelService $shippingLabelService)
+    public function showShippingForm()
     {
-        $this->shippingLabelService = $shippingLabelService;
+        $user = Auth::user();
+        if (Cart::where('user_id', $user->id)->count() === 0) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty.');
+        }
+        
+        return view('checkout.shipping');
     }
 
-    public function process(Request $request)
+    public function calculateShipping(Request $request, StallionExpressService $stallion)
     {
-        try {
-            // Log the incoming request data
-            Log::info('Checkout process started', [
-                'shipping_data' => $request->shipping_data,
-                'address' => $request->address
-            ]);
-
-        // Validate the request
         $validated = $request->validate([
-            'shipping_data' => 'required|array',
-            'address' => 'required|array',
+            'name' => 'required|string|max:255',
+            'address1' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'province_code' => 'required|string|size:2',
+            'postal_code' => 'required|string|max:10',
+            'country_code' => 'required|string|size:2',
+            'phone' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
         ]);
 
-            $shippingData = is_string($request->shipping_data) ? json_decode($request->shipping_data, true) : $request->shipping_data;
-            $address = is_string($request->address) ? json_decode($request->address, true) : $request->address;
+        $user = Auth::user();
+        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
 
-            if (!$shippingData || !$address) {
-                throw new \Exception('Invalid shipping data or address format');
-            }
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty.');
+        }
 
-        // Create shipment array
-        $shipment = [
-            "to_address" => [
-                "name" => $address['name'],
-                "address1" => $address['address1'],
-                "city" => $address['city'],
-                "province_code" => $address['province_code'],
-                "postal_code" => $address['postal_code'],
-                "country_code" => $address['country_code'],
-                "is_residential" => true,
-                "phone" => $address['phone'],
-                "email" => $address['email']
-            ],
-            "weight" => $address['weight'],
-            "weight_unit" => "kg",
-            "length" => 30,
-            "width" => 25,
-            "height" => 10,
+        $cartTotal = 0;
+        $weight = 0;
+        $items = [];
+
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            $price = floatval($product->price);
+            $cartTotal += $price * $item->quantity;
+            $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
+
+            $items[] = [
+                "description" => $product->title,
+                "sku" => "SKU{$product->id}",
+                "quantity" => $item->quantity,
+                "value" => $price,
+                "currency" => "CAD",
+                "country_of_origin" => "CA",
+                "hs_code" => "123456",
+                "manufacturer_name" => "Honey Supplier",
+                "manufacturer_address1" => "123 Bee Lane",
+                "manufacturer_city" => "Toronto",
+                "manufacturer_province_code" => "ON",
+                "manufacturer_postal_code" => "M5V 2H1",
+                "manufacturer_country_code" => "CA",
+            ];
+        }
+
+        // Prepare Stallion request
+        $shippingPayload = [
+            "to_address" => $validated,
+            "is_return" => false,
+            "weight_unit" => "lbs",
+            "weight" => max($weight, 0.5),
+            "length" => 9,
+            "width" => 12,
+            "height" => 1,
             "size_unit" => "cm",
+            "items" => $items,
             "package_type" => "Parcel",
-            "package_contents" => "Merchandise",
-            "region" => "ON"
+            "signature_confirmation" => true,
+            "insured" => true,
+            "tax_identifier" => [
+                "tax_type" => "IOSS",
+                "number" => "IM1234567890",
+                "issuing_authority" => "GB"
+            ]
         ];
 
-            // Log the shipment data
-            Log::info('Shipment data prepared', ['shipment' => $shipment]);
-
-        // Generate shipping label
-        $label = $this->shippingLabelService->generateLabel($shipment, $shippingData);
-
-        if (isset($label['error'])) {
-                Log::error('Label generation failed', ['error' => $label['error']]);
-            return back()->withErrors(['shipping' => $label['error']]);
+        // Get rate
+        $rateResponse = $stallion->getShippingRates($shippingPayload);
+        $shippingCost = $rateResponse['rates'][0]['rate'];
+        if ($rateResponse['rates'][0]['currency'] == 'CAD'){
+            $shippingCost = $shippingCost*0.73;
+        }
+        if($validated['country_code']=='CA' && $cartTotal >= 150){
+            $shippingCost = 0;
+        }
+        if($validated['country_code']=='US' && $cartTotal >= 200){
+            $shippingCost = 0;
         }
 
-            // For testing, let's create a mock label if the service fails
-            if (!isset($label['label_url'])) {
-                $label = [
-                    'label_url' => '#',
-                    'tracking_number' => 'TEST' . time(),
-                    'tracking_url' => '#',
-                    'shipment_id' => 'TEST' . time()
-                ];
-            }
-
-        // Store order with shipping information
-            try {
-        $order = DB::table('orders')->insert([
-            'customer_name' => $address['name'],
-            'email' => $address['email'],
-            'phone' => $address['phone'],
-            'address' => $address['address1'],
-            'city' => $address['city'],
-            'province' => $address['province_code'],
-            'postal_code' => $address['postal_code'],
-            'carrier' => $shippingData['carrier'],
-            'service' => $shippingData['service'],
-            'amount' => $shippingData['cost'],
-            'tracking_number' => $label['tracking_number'],
-            'tracking_url' => $label['tracking_url'],
-            'label_url' => $label['label_url'],
-            'shipment_id' => $label['shipment_id'],
-            'created_at' => now(),
-            'updated_at' => now(),
+        return view('checkout.review', [
+            'cartItems' => $cartItems,
+            'cartTotal' => $cartTotal,
+            'shippingCost' => $shippingCost,
+            'shippingData' => $validated,
+            'shippingPayload' => $shippingPayload,
         ]);
-            } catch (\Exception $e) {
-                Log::error('Failed to store order', ['error' => $e->getMessage()]);
-            }
+    }
 
-        // Store shipping information in session for order confirmation
-        session([
-            'shipping_label' => $label,
-            'shipping_address' => $address
-        ]);
+    public function processPayment(Request $request, StallionExpressService $stallion)
+    {
+        $shippingData = json_decode($request->shipping_data, true);
+        $shippingCost = $request->shipping_cost;
+        $shippingPayload = json_decode($request->shipping_payload, true);
 
-        return view('checkout.confirmation', [
-            'label' => $label,
-            'address' => $address,
-            'shipping' => $shippingData
-        ]);
+        $user = Auth::user();
+        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
 
-        } catch (\Exception $e) {
-            Log::error('Checkout process failed', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return back()->withErrors(['error' => 'An error occurred during checkout. Please try again.']);
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty.');
         }
+
+        $cartTotal = 0;
+        $lineItems = [];
+
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+            $price = floatval($product->price);
+            $cartTotal += $price * $item->quantity;
+
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => ['name' => $product->title],
+                    'unit_amount' => intval($price * 100),
+                ],
+                'quantity' => $item->quantity,
+            ];
+        }
+
+        if ( $shippingCost > 0) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => ['name' => 'Shipping'],
+                    'unit_amount' => intval($shippingCost * 100),
+                ],
+                'quantity' => 1,
+            ];
+        }
+        $checkoutSession = CheckoutSession::create([
+            'user_id' => $user->id,
+            'shipping_payload' => $shippingPayload,
+        ]);
+        // Create Stripe session
+        $stripe = new StripeClient(config('services.stripe.secret'));
+        $session = $stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'customer_email' => $shippingData['email'],
+            'metadata' => [
+                'user_id' => $user->id,
+                'shipping_name' => $shippingData['name'],
+                'shipping_address' => $shippingData['address1'],
+                'shipping_city' => $shippingData['city'],
+                'shipping_province' => $shippingData['province_code'],
+                'shipping_postal_code' => $shippingData['postal_code'],
+                'shipping_country' => $shippingData['country_code'],
+                'shipping_phone' => $shippingData['phone'],
+            ],
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel'),
+        ]);
+        $checkoutSession->update(['stripe_session_id' => $session->id]);
+
+        return redirect($session->url);
+    }
+
+    public function success(Request $request,StallionExpressService $stallion)
+    {
+        $sessionId = $request->query('session_id');
+        
+        if (!$sessionId) {
+            return redirect()->route('home')->with('error', 'Invalid session');
+        }
+
+        $stripe = new StripeClient(config('services.stripe.secret'));
+        $session = $stripe->checkout->sessions->retrieve($sessionId);
+        $checkoutSession = CheckoutSession::where('stripe_session_id', $sessionId)->firstOrFail();
+        $shippingPayload = $checkoutSession->shipping_payload;
+        // Here you would typically create an order record in your database
+        // Clear the user's cart
+        Cart::where('user_id', Auth::id())->delete();
+
+        $response = $stallion->createShipment($shippingPayload);
+
+
+        return view('checkout.success', [
+            'orderTotal' => $session->amount_total / 100,
+            'shippingName' => $session->metadata->shipping_name,
+            'shippingAddress' => $session->metadata->shipping_address,
+            'shippingCity' => $session->metadata->shipping_city,
+            'shippingProvince' => $session->metadata->shipping_province,
+            'shippingPostalCode' => $session->metadata->shipping_postal_code
+        ]);
+    }
+
+    public function cancel()
+    {
+        return view('checkout.cancel');
     }
 }
-
-
-
-
-

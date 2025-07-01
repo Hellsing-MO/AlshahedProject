@@ -102,7 +102,7 @@
       align-items: center;
       justify-content: center;
     }
-    .nav-icons a[href*=\"mycart\"] {
+    .nav-icons a[href*=\"shipping\"] {
       display: none;
     }
     .logo-container {

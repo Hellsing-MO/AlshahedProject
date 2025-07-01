@@ -11,7 +11,7 @@
         <img src="{{asset('images/logo alshahed.png')}}" width="66px" height="88px" alt="logo">
         <span><span class="al-sh">Al</span>shahed</span>
         <!-- Mobile cart icon next to logo -->
-        <a href="{{url('mycart')}}" class="mobile-cart-icon" data-count="{{$count}}">
+        <a href="{{url('/mycart')}}" class="mobile-cart-icon" data-count="{{$count}}">
             <i class='bx bx-cart'></i>
         </a>
         <!-- Mobile WhatsApp icon next to cart -->
@@ -67,7 +67,7 @@
             @if (Route::has('login'))
             @auth
             <div class="nav-icons">
-            <a href="{{url('mycart')}}"><i class='bx bx-cart'>[{{$count}}]</i></a>
+            <a href="{{url('/mycart')}}"><i class='bx bx-cart'>[{{$count}}]</i></a>
             <div class="bx bx-menu" id="menu-icon"></div>
             </div>
 
@@ -104,7 +104,7 @@
             
 
             <div class="nav-icons">
-            <a href="{{url('mycart')}}"><i class='bx bx-cart nav-cart'>[{{$count}}]</i></a>
+            <a href="{{url('/mycart')}}"><i class='bx bx-cart nav-cart'>[{{$count}}]</i></a>
             <div class="bx bx-menu" id="menu-icon"></div>
             </div>
 

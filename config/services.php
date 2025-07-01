@@ -39,9 +39,13 @@ return [
     ],
 
     'stallion' => [
-        'key' => env('STALLION_API_KEY'),
+        'key' => env('STALLION_API_KEY_VALUE'),
         'origin_postal_code' => env('STALLION_ORIGIN_POSTAL_CODE'),
-        'base' => env('STALLION_API_BASE')
+        'base' => env('STALLION_API_BASE_VALUE')
     ],
 
+    'stripe'=>[
+        'key'=>env('STRIPE_KEY_VALUE'),
+        'secret'=>env('STRIPE_SECRET_VALUE'),
+    ]
 ];

@@ -3,39 +3,47 @@
 namespace App\Http\Controllers;
        
 use Illuminate\Http\Request;
-use Stripe;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
+use Stripe\StripeClient;
+use Illuminate\Support\Facades\Config;
        
 class StripePaymentController extends Controller
 {
-    /**
-     * success response method.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function stripe($value): View
-    {
-        return view('stripe', compact('value'));
-    }
-      
-    /**
-     * success response method.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function stripePost(Request $request, $value): RedirectResponse
-    {
-        $stripe = new  Stripe\StripeClient(env('STRIPE_SECRET'));
-      
-        $charge =  $stripe->charges->create([
-                "amount" => $value * 100,
-                "currency" => "usd",
-                "source" => $request->stripeToken,
-                "description" => "Test payment from itsolutionstuff.com." 
-        ]);
-                
-        return back()
-                ->with('success', 'Payment successful!');
-    }
+    public function stripe()
+{
+    return view('stripe');
+}
+
+public function stripeCheckout(Request $request)
+{
+    $stripe = new StripeClient(config('services.stripe.secret'));
+
+    $session = $stripe->checkout->sessions->create([
+        'success_url' => route('stripe.checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+        'cancel_url' => route('stripe.index'),
+        'payment_method_types' => ['card'],
+        'line_items' => [[
+            'price_data' => [
+                'currency' => 'usd',
+                'product_data' => [
+                    'name' => $request->product,
+                ],
+                'unit_amount' => $request->price * 100,
+            ],
+            'quantity' => 1,
+        ]],
+        'mode' => 'payment',
+    ]);
+
+    return redirect($session->url);
+}
+
+public function stripeCheckoutSuccess(Request $request)
+{
+    $stripe = new StripeClient(config('services.stripe.secret'));
+    $session = $stripe->checkout->sessions->retrieve($request->session_id);
+
+    // You can add logic here to handle the successful payment, such as updating order status
+
+    return view('success', ['session' => $session]);
+}
 }
