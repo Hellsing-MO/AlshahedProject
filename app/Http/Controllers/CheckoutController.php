@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Services\StallionExpressService;
 use Stripe\StripeClient;
+use App\Models\CheckoutSession;
 
 class CheckoutController extends Controller
 {
@@ -141,7 +142,7 @@ class CheckoutController extends Controller
             ];
         }
 
-        if ($cartTotal < 150 && $shippingCost > 0) {
+        if ( $shippingCost > 0) {
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
@@ -151,6 +152,10 @@ class CheckoutController extends Controller
                 'quantity' => 1,
             ];
         }
+        $checkoutSession = CheckoutSession::create([
+            'user_id' => $user->id,
+            'shipping_payload' => $shippingPayload,
+        ]);
         // Create Stripe session
         $stripe = new StripeClient(config('services.stripe.secret'));
         $session = $stripe->checkout->sessions->create([
@@ -167,11 +172,11 @@ class CheckoutController extends Controller
                 'shipping_postal_code' => $shippingData['postal_code'],
                 'shipping_country' => $shippingData['country_code'],
                 'shipping_phone' => $shippingData['phone'],
-                'shipping_payload' => json_encode($shippingPayload),
             ],
             'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.cancel'),
         ]);
+        $checkoutSession->update(['stripe_session_id' => $session->id]);
 
         return redirect($session->url);
     }
@@ -186,12 +191,14 @@ class CheckoutController extends Controller
 
         $stripe = new StripeClient(config('services.stripe.secret'));
         $session = $stripe->checkout->sessions->retrieve($sessionId);
-        
+        $checkoutSession = CheckoutSession::where('stripe_session_id', $sessionId)->firstOrFail();
+        $shippingPayload = $checkoutSession->shipping_payload;
         // Here you would typically create an order record in your database
         // Clear the user's cart
         Cart::where('user_id', Auth::id())->delete();
-        $shippingPayload = json_decode($session->metadata->shipping_payload, true);
+
         $response = $stallion->createShipment($shippingPayload);
+
 
         return view('checkout.success', [
             'orderTotal' => $session->amount_total / 100,
