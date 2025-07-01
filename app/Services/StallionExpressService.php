@@ -25,7 +25,6 @@ class StallionExpressService
     {
         $response = Http::withToken($this->apiToken)
             ->post($this->baseUrl . 'shipments', $payload);
-dd($response->json());
         return $response->json();
     }
 }
