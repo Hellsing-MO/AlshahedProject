@@ -141,7 +141,7 @@ class CheckoutController extends Controller
             ];
         }
         // Create Stripe session
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripe = new StripeClient(config('services.stripe.secret'));
         $session = $stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
@@ -172,7 +172,7 @@ class CheckoutController extends Controller
             return redirect()->route('home')->with('error', 'Invalid session');
         }
 
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripe = new StripeClient(config('services.stripe.secret'));
         $session = $stripe->checkout->sessions->retrieve($sessionId);
         
         // Here you would typically create an order record in your database

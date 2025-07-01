@@ -15,7 +15,7 @@ class StripePaymentController extends Controller
 
 public function stripeCheckout(Request $request)
 {
-    $stripe = new StripeClient(env('STRIPE_SECRET'));
+    $stripe = new StripeClient(config('services.stripe.secret'));
 
     $session = $stripe->checkout->sessions->create([
         'success_url' => route('stripe.checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
@@ -39,7 +39,7 @@ public function stripeCheckout(Request $request)
 
 public function stripeCheckoutSuccess(Request $request)
 {
-    $stripe = new StripeClient(env('STRIPE_SECRET'));
+    $stripe = new StripeClient(config('services.stripe.secret'));
     $session = $stripe->checkout->sessions->retrieve($request->session_id);
 
     // You can add logic here to handle the successful payment, such as updating order status

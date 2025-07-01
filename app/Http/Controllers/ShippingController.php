@@ -116,7 +116,7 @@ class ShippingController extends Controller
         }
 
         // Create Stripe session
-        $stripe = new StripeClient(env('STRIPE_SECRET'));
+        $stripe = new StripeClient(config('services.stripe.secret'));
 
         $session = $stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
