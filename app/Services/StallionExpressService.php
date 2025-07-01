@@ -10,15 +10,15 @@ class StallionExpressService
 
     public function __construct()
     {
-        $this->apiToken = env('STALLION_API_TOKEN');
-        $this->baseUrl = 'https://ship.stallionexpress.ca/api/v4/';
+        $this->apiToken =config('services.stallion.key');
+        $this->baseUrl = config('services.stallion.base');
     }
 
     public function getShippingRates($payload)
     {
         $response = Http::withToken($this->apiToken)
             ->post($this->baseUrl . 'rates', $payload);
-
+dd($response);
         return $response->json();
     }
 
