@@ -23,11 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // Shipping & Checkout Routes
-    Route::get('/checkout/shipping', [CheckoutController::class, 'showShippingForm'])->name('checkout.shipping');
-    Route::post('/checkout/calculate-shipping', [CheckoutController::class, 'calculateShipping'])->name('checkout.calculate-shipping');
-    Route::post('/checkout/process-payment', [CheckoutController::class, 'processPayment'])->name('checkout.process-payment');
-    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
-    Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
 });
 
 require __DIR__.'/auth.php';
@@ -77,9 +73,14 @@ route::get('add_cart/{id}', [HomeController::class, 'add_cart']);
 
 route::get('delete_cart/{id}', [HomeController::class, 'delete_cart']);
 
-Route::get('mycart', [HomeController::class, 'mycart'])->middleware('auth')->name('cart');
+Route::get('mycart', [HomeController::class, 'mycart'])->name('cart');
 
 Route::get('/api/products/category/{id}', [HomeController::class, 'getByCategory']);
 
 Route::get('/api/products/all', [App\Http\Controllers\HomeController::class, 'getAllProducts']);
 
+Route::get('/checkout/shipping', [CheckoutController::class, 'showShippingForm'])->name('checkout.shipping');
+Route::post('/checkout/calculate-shipping', [CheckoutController::class, 'calculateShipping'])->name('checkout.calculate-shipping');
+Route::post('/checkout/process-payment', [CheckoutController::class, 'processPayment'])->name('checkout.process-payment');
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
