@@ -16,10 +16,8 @@
       <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 30px; text-align: center;">Order Summary</h2>
       
       @php($currentStep = 'Review')
+      @php($steps = ['Shipping', 'Review', 'Payment', 'Success'])
       <div class="checkout-steps" style="display: flex; justify-content: center; align-items: center; margin-bottom: 30px;">
-          @php
-              $steps = ['Shipping', 'Review', 'Payment', 'Success'];
-          @endphp
           @foreach($steps as $step)
               <div style="text-align: center;">
                   <div style="font-weight: bold; font-size: 18px; color: {{ $step == $currentStep ? '#FFB800' : '#bbb' }}; border-bottom: 3px solid {{ $step == $currentStep ? '#FFB800' : 'transparent' }}; padding: 5px 20px; transition: color 0.3s, border-color 0.3s;">

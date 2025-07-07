@@ -126,24 +126,15 @@
   @include('home.header')
   <div class="checkout-container">
     <div class="checkout-card">
+      @php($steps = ['Shipping', 'Review', 'Payment', 'Success'])
       <div class="progress-bar">
         <div class="progress-bar-line"></div>
-        <div class="progress-bar-step">
-          <div class="progress-bar-icon"><i class='bx bx-user'></i></div>
-          <div class="progress-bar-label">Shipping</div>
-        </div>
-        <div class="progress-bar-step">
-          <div class="progress-bar-icon"><i class='bx bx-list-check'></i></div>
-          <div class="progress-bar-label">Review</div>
-        </div>
-        <div class="progress-bar-step active">
-          <div class="progress-bar-icon"><i class='bx bx-credit-card'></i></div>
-          <div class="progress-bar-label">Payment</div>
-        </div>
-        <div class="progress-bar-step">
-          <div class="progress-bar-icon"><i class='bx bx-check-circle'></i></div>
-          <div class="progress-bar-label">Success</div>
-        </div>
+        @foreach($steps as $step)
+          <div class="progress-bar-step">
+            <div class="progress-bar-icon"><i class='bx bx-user'></i></div>
+            <div class="progress-bar-label">{{ $step }}</div>
+          </div>
+        @endforeach
       </div>
       <div class="form-title">Payment</div>
       <form action="{{ route('checkout.process') }}" method="POST">
