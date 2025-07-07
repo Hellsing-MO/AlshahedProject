@@ -136,16 +136,22 @@
       <div class="progress-bar">
         <div class="progress-bar-line"></div>
         @foreach($steps as $step)
-          <div class="progress-bar-step">
-            <div class="progress-bar-icon"><i class='bx bx-user'></i></div>
+          <div class="progress-bar-step{{ $step == 'Payment' ? ' active' : '' }}">
+            <div class="progress-bar-icon">
+              @if($step == 'Shipping')<i class='bx bx-user'></i>@endif
+              @if($step == 'Review')<i class='bx bx-list-check'></i>@endif
+              @if($step == 'Payment')<i class='bx bx-credit-card'></i>@endif
+              @if($step == 'Success')<i class='bx bx-check-circle'></i>@endif
+            </div>
             <div class="progress-bar-label">{{ $step }}</div>
           </div>
         @endforeach
       </div>
       <div class="form-title">Payment Cancelled</div>
       <div class="cancel-icon"><i class='bx bx-x-circle'></i></div>
-      <p style="font-size: 18px; color: #7f8c8d;">Your payment was not completed.<br>You can try again or contact support if you need help.</p>
-      <a href="/mycart" class="btn-main">Return to Cart</a>
+      <p style="font-size: 19px; color: #e74c3c; font-weight: 600; margin-bottom: 10px;">Your payment was not completed.</p>
+      <p style="font-size: 17px; color: #7f8c8d;">You can try again or contact our support if you need help.<br>We're here to assist you!</p>
+      <a href="/mycart" class="btn-main" style="margin-top: 18px;">Return to Cart</a>
     </div>
   </div>
 @include('home.footer')

@@ -130,34 +130,58 @@
       <div class="progress-bar">
         <div class="progress-bar-line"></div>
         @foreach($steps as $step)
-          <div class="progress-bar-step">
-            <div class="progress-bar-icon"><i class='bx bx-user'></i></div>
+          <div class="progress-bar-step{{ $step == 'Payment' ? ' active' : '' }}">
+            <div class="progress-bar-icon">
+              @if($step == 'Shipping')<i class='bx bx-user'></i>@endif
+              @if($step == 'Review')<i class='bx bx-list-check'></i>@endif
+              @if($step == 'Payment')<i class='bx bx-credit-card'></i>@endif
+              @if($step == 'Success')<i class='bx bx-check-circle'></i>@endif
+            </div>
             <div class="progress-bar-label">{{ $step }}</div>
           </div>
         @endforeach
       </div>
       <div class="form-title">Payment</div>
-      <form action="{{ route('checkout.process') }}" method="POST">
+      <form action="{{ route('checkout.process') }}" method="POST" style="margin-top: 24px;">
         @csrf
-        <h2>Shipping Address</h2>
-        <label>Name:</label>
-        <input type="text" name="name" required><br>
-        <label>Address:</label>
-        <input type="text" name="address1" required><br>
-        <label>City:</label>
-        <input type="text" name="city" required><br>
-        <label>Province Code:</label>
-        <input type="text" name="province_code" required><br>
-        <label>Postal Code:</label>
-        <input type="text" name="postal_code" required><br>
-        <label>Country Code:</label>
-        <input type="text" name="country_code" required><br>
-        <label>Phone:</label>
-        <input type="text" name="phone" required><br>
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
-
-        <button type="submit" class="btn-main">Proceed to Payment</button>
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Name</label>
+            <input type="text" name="name" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Address</label>
+            <input type="text" name="address1" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">City</label>
+            <input type="text" name="city" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Province Code</label>
+            <input type="text" name="province_code" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Postal Code</label>
+            <input type="text" name="postal_code" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Country Code</label>
+            <input type="text" name="country_code" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Phone</label>
+            <input type="text" name="phone" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <label style="font-weight: 600; color: #2c3e50;">Email</label>
+            <input type="email" name="email" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
+          </div>
+        </div>
+        <button type="submit" class="btn-main" style="margin-top: 28px;">
+          <i class='bx bx-credit-card' style="font-size: 20px; vertical-align: middle; margin-right: 8px;"></i>
+          Proceed to Payment
+        </button>
       </form>
     </div>
   </div>

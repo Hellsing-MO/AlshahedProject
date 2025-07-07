@@ -136,16 +136,22 @@
       <div class="progress-bar">
         <div class="progress-bar-line"></div>
         @foreach($steps as $step)
-          <div class="progress-bar-step">
-            <div class="progress-bar-icon"><i class='bx bx-user'></i></div>
+          <div class="progress-bar-step{{ $step == 'Success' ? ' active' : '' }}">
+            <div class="progress-bar-icon">
+              @if($step == 'Shipping')<i class='bx bx-user'></i>@endif
+              @if($step == 'Review')<i class='bx bx-list-check'></i>@endif
+              @if($step == 'Payment')<i class='bx bx-credit-card'></i>@endif
+              @if($step == 'Success')<i class='bx bx-check-circle'></i>@endif
+            </div>
             <div class="progress-bar-label">{{ $step }}</div>
           </div>
         @endforeach
       </div>
       <div class="form-title">Thank you for your order!</div>
       <div class="success-icon"><i class='bx bx-check-circle'></i></div>
-      <p style="font-size: 18px; color: #7f8c8d;">Your payment was successful.<br>We are processing your order and will send you a confirmation email soon.</p>
-      <a href="/" class="btn-main">Return to Home</a>
+      <p style="font-size: 19px; color: #2ecc71; font-weight: 600; margin-bottom: 10px;">Your payment was successful!</p>
+      <p style="font-size: 17px; color: #7f8c8d;">We are processing your order and will send you a confirmation email soon.<br>Thank you for shopping with Alshahed Honey!</p>
+      <a href="/" class="btn-main" style="margin-top: 18px;">Return to Home</a>
     </div>
   </div>
 @include('home.footer')
