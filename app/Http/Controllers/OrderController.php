@@ -20,4 +20,13 @@ class OrderController extends BaseController
         $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         return view('orders.index', compact('orders'));
     }
+
+    public function show(Order $order)
+    {
+        $user = Auth::user();
+        if ($order->user_id !== $user->id) {
+            abort(403, 'Unauthorized');
+        }
+        return view('orders.show', compact('order'));
+    }
 }

@@ -96,6 +96,7 @@
             <th>Total</th>
             <th>Status</th>
             <th>Products</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -111,6 +112,9 @@
                     {{ $product['description'] }} <span style="color:#bbb;">×{{ $product['quantity'] }}</span>
                   </div>
                 @endforeach
+              </td>
+              <td>
+                <a href="{{ route('orders.show', $order->id) }}" style="background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%); color: #222; padding: 8px 22px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 2px 8px rgba(255,184,0,0.07); transition: background 0.2s;">View</a>
               </td>
             </tr>
           @endforeach
