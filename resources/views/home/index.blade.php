@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Honey Website Design</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{{asset('style.css')}}">
 
   <!--box icons-->
   <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -227,8 +227,8 @@
         </a>
         <br>
         <br>
-        <h3>{{$products->title}}</h3>
-        <p> {!!Str::limit($products->description,50)!!}</p>
+        <h3>{{ $products->getTranslated('title') }}</h3>
+        <p>{!! Str::limit($products->getTranslated('description'), 50) !!}</p>
         <div class="in-text">
           <div class="price">
             <h6>${{$products->price}}</h6>

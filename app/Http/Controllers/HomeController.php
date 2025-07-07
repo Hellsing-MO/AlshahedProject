@@ -151,8 +151,28 @@ public function getAllProducts()
 
     public function mycart()
     {
-        $cartItems = Cart::with('product')->where('user_id', Auth::id())->get();
-        return view('cart', compact('cartItems'));
+        if (Auth::check()) {
+            $cartItems = Cart::with('product')->where('user_id', Auth::id())->get();
+            $count = $cartItems->count();
+        } else {
+            $sessionCart = session()->get('cart', []);
+            $cartItems = collect();
+            foreach ($sessionCart as $id => $item) {
+                $cartItems->push((object)[
+                    'id' => $id,
+                    'product' => (object)[
+                        'id' => $item['product_id'],
+                        'title' => $item['title'],
+                        'price' => $item['price'],
+                        'image' => $item['image'],
+                        'Weight' => $item['Weight']
+                    ],
+                    'quantity' => $item['quantity']
+                ]);
+            }
+            $count = count($sessionCart);
+        }
+        return view('cart', compact('cartItems', 'count'));
     }
     
 

@@ -13,11 +13,16 @@ class CheckoutController extends Controller
 {
     public function showShippingForm()
     {
-        $user = Auth::user();
-        if (Cart::where('user_id', $user->id)->count() === 0) {
+        // Support both logged-in and guest users
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cartCount = Cart::where('user_id', $user->id)->count();
+        } else {
+            $cartCount = count(session()->get('cart', []));
+        }
+        if ($cartCount === 0) {
             return redirect()->route('cart')->with('error', 'Your cart is empty.');
         }
-        
         return view('checkout.shipping');
     }
 
@@ -34,8 +39,26 @@ class CheckoutController extends Controller
             'email' => 'required|email|max:255',
         ]);
 
-        $user = Auth::user();
-        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+        $userId = null;
+        $customerEmail = null;
+        // Support both logged-in and guest users
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+            $customerEmail = $user->email;
+            $userId = $user->id;
+        } else {
+            // Build cartItems from session for guests
+            $sessionCart = session()->get('cart', []);
+            $cartItems = collect();
+            foreach ($sessionCart as $id => $item) {
+                $cartItems->push((object)[
+                    'product' => \App\Models\Product::find($item['product_id']),
+                    'quantity' => $item['quantity']
+                ]);
+            }
+            $customerEmail = $validated['email'];
+        }
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart')->with('error', 'Your cart is empty.');
@@ -117,8 +140,25 @@ class CheckoutController extends Controller
         $shippingCost = $request->shipping_cost;
         $shippingPayload = json_decode($request->shipping_payload, true);
 
-        $user = Auth::user();
-        $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+        $userId = null;
+        $customerEmail = null;
+        // Support both logged-in and guest users
+        if (Auth::check()) {
+            $user = Auth::user();
+            $cartItems = Cart::with('product')->where('user_id', $user->id)->get();
+            $customerEmail = $user->email;
+            $userId = $user->id;
+        } else {
+            $sessionCart = session()->get('cart', []);
+            $cartItems = collect();
+            foreach ($sessionCart as $id => $item) {
+                $cartItems->push((object)[
+                    'product' => \App\Models\Product::find($item['product_id']),
+                    'quantity' => $item['quantity']
+                ]);
+            }
+            $customerEmail = $shippingData['email'];
+        }
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart')->with('error', 'Your cart is empty.');
@@ -153,7 +193,7 @@ class CheckoutController extends Controller
             ];
         }
         $checkoutSession = CheckoutSession::create([
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'shipping_payload' => $shippingPayload,
         ]);
         // Create Stripe session
@@ -162,9 +202,9 @@ class CheckoutController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'customer_email' => $shippingData['email'],
+            'customer_email' => $customerEmail,
             'metadata' => [
-                'user_id' => $user->id,
+                'user_id' => $userId,
                 'shipping_name' => $shippingData['name'],
                 'shipping_address' => $shippingData['address1'],
                 'shipping_city' => $shippingData['city'],
@@ -195,7 +235,11 @@ class CheckoutController extends Controller
         $shippingPayload = $checkoutSession->shipping_payload;
         // Here you would typically create an order record in your database
         // Clear the user's cart
-        Cart::where('user_id', Auth::id())->delete();
+        if (Auth::check()) {
+            Cart::where('user_id', Auth::id())->delete();
+        } else {
+            session()->forget('cart');
+        }
 
         $response = $stallion->createShipment($shippingPayload);
 
