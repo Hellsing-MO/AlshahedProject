@@ -139,6 +139,15 @@
       .order-products-list { gap: 8px; }
       .order-product-img { width: 44px; height: 44px; border-radius: 8px; }
     }
+    @media print {
+      body { background: #fff !important; }
+      .order-details-container, .order-details-card { box-shadow: none !important; border: none !important; background: #fff !important; }
+      .order-details-title, .order-section-title { color: #222 !important; border: none !important; }
+      .order-status, .back-orders-btn, .order-product-img, .order-shipping-box { box-shadow: none !important; background: none !important; color: #222 !important; }
+      .back-orders-btn, .order-status, .order-section-title, .order-details-title { color: #222 !important; background: none !important; }
+      .back-orders-btn, .order-status { display: none !important; }
+      .order-product-img { width: 40px !important; height: 40px !important; }
+    }
   </style>
 </head>
 <body>
@@ -150,6 +159,15 @@
       <div><b>Date:</b> {{ $order->created_at->format('Y-m-d') }}</div>
       <div><span class="order-status">{{ ucfirst($order->status) }}</span></div>
     </div>
+    @if($order->tracking_info && $order->tracking_info['tracking_number'])
+      <div class="order-section-title">Tracking Information</div>
+      <div class="order-shipping-box" style="margin-bottom: 18px;">
+        <b>Tracking Number:</b> {{ $order->tracking_info['tracking_number'] }}<br>
+        @if($order->tracking_info['carrier'])<b>Carrier:</b> {{ $order->tracking_info['carrier'] }}<br>@endif
+        @if($order->tracking_info['status'])<b>Status:</b> {{ $order->tracking_info['status'] }}<br>@endif
+        @if($order->tracking_info['tracking_url'])<a href="{{ $order->tracking_info['tracking_url'] }}" target="_blank" style="color:#3498db; text-decoration:underline;">Track Shipment</a>@endif
+      </div>
+    @endif
     <div class="order-section-title">Shipping Address</div>
     <div class="order-shipping-box">
       {{ $order->shipping_address['address1'] ?? '' }}<br>
@@ -176,6 +194,7 @@
       <span>${{ number_format($order->total, 2) }}</span>
     </div>
     <a href="{{ route('orders.index') }}" class="back-orders-btn">← Back to Orders</a>
+    <button onclick="window.print()" class="back-orders-btn" style="margin-left: 12px; background: linear-gradient(90deg, #3498db 60%, #b6e0fe 100%); color: #fff;">🖨 Print Invoice</button>
   </div>
 </div>
 @include('home.footer')

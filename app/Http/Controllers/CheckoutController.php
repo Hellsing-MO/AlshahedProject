@@ -243,6 +243,15 @@ class CheckoutController extends Controller
         }
 
         $response = $stallion->createShipment($shippingPayload);
+        $trackingInfo = null;
+        if (is_array($response) && isset($response['tracking_number'])) {
+            $trackingInfo = [
+                'tracking_number' => $response['tracking_number'],
+                'carrier' => $response['carrier'] ?? null,
+                'status' => $response['status'] ?? null,
+                'tracking_url' => $response['tracking_url'] ?? null,
+            ];
+        }
 
         // --- ORDER CREATION ---
         $userId = Auth::id();
@@ -257,7 +266,15 @@ class CheckoutController extends Controller
             'phone' => $shippingPayload['to_address']['phone'] ?? '',
         ];
         // Get products from the original cart/shipping payload
-        $products = $shippingPayload['items'] ?? [];
+        $products = [];
+        if (!empty($shippingPayload['items'])) {
+            foreach ($shippingPayload['items'] as $item) {
+                // Try to get the product image
+                $productModel = \App\Models\Product::where('title', $item['description'])->first();
+                $image = $productModel ? $productModel->image : null;
+                $products[] = array_merge($item, ['image' => $image]);
+            }
+        }
         $total = $session->amount_total / 100;
         $order = Order::create([
             'user_id' => $userId,
@@ -268,6 +285,7 @@ class CheckoutController extends Controller
             'total' => $total,
             'stripe_session_id' => $sessionId,
             'status' => 'paid',
+            'tracking_info' => $trackingInfo,
         ]);
 
         return view('checkout.success', [

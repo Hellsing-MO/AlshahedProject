@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Honey Website Design</title>
-  <link rel="stylesheet" href="{{asset('style.css')}}">
+  <link rel="stylesheet" href="style.css">
 
   <!--box icons-->
   <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -22,7 +22,7 @@
     <script src="https://unpkg.com/scrollreveal"></script>
 </head>
 
-<body>
+<body class="all">
  <!-- ////////////////
      ***** Navigtion Bar*
     /////////////////////-->
@@ -33,7 +33,7 @@
           <img src="images/logo alshahed.png" width="66px" height="88px" alt="logo">
           <span><span class="al-sh">Al</span>shahed</span>
           <!-- Mobile cart icon next to logo -->
-          <a href="{{url('/mycart')}}" class="mobile-cart-icon" data-count="{{$count}}">
+          <a href="{{url('mycart')}}" class="mobile-cart-icon" data-count="{{$count}}">
             <i class='bx bx-cart'></i>
           </a>
           <!-- Mobile WhatsApp icon next to cart -->
@@ -64,7 +64,7 @@
             </li>
   
             <li class="navbar-item">
-              <a href="#about" class="navbar-link" data-nav-link>
+              <a href="{{url('about_us')}}" class="navbar-link" data-nav-link>
                 <i class='bx bx-info-circle' style="margin-right: 12px; font-size: 20px;"></i>
                 {{__('messages.about us')}}
               </a>
@@ -89,7 +89,7 @@
             @if (Route::has('login'))
             @auth
             <div class="nav-icons">
-              <a href="{{url('/mycart')}}"><i class='bx bx-cart'>[{{$count}}]</i></a>
+              <a href="{{url('mycart')}}"><i class='bx bx-cart'>[{{$count}}]</i></a>
               <div class="bx bx-menu" id="menu-icon"></div>
             </div>
 
@@ -103,8 +103,9 @@
                         <input type="submit" value="logout">
                       </a>
                     </form>
-                    <a href="{{route('orders.index') }}"class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">My Orders</a>
-
+                    <a href="{{ route('orders.index') }}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
+                      My Orders
+                    </a>
                   </div>
                 </div>
                 <span class="text-gray-400">/</span>
@@ -128,7 +129,7 @@
               
 
             <div class="nav-icons">
-              <a href="{{url('/mycart')}}"><i class='bx bx-cart nav-cart'>[{{$count}}]</i></a>
+              <a href="{{url('mycart')}}"><i class='bx bx-cart nav-cart'>[{{$count}}]</i></a>
               <div class="bx bx-menu" id="menu-icon"></div>
             </div>
 
@@ -193,11 +194,9 @@
   <!-- Company Images Slider Section -->
   <section class="company-slider-section">
     <div class="company-slider-title text-center">
-      <h2>Our Company in Pictures</h2>
     </div>
     <div class="swiper company-swiper">
       <div class="swiper-wrapper">
-        <!--
         <div class="swiper-slide"><img src="{{asset('images/dark-coffee-beans-bowl-brown-table.jpg')}}" alt="Company Image 1" loading="lazy"></div>
         <div class="swiper-slide"><img src="{{asset('images/top-view-assortment-dried-fruits-black-yellow-raisins.jpg')}}" alt="Company Image 2" loading="lazy"></div>
         <div class="swiper-slide"><img src="{{asset('images/top-view-brown-almonds.jpg')}}" alt="Company Image 3" loading="lazy"></div>
@@ -211,8 +210,36 @@
     </div>
   </section>
 
-
-
+  <!-- Store Categories Section -->
+  <section class="store-categories-section">
+    <div class="middle-text revial-top">
+      <h4>
+        <img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">
+        {{ __('messages.store_categories') ?? 'Store Categories' }}
+      </h4>
+      <h2>{{ __('messages.choose_category') ?? 'Choose Your Category' }}</h2>
+    </div>
+    <div class="categories-container">
+      <div class="category-box revial-lift">
+        <a href="{{ url('our_shop') }}">
+          <img src="{{asset('images/قسم العسل .jpg')}}"  alt="Honey" loading="lazy" class="category-img">
+          <h3>قسم العسل</h3>
+        </a>
+      </div>
+      <div class="category-box revial-top">
+        <a href="{{ url('category/22') }}">
+          <img src="{{asset('images/اللوز.jpg')}}"  alt="Nuts" loading="lazy" class="category-img">
+          <h3>قسم البن, الزبيب واللوز اليمني</h3>
+        </a>
+      </div>
+      <div class="category-box revial-right">
+        <a href="{{ url('category/23') }}">
+          <img src="{{asset('images/الملجقات.jpg')}}"  alt="Dried Fruits" loading="lazy" class="category-img">
+          <h3 style="font-size: 15px">اقسام اخرى(القسط الهندي, العكبر, قشر الرمان, حبوب اللقاح, لبان الذكر)</h3>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!--Our shop-->
   <section class="shop" id="shop"">
@@ -251,23 +278,24 @@
   <div class="text-center">
     <a href="{{url('our_shop')}}" class="btn">{{__('messages.all pro')}}<i class='bx bxs-right-arrow'></i></a>
   </div>
+
+
+  
   <!---reviews-->
   <section class="review mySwiper" id="review">
     <div class="middle-text revial-top">
-      <h4>{{__('messages.Our Customer')}}</h4>
+      <h4><img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">{{__('messages.Our Customer')}}</h4>
       <h2>{{__('messages.clients')}}</h2>
     </div>
     <div class="swiper-wrapper revial-bottom">
-      <article class="box swiper-slide">
-        <p>Never have tried Blueberry before it's very good !The Taste is still in my mouth and ican feel the depth of
-          the taste of the every ingr adients used in the food. I really Love Fafo</p>
+      <article class="box swiper-slide" style="background: #fffbe6; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #ffe0a3;">
+        <p style="color: #b8860b; font-size: 1.1rem;">{{__('messages.review1')}}</p>
         <div class="in-box">
           <div class="bx-img">
-            <img src="images/r1.jpg" loading="lazy">
+            <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Anonymous User" loading="lazy" style="border-radius: 50%; border: 2px solid #ffb800; background: #fff; width: 70px; height: 70px;">
           </div>
           <div class="bxx-text">
-            <h4>Karahan Jotti</h4>
-            <h5>Honey Customer</h5>
+            <h4>Alex Morgan</h4>
           </div>
           <div class="ratings">
             <a href="#"><i class='bx bxs-star'></i></a>
@@ -276,20 +304,17 @@
             <a href="#"><i class='bx bxs-star'></i></a>
             <a href="#"><i class='bx bxs-star'></i></a>
           </div>
-
         </div>
       </article>
 
-      <article class="box swiper-slide">
-        <p>Never have tried Blueberry before it's very good !The Taste is still in my mouth and ican feel the depth of
-          the taste of the every ingr adients used in the food. I really Love Fafo</p>
+      <article class="box swiper-slide" style="background: #fffbe6; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #ffe0a3;">
+        <p style="color: #b8860b; font-size: 1.1rem;">{{__('messages.review2')}}</p>
         <div class="in-box">
           <div class="bx-img">
-            <img src="images/r1.jpg" loading="lazy">
+            <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Anonymous User" loading="lazy" style="border-radius: 50%; border: 2px solid #ffb800; background: #fff; width: 70px; height: 70px;">
           </div>
           <div class="bxx-text">
-            <h4>Karahan Jotti</h4>
-            <h5>Honey Customer</h5>
+            <h4>Jamie Lee</h4>
           </div>
           <div class="ratings">
             <a href="#"><i class='bx bxs-star'></i></a>
@@ -298,20 +323,17 @@
             <a href="#"><i class='bx bxs-star'></i></a>
             <a href="#"><i class='bx bxs-star'></i></a>
           </div>
-
         </div>
       </article>
 
-      <article class="box swiper-slide">
-        <p>Never have tried Blueberry before it's very good !The Taste is still in my mouth and ican feel the depth of
-          the taste of the every ingr adients used in the food. I really Love Fafo</p>
+      <article class="box swiper-slide" style="background: #fffbe6; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #ffe0a3;">
+        <p style="color: #b8860b; font-size: 1.1rem;">{{__('messages.review3')}}</p>
         <div class="in-box">
           <div class="bx-img">
-            <img src="images/r1.jpg" loading="lazy">
+            <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Anonymous User" loading="lazy" style="border-radius: 50%; border: 2px solid #ffb800; background: #fff; width: 70px; height: 70px;">
           </div>
           <div class="bxx-text">
-            <h4>Karahan Jotti</h4>
-            <h5>Honey Customer</h5>
+            <h4>Samira Patel</h4>
           </div>
           <div class="ratings">
             <a href="#"><i class='bx bxs-star'></i></a>
@@ -320,20 +342,17 @@
             <a href="#"><i class='bx bxs-star'></i></a>
             <a href="#"><i class='bx bxs-star'></i></a>
           </div>
-
         </div>
       </article>
 
-      <article class="box swiper-slide">
-        <p>Never have tried Blueberry before it's very good !The Taste is still in my mouth and ican feel the depth of
-          the taste of the every ingr adients used in the food. I really Love Fafo</p>
+      <article class="box swiper-slide" style="background: #fffbe6; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #ffe0a3;">
+        <p style="color: #b8860b; font-size: 1.1rem;">{{__('messages.review4')}}</p>
         <div class="in-box">
           <div class="bx-img">
-            <img src="images/r1.jpg" loading="lazy">
+            <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Anonymous User" loading="lazy" style="border-radius: 50%; border: 2px solid #ffb800; background: #fff; width: 70px; height: 70px;">
           </div>
           <div class="bxx-text">
-            <h4>Karahan Jotti</h4>
-            <h5>Honey Customer</h5>
+            <h4>Diego Rossi</h4>
           </div>
           <div class="ratings">
             <a href="#"><i class='bx bxs-star'></i></a>
@@ -342,29 +361,6 @@
             <a href="#"><i class='bx bxs-star'></i></a>
             <a href="#"><i class='bx bxs-star'></i></a>
           </div>
-
-        </div>
-      </article>
-
-      <article class="box swiper-slide">
-        <p>Never have tried Blueberry before it's very good !The Taste is still in my mouth and ican feel the depth of
-          the taste of the every ingr adients used in the food. I really Love Fafo</p>
-        <div class="in-box">
-          <div class="bx-img">
-            <img src="images/r1.jpg" loading="lazy">
-          </div>
-          <div class="bxx-text">
-            <h4>Karahan Jotti</h4>
-            <h5>Honey Customer</h5>
-          </div>
-          <div class="ratings">
-            <a href="#"><i class='bx bxs-star'></i></a>
-            <a href="#"><i class='bx bxs-star'></i></a>
-            <a href="#"><i class='bx bxs-star'></i></a>
-            <a href="#"><i class='bx bxs-star'></i></a>
-            <a href="#"><i class='bx bxs-star'></i></a>
-          </div>
-
         </div>
       </article>
 

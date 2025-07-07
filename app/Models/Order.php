@@ -15,11 +15,13 @@ class Order extends Model
         'total',
         'stripe_session_id',
         'status',
+        'tracking_info',
     ];
 
     protected $casts = [
         'shipping_address' => 'array',
         'products' => 'array',
+        'tracking_info' => 'array',
     ];
 
     //

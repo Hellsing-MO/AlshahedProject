@@ -165,63 +165,63 @@
         <div class="progress-bar-line"></div>
         <div class="progress-bar-step active">
           <div class="progress-bar-icon"><i class='bx bx-user'></i></div>
-          <div class="progress-bar-label">Shipping</div>
+          <div class="progress-bar-label">{{ __('messages.Shipping') }}</div>
         </div>
         <div class="progress-bar-step">
           <div class="progress-bar-icon"><i class='bx bx-list-check'></i></div>
-          <div class="progress-bar-label">Review</div>
+          <div class="progress-bar-label">{{ __('messages.Review') }}</div>
         </div>
         <div class="progress-bar-step">
           <div class="progress-bar-icon"><i class='bx bx-credit-card'></i></div>
-          <div class="progress-bar-label">Payment</div>
+          <div class="progress-bar-label">{{ __('messages.Payment') }}</div>
         </div>
         <div class="progress-bar-step">
           <div class="progress-bar-icon"><i class='bx bx-check-circle'></i></div>
-          <div class="progress-bar-label">Success</div>
+          <div class="progress-bar-label">{{ __('messages.Success') }}</div>
         </div>
       </div>
-      <div class="form-title">Shipping Information</div>
+      <div class="form-title">{{ __('messages.Shipping Information') }}</div>
       <form action="{{ secure_url(route('checkout.calculate-shipping')) }}" method="POST" class="shipping-form" autocomplete="on">
         @csrf
         <div class="floating-label-group">
           <input type="text" name="name" placeholder=" " required>
-          <label class="floating-label">Full Name</label>
+          <label class="floating-label">{{ __('messages.Full Name') }}</label>
         </div>
         <div class="floating-label-group">
           <input type="text" name="address1" placeholder=" " required>
-          <label class="floating-label">Address</label>
+          <label class="floating-label">{{ __('messages.Address') }}</label>
         </div>
         <div style="display: flex; gap: 10px;">
           <div class="floating-label-group" style="flex:1;">
             <input type="text" name="city" placeholder=" " required>
-            <label class="floating-label">City</label>
+            <label class="floating-label">{{ __('messages.City') }}</label>
           </div>
           <div class="floating-label-group" style="flex:1;">
             <input type="text" name="province_code" placeholder=" " maxlength="2" required>
-            <label class="floating-label">Province Code</label>
+            <label class="floating-label">{{ __('messages.Province Code') }}</label>
           </div>
         </div>
         <div style="display: flex; gap: 10px;">
           <div class="floating-label-group" style="flex:1;">
             <input type="text" name="postal_code" placeholder=" " required>
-            <label class="floating-label">Postal Code</label>
+            <label class="floating-label">{{ __('messages.Postal Code') }}</label>
           </div>
           <div class="floating-label-group" style="flex:1;">
             <input type="text" name="country_code" value="CA" placeholder=" " required>
-            <label class="floating-label">Country Code</label>
+            <label class="floating-label">{{ __('messages.Country Code') }}</label>
           </div>
         </div>
         <div style="display: flex; gap: 10px;">
           <div class="floating-label-group" style="flex:1;">
             <input type="tel" name="phone" placeholder=" " required>
-            <label class="floating-label">Phone</label>
+            <label class="floating-label">{{ __('messages.Phone') }}</label>
           </div>
           <div class="floating-label-group" style="flex:1;">
             <input type="email" name="email" placeholder=" " required>
-            <label class="floating-label">Email</label>
+            <label class="floating-label">{{ __('messages.Email') }}</label>
           </div>
         </div>
-        <button type="submit" class="btn-main">Review Order</button>
+        <button type="submit" class="btn-main">{{ __('messages.Review Order') }}</button>
       </form>
     </div>
   </div>

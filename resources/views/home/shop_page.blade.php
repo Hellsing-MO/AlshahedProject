@@ -8,20 +8,20 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
    <meta content="Codescandy" name="author" />
    <title>Shop page</title>
-   <link href="../assets/libs/tiny-slider/dist/tiny-slider.css" rel="stylesheet" />
-   <link href="../assets/libs/nouislider/dist/nouislider.min.css" rel="stylesheet" />
+   <link href="{{asset('../assets/libs/tiny-slider/dist/tiny-slider.css" rel="stylesheet')}}" />
+   <link href="{{asset('../assets/libs/nouislider/dist/nouislider.min.css" rel="stylesheet')}}" />
    <!-- Favicon icon-->
-   <link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon/favicon.ico" />
+   <link rel="shortcut icon" type="image/x-icon" href="{{asset('../assets/images/favicon/favicon.ico')}}" />
    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
    <!-- Libs CSS -->
-   <link href="../assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-   <link href="../assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet" />
-   <link href="../assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet" />
+   <link href="{{asset('../assets/libs/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet')}}" />
+   <link href="{{asset('../assets/libs/feather-webfont/dist/feather-icons.css" rel="stylesheet')}}" />
+   <link href="{{asset('../assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet')}}" />
 
    <!-- Theme CSS -->
-   <link rel="stylesheet" href="style.css">
-   <link rel="stylesheet" href="../assets/css/theme.min.css" />
+   <link rel="stylesheet" href="{{asset('style.css')}}">
+   <link rel="stylesheet" href="{{asset('../assets/css/theme.min.css')}}" />
 
 
    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8S4MT3EYG"></script>
@@ -55,7 +55,8 @@
       <!-- Modal -->
 
       <script src="../assets/js/vendors/validation.js"></script>
-
+      <br>
+      <br>
       <main>
          <!-- section-->
          <!-- section -->
@@ -85,8 +86,8 @@
                                  <li class="nav-item border-bottom w-100">
                                    <a href="#" class="nav-link category-link d-flex align-items-center"
                                       data-category-id="all"
-                                      data-category-name="All Products">
-                                     All Products
+                                      data-category-name="كل المنتجات">
+                                     كل المنتجات
                                    </a>
                                  </li>
                                  @foreach ($category as $cat)
@@ -112,7 +113,7 @@
                            <h2 class="mb-0 fs-1 h2-header-bee">
                               <img class="beenice1" src="{{asset('images/beenice1.png')}}">
                               <span id="selected-category" style="color: #222">
-                                 {{isset($selected_category) ? $selected_category->category_name : 'All Products'}}
+                                 {{isset($selected_category) ? $selected_category->category_name : 'كل المنتجات'}}
                                </span>
                            </h2>
                         </div>
@@ -200,10 +201,107 @@
          </div>
       </main>
 
+      
+    <!--features-->
+    <section class="features-section">
+      <div class="middle-text revial-top">
+        <h4><img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">Why Choose Us</h4>
+        <h2>Our Core Features</h2>
+      </div>
+      <div class="features-container">
+        <div class="feature-box revial-lift">
+          <div class="feature-icon"><i class='bx bx-time-five'></i></div>
+          <h3>Always Open</h3>
+          <a href="#">24/7 working</a>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon"><i class='bx bx-map-pin'></i></div>
+          <h3>Our Location</h3>
+          <a href="https://maps.app.goo.gl/2bKE2M8vTHJuPdwz9?g_st=awb">North York, Canada</a>
+        </div>
+        <div class="feature-box revial-right">
+          <div class="feature-icon"><i class='bx bxs-phone-call'></i></div>
+          <h3>Contact Us</h3>
+          <a href="http://wa.me/14379951819/">+1 (437) 995-1819</a>
+        </div>
+      </div>
+    </section>
+    
+<!--contact-->
+  <section class="contact" id="contact">
+      <div class="contact-text">
+        <h2 class="revial-top">{{__('messages.contact us')}}</h2>
+       
+        <div class="social">
+          <a href="https://www.instagram.com/alshahedhoney?igsh=MThka284ZmdsemIxYQ=="><i class='bx bxl-instagram-alt revial-lift'></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61560393087783"><i class='bx bxl-facebook revial-top'></i></a>
+          <a href="#"><i class='bx bxl-twitter revial-bottom'></i></a>
+          <a href="http://wa.me/14379951819/"><i class='bx bxl-whatsapp revial-bottom'></i></a>
+        </div>
+      </div>
+
+      <div class="footer-content">
+        <!-- Quick Links and Contact Info Row -->
+        <div class="footer-row">
+          <!-- Website Links Section -->
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="{{url('/')}}"><i class='bx bx-home-alt'></i> {{__('messages.Home')}}</a></li>
+              <li><a href="#about"><i class='bx bx-info-circle'></i> {{__('messages.about us')}}</a></li>
+              <li><a href="{{url('our_shop')}}"><i class='bx bx-store'></i> {{__('messages.our shop')}}</a></li>
+              <li><a href="#contact"><i class='bx bx-phone'></i> {{__('messages.contact us')}}</a></li>
+            </ul>
+          </div>
+
+          <!-- Contact Information Section -->
+          <div class="footer-section">
+            <h3>Contact Info</h3>
+            <div class="contact-details">
+              <div class="contact-item">
+                <a href="https://maps.google.com/?q=45+Grenoble+Dr,+North+York,+ON+M3C+1C4,+Canada" target="_blank">
+                  <i class='bx bxs-location-plus'></i>
+                  <span>45 Grenoble Dr, North York, ON M3C 1C4، Canada</span>
+                </a>
+              </div>
+              <div class="contact-item">
+                <a href="tel:+14379951819">
+                  <i class='bx bx-mobile-alt'></i>
+                  <span>+1 (437) 995-1819</span>
+                </a>
+              </div>
+              <div class="contact-item">
+                <a href="mailto:info@alshahedhoney.com">
+                  <i class='bx bxs-envelope'></i>
+                  <span>info@alshahedhoney.com</span>
+                </a>
+              </div>
+              <div class="contact-item">
+                <a href="https://alshahedhoney.com" target="_blank">
+                  <i class='bx bx-globe'></i>
+                  <span>www.alshahedhoney.com</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Newsletter Section -->
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div class="container">
+          <p class="copyright">
+            Copyright by <span>Alshahed</span> With <span>LOVE</span>. All rights reserved.
+          </p>
+        </div>
+      </div>
+  </section>
       <!-- modal -->
 
-      <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
+      <script src="{{asset('../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
+      <script src="{{asset('../assets/libs/simplebar/dist/simplebar.min.js')}}"></script>
       <script>
          document.addEventListener('DOMContentLoaded', function() {
            // User dropdown
@@ -369,7 +467,7 @@
       </script>
 
       <!-- Theme JS -->
-      <script src="../assets/js/theme.min.js"></script>
+      <script src="{{asset('../assets/js/theme.min.js')}}"></script>
 
 </body>
 

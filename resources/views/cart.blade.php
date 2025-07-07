@@ -238,18 +238,18 @@
 <div class="cart-main-container">
   <div class="cart-card">
     <div class="cart-card-accent"></div>
-    <h2 style="color: #2c3e50; border-bottom: 2px solid #ffe066; padding-bottom: 10px; margin-bottom: 25px; font-weight: 700; letter-spacing: -1px;">My Shopping Cart</h2>
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #ffe066; padding-bottom: 10px; margin-bottom: 25px; font-weight: 700; letter-spacing: -1px;">{{ __('messages.My Shopping Cart') }}</h2>
     @if(count($cartItems) > 0)
       <div style="overflow-x: auto;">
         <table class="cart-table">
           <thead>
             <tr>
-              <th>Image</th>
-              <th>Product</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Action</th>
+              <th>{{ __('messages.Image') }}</th>
+              <th>{{ __('messages.Product') }}</th>
+              <th>{{ __('messages.Qty') }}</th>
+              <th>{{ __('messages.Price') }}</th>
+              <th>{{ __('messages.Total') }}</th>
+              <th>{{ __('messages.Action') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -263,7 +263,7 @@
               <td class="cart-qty">{{$item->quantity}}</td>
               <td class="cart-price">${{number_format($item->product->price, 2)}}</td>
               <td class="cart-total">${{number_format($subtotal, 2)}}</td>
-              <td><a href="{{url('delete_cart', $item->id)}}" class="cart-remove-btn">Remove</a></td>
+              <td><a href="{{url('delete_cart', $item->id)}}" class="cart-remove-btn">{{ __('messages.Remove') }}</a></td>
             </tr>
             @endforeach
             <tr class="cart-total-row">
@@ -275,13 +275,13 @@
         </table>
       </div>
       <div style="display: flex; justify-content: flex-end;">
-        <a href="{{route('checkout.shipping')}}" class="cart-checkout-btn">Proceed to Checkout</a>
+        <a href="{{route('checkout.shipping')}}" class="cart-checkout-btn">{{ __('messages.Proceed to Checkout') }}</a>
       </div>
     @else
       <div class="cart-empty">
         <div class="cart-empty-icon"><i class='bx bx-cart'></i></div>
-        <div class="cart-empty-text">Your cart is empty.</div>
-        <a href="{{ url('/') }}" class="cart-empty-btn">Continue Shopping</a>
+        <div class="cart-empty-text">{{ __('messages.Your cart is empty.') }}</div>
+        <a href="{{ url('/') }}" class="cart-empty-btn">{{ __('messages.Continue Shopping') }}</a>
       </div>
     @endif
   </div>
