@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->string('stripe_session_id')->unique();
             $table->string('status')->default('pending');
+            $table->json('tracking_info')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
