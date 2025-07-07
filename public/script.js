@@ -71,20 +71,68 @@ var swiper = new Swiper(".mySwiper", {
   });
 
 //scroll reveal
+console.log("Initializing ScrollReveal...");
 
 ScrollReveal({
-    // reset: true,
-    distance:'80px',
-    duration:2000,
-    delay:200
+    reset: false,
+    distance: '80px',
+    duration: 2000,
+    delay: 200,
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    origin: 'bottom',
+    interval: 100
 });
 
-ScrollReveal().reveal('.revial-top', {origin: 'top'});
+// Reveal elements with different origins
+ScrollReveal().reveal('.revial-top', {
+    origin: 'top',
+    distance: '60px',
+    duration: 1500,
+    delay: 200
+});
 
-ScrollReveal().reveal('.revial-bottom', { origin: 'bottom' });
+ScrollReveal().reveal('.revial-bottom', { 
+    origin: 'bottom',
+    distance: '60px',
+    duration: 1500,
+    delay: 200
+});
 
-ScrollReveal().reveal('.revial-lift', {origin: 'left' });
+ScrollReveal().reveal('.revial-lift', {
+    origin: 'left',
+    distance: '60px',
+    duration: 1500,
+    delay: 200
+});
 
-ScrollReveal().reveal('.revial-right', {origin: "right",});
+ScrollReveal().reveal('.revial-right', {
+    origin: "right",
+    distance: '60px',
+    duration: 1500,
+    delay: 200
+});
 
-console.log("hello world");
+// Debug: Check if elements exist
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM loaded, checking for animation elements...");
+    
+    const topElements = document.querySelectorAll('.revial-top');
+    const leftElements = document.querySelectorAll('.revial-lift');
+    const rightElements = document.querySelectorAll('.revial-right');
+    const bottomElements = document.querySelectorAll('.revial-bottom');
+    
+    console.log(`Found ${topElements.length} top elements`);
+    console.log(`Found ${leftElements.length} left elements`);
+    console.log(`Found ${rightElements.length} right elements`);
+    console.log(`Found ${bottomElements.length} bottom elements`);
+    
+    // Check for category boxes specifically
+    const categoryBoxes = document.querySelectorAll('.category-box');
+    console.log(`Found ${categoryBoxes.length} category boxes`);
+    
+    categoryBoxes.forEach((box, index) => {
+        console.log(`Category box ${index + 1}:`, box.className);
+    });
+});
+
+console.log("ScrollReveal initialization complete");

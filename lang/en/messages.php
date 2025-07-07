@@ -23,6 +23,10 @@ return [
         'send mess'=> 'SEND YOUR Message',
         'Get Directions'=> 'Get Directions',
         'lang' => 'en',
-
-
+        'store_categories' => 'Store Categories',
+        'choose_category' => 'Choose Your Category',
+        'review1' => 'The pure Yemeni honey from Alshahed is absolutely incredible! The taste is unlike anything I\'ve ever had. Highly recommend!',
+        'review2' => 'Amazing quality and authentic taste. The honey is so pure and natural. Will definitely order again!',
+        'review3' => 'Best honey I\'ve ever tasted! The shipping was fast and the packaging was perfect. Thank you Alshahed!',
+        'review4' => 'Exceptional quality Yemeni honey. The flavor is rich and authentic. Great customer service too!',
 ];
