@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
@@ -24,6 +25,10 @@ Route::middleware('auth')->group(function () {
     
     // Shipping & Checkout Routes
 
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 });
 
 require __DIR__.'/auth.php';

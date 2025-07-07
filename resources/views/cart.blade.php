@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,226 @@
   <title>Document</title>
   <link rel="stylesheet" href="{{asset('style.css')}}">
   <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #fffbe6 0%, #fff 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .cart-main-container {
+      max-width: 900px;
+      margin: 20px auto 32px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 120px);
+      justify-content: center;
+    }
+    .cart-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 16px 48px 0 rgba(255,184,0,0.13), 0 4px 16px 0 rgba(0,0,0,0.08);
+      border: 1.5px solid #f3e7c3;
+      padding: 48px 40px 36px 40px;
+      animation: cartPopIn 0.7s cubic-bezier(.23,1.01,.32,1) both;
+      position: relative;
+      overflow: hidden;
+    }
+    .cart-card-accent {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 12px;
+      background: linear-gradient(90deg, #FFB800 0%, #ffe066 100%);
+      border-radius: 28px 28px 0 0;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 2;
+    }
+    @keyframes cartPopIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(60px); }
+      60% { opacity: 1; transform: scale(1.03) translateY(-8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .cart-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 18px;
+      margin-bottom: 30px;
+      background: none;
+      animation: fadeInTable 0.8s cubic-bezier(.23,1.01,.32,1) both;
+    }
+    @keyframes fadeInTable {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: none; }
+    }
+    .cart-table thead tr {
+      background-color: #fffbe6;
+    }
+    .cart-table th {
+      padding: 20px 10px;
+      text-align: left;
+      border-bottom: 2px solid #ffe066;
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+    .cart-table th:first-child { border-radius: 16px 0 0 16px; }
+    .cart-table th:last-child { border-radius: 0 16px 16px 0; }
+    .cart-table tbody tr {
+      background: #fffdfa;
+      box-shadow: 0 4px 24px 0 rgba(255,184,0,0.10), 0 2px 8px 0 rgba(0,0,0,0.04);
+      border-radius: 18px;
+      transition: box-shadow 0.2s, background 0.2s;
+      border: 1.5px solid #ffe066;
+    }
+    .cart-table tbody tr:hover {
+      box-shadow: 0 8px 32px 0 rgba(52,152,219,0.13), 0 4px 16px 0 rgba(0,0,0,0.08);
+      background: #f8f9fa;
+    }
+    .cart-product-img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(52,152,219,0.08);
+      border: 2.5px solid #f3e7c3;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .cart-table tbody tr:hover .cart-product-img {
+      border-color: #FFB800;
+      box-shadow: 0 4px 18px 0 rgba(52,152,219,0.13);
+    }
+    .cart-product-title {
+      font-weight: 700;
+      color: #2c3e50;
+      font-size: 1.18rem;
+      letter-spacing: -0.5px;
+    }
+    .cart-qty {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+    .cart-price {
+      font-weight: 700;
+      font-size: 1.13rem;
+    }
+    .cart-total {
+      color: #FFB800;
+      font-weight: 700;
+      font-size: 1.13rem;
+    }
+    .cart-remove-btn {
+      background: linear-gradient(90deg, #e74c3c 60%, #ffb8b8 100%);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(231,76,60,0.09);
+      transition: background 0.2s, transform 0.1s;
+    }
+    .cart-remove-btn:hover {
+      background: linear-gradient(90deg, #c0392b 60%, #ffb8b8 100%);
+      transform: scale(1.06);
+    }
+    .cart-total-row {
+      background-color: #fffbe6;
+      font-weight: bold;
+    }
+    .cart-total-label {
+      text-align: right;
+      border-radius: 0 0 0 16px;
+      padding: 20px 18px;
+      font-size: 1.18rem;
+    }
+    .cart-total-value {
+      text-align: right;
+      color: #e6a700;
+      font-size: 1.25rem;
+      border-radius: 0 0 16px 0;
+      padding: 20px 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .cart-checkout-btn {
+      background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%);
+      color: #222;
+      padding: 20px 60px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 22px;
+      box-shadow: 0 2px 8px rgba(255,184,0,0.07);
+      letter-spacing: 0.7px;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 18px;
+      display: inline-block;
+    }
+    .cart-checkout-btn:hover {
+      background: linear-gradient(90deg, #e6a700 60%, #ffe066 100%);
+      transform: scale(1.04);
+    }
+    .cart-empty {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(90deg, #fffbe6 60%, #fff 100%);
+      border-radius: 18px;
+      box-shadow: 0 2px 12px 0 rgba(255,184,0,0.07);
+      margin-top: 40px;
+      animation: fadeInTable 0.8s cubic-bezier(.23,1.01,.32,1) both;
+    }
+    .cart-empty-icon {
+      font-size: 60px;
+      color: #FFB800;
+      margin-bottom: 18px;
+    }
+    .cart-empty-text {
+      font-size: 21px;
+      color: #7f8c8d;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .cart-empty-btn {
+      background: linear-gradient(90deg, #3498db 60%, #b6e0fe 100%);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 17px;
+      box-shadow: 0 2px 8px rgba(52,152,219,0.07);
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+    }
+    .cart-empty-btn:hover {
+      background: linear-gradient(90deg, #217dbb 60%, #b6e0fe 100%);
+      transform: scale(1.04);
+    }
+    @media (max-width: 900px) {
+      .cart-card { max-width: 100%; padding: 16px 2vw 16px 2vw; border-radius: 18px; }
+      .cart-main-container { max-width: 100%; padding: 0 2vw; margin-top: 90px; min-height: unset; }
+      .cart-table th, .cart-table td { font-size: 0.98rem; padding: 8px 6px; }
+      .cart-product-img { width: 54px; height: 54px; border-radius: 10px; }
+      .cart-table th, .cart-table td { font-size: 0.98rem; }
+      .cart-checkout-btn { font-size: 16px; padding: 15px 38px; }
+      .cart-total-label, .cart-total-value { font-size: 1rem; padding: 12px 8px; }
+    }
+    @media (min-width: 901px) {
+      .cart-main-container { max-width: 1500px; }
+      
+      .cart-card { max-width: 100%; padding: 64px 64px 48px 64px; border-radius: 32px; box-shadow: 0 24px 64px 0 rgba(255,184,0,0.18), 0 8px 32px 0 rgba(0,0,0,0.10); border: 2.5px solid #ffe066; }
+      .cart-table th, .cart-table td { font-size: 1.18rem; }
+      .cart-product-img { width: 130px; height: 130px; border-radius: 22px; }
+      .cart-checkout-btn { font-size: 20px; padding: 16px 60px; margin-top: 28px; }
+      .cart-total-label, .cart-total-value { font-size: 1.25rem; padding: 28px 18px; }
+    }
+  </style>
 </head>
 <body>
   @include('home.header')
@@ -17,54 +235,56 @@
   <br>
   <br>
   <br>
-<div class="container" style="max-width: 1200px; margin: 30px auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 25px;">My Shopping Cart</h2>
-  
-  @if(count($cartItems) > 0)
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-        <thead>
-          <tr style="background-color: #f8f9fa;">
-            <th style="padding: 12px 15px; text-align: left; border-bottom: 2px solid #dee2e6;">Product</th>
-            <th style="padding: 12px 15px; text-align: center; border-bottom: 2px solid #dee2e6;">Qty</th>
-            <th style="padding: 12px 15px; text-align: right; border-bottom: 2px solid #dee2e6;">Price</th>
-            <th style="padding: 12px 15px; text-align: right; border-bottom: 2px solid #dee2e6;">Total</th>
-            <th style="padding: 12px 15px; text-align: center; border-bottom: 2px solid #dee2e6;">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @php($total = 0)
-          @foreach($cartItems as $item)
-          @php($subtotal = $item->product->price * $item->quantity)
-          @php($total += $subtotal)
-          <tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 12px 15px;">{{$item->product->title}}</td>
-            <td style="padding: 12px 15px; text-align: center;">{{$item->quantity}}</td>
-            <td style="padding: 12px 15px; text-align: right;">${{number_format($item->product->price, 2)}}</td>
-            <td style="padding: 12px 15px; text-align: right;">${{number_format($subtotal, 2)}}</td>
-            <td style="padding: 12px 15px; text-align: center;">
-              <a href="{{url('delete_cart', $item->id)}}" style="background-color: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; display: inline-block; transition: background-color 0.3s;">Remove</a>
-            </td>
-          </tr>
-          @endforeach
-          <tr style="background-color: #f8f9fa; font-weight: bold;">
-            <td colspan="3" style="padding: 12px 15px; text-align: right;">Total:</td>
-            <td style="padding: 12px 15px; text-align: right;">${{number_format($total, 2)}}</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <div style="display: flex; justify-content: flex-end;">
-      <a href="{{route('checkout.shipping')}}" style="background-color: #3498db; color: white; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: bold; transition: background-color 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">Proceed to Checkout</a>
-    </div>
-  @else
-    <div style="text-align: center; padding: 40px 20px; background-color: #f8f9fa; border-radius: 8px;">
-      <p style="font-size: 18px; color: #7f8c8d; margin-bottom: 20px;">Your cart is empty.</p>
-      <a href="{{ url('/') }}" style="background-color: #3498db; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; transition: background-color 0.3s;">Continue Shopping</a>
-    </div>
-  @endif
+<div class="cart-main-container">
+  <div class="cart-card">
+    <div class="cart-card-accent"></div>
+    <h2 style="color: #2c3e50; border-bottom: 2px solid #ffe066; padding-bottom: 10px; margin-bottom: 25px; font-weight: 700; letter-spacing: -1px;">My Shopping Cart</h2>
+    @if(count($cartItems) > 0)
+      <div style="overflow-x: auto;">
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @php($total = 0)
+            @foreach($cartItems as $item)
+            @php($subtotal = $item->product->price * $item->quantity)
+            @php($total += $subtotal)
+            <tr>
+              <td><img class="cart-product-img" src="{{ asset('products/' . $item->product->image) }}" alt="{{$item->product->title}}"></td>
+              <td class="cart-product-title">{{$item->product->title}}</td>
+              <td class="cart-qty">{{$item->quantity}}</td>
+              <td class="cart-price">${{number_format($item->product->price, 2)}}</td>
+              <td class="cart-total">${{number_format($subtotal, 2)}}</td>
+              <td><a href="{{url('delete_cart', $item->id)}}" class="cart-remove-btn">Remove</a></td>
+            </tr>
+            @endforeach
+            <tr class="cart-total-row">
+              <td colspan="4" class="cart-total-label">Total:</td>
+              <td class="cart-total-value">${{number_format($total, 2)}}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display: flex; justify-content: flex-end;">
+        <a href="{{route('checkout.shipping')}}" class="cart-checkout-btn">Proceed to Checkout</a>
+      </div>
+    @else
+      <div class="cart-empty">
+        <div class="cart-empty-icon"><i class='bx bx-cart'></i></div>
+        <div class="cart-empty-text">Your cart is empty.</div>
+        <a href="{{ url('/') }}" class="cart-empty-btn">Continue Shopping</a>
+      </div>
+    @endif
+  </div>
 </div>
 
     <!--features-->

@@ -103,6 +103,8 @@
                         <input type="submit" value="logout">
                       </a>
                     </form>
+                    <a href="{{route('orders.index') }}"class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">My Orders</a>
+
                   </div>
                 </div>
                 <span class="text-gray-400">/</span>

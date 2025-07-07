@@ -31,12 +31,13 @@
       box-shadow: 0 16px 48px 0 rgba(255,184,0,0.13), 0 4px 16px 0 rgba(0,0,0,0.08);
       border: 1.5px solid #f3e7c3;
       padding: 48px 40px 36px 40px;
-      animation: slideFadeIn 0.7s cubic-bezier(.23,1.01,.32,1) both;
+      animation: cardPopIn 0.7s cubic-bezier(.23,1.01,.32,1) both;
       position: relative;
     }
-    @keyframes slideFadeIn {
-      from { opacity: 0; transform: translateY(60px); }
-      to { opacity: 1; transform: none; }
+    @keyframes cardPopIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(60px); }
+      60% { opacity: 1; transform: scale(1.03) translateY(-8px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
     }
     .progress-bar {
       display: flex;
@@ -51,7 +52,16 @@
       align-items: center;
       flex: 1;
       z-index: 1;
+      animation: progressFadeIn 0.7s cubic-bezier(.23,1.01,.32,1) both;
     }
+    @keyframes progressFadeIn {
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .progress-bar-step:nth-child(1) { animation-delay: 0.05s; }
+    .progress-bar-step:nth-child(2) { animation-delay: 0.15s; }
+    .progress-bar-step:nth-child(3) { animation-delay: 0.25s; }
+    .progress-bar-step:nth-child(4) { animation-delay: 0.35s; }
     .progress-bar-icon {
       width: 38px; height: 38px;
       border-radius: 50%;
@@ -61,12 +71,18 @@
       font-size: 22px;
       color: #bbb;
       margin-bottom: 6px;
-      transition: border-color 0.3s, color 0.3s;
+      transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
     }
     .progress-bar-step.active .progress-bar-icon {
       border-color: #FFB800;
       color: #FFB800;
       background: #fffbe6;
+      box-shadow: 0 0 0 4px #ffe06655;
+      animation: iconPulse 1.1s cubic-bezier(.23,1.01,.32,1) infinite alternate;
+    }
+    @keyframes iconPulse {
+      0% { box-shadow: 0 0 0 4px #ffe06655; }
+      100% { box-shadow: 0 0 0 10px #ffe06622; }
     }
     .progress-bar-label {
       font-size: 13px;
@@ -125,6 +141,25 @@
       margin-top: -8px;
       display: flex;
       justify-content: space-between;
+    }
+    .free-shipping-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #2ecc71 60%, #b6f7c1 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      border-radius: 999px;
+      padding: 6px 18px;
+      margin-left: 8px;
+      margin-bottom: 2px;
+      box-shadow: 0 2px 8px rgba(46,204,113,0.09);
+      letter-spacing: 0.5px;
+      vertical-align: middle;
+      animation: badgePop 0.7s cubic-bezier(.23,1.01,.32,1) both;
+    }
+    @keyframes badgePop {
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
     }
     .btn-main {
       background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%);
@@ -222,8 +257,18 @@
           <span>${{number_format($cartTotal, 2)}}</span>
         </div>
         <div class="order-details-row">
-          <span>Shipping:</span>
-          <span>${{number_format($shippingCost, 2)}}</span>
+          <span>Shipping:
+            @if($shippingCost == 0)
+              <span class="free-shipping-badge"><i class='bx bx-gift'></i> Free Shipping</span>
+            @endif
+          </span>
+          <span>
+            @if($shippingCost == 0)
+              <span style="color: #2ecc71; font-weight: 600;">FREE</span>
+            @else
+              ${{number_format($shippingCost, 2)}}
+            @endif
+          </span>
         </div>
         <div class="order-total-row">
           <span>Total:</span>

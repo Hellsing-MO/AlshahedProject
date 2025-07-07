@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('customer_name');
             $table->string('customer_email');
-            $table->string('customer_phone');
-            $table->text('shipping_address'); // ممكن تخزن json
-            $table->string('shipping_provider');
-            $table->string('shipping_service');
-            $table->decimal('shipping_amount', 8, 2);
-            $table->string('shipping_currency', 5);
-            $table->string('shipping_duration')->nullable();
+            $table->json('shipping_address');
+            $table->json('products');
+            $table->decimal('total', 10, 2);
+            $table->string('stripe_session_id')->unique();
             $table->string('status')->default('pending');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

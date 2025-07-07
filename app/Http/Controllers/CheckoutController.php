@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Services\StallionExpressService;
 use Stripe\StripeClient;
 use App\Models\CheckoutSession;
+use App\Models\Order;
 
 class CheckoutController extends Controller
 {
@@ -243,10 +244,36 @@ class CheckoutController extends Controller
 
         $response = $stallion->createShipment($shippingPayload);
 
+        // --- ORDER CREATION ---
+        $userId = Auth::id();
+        $customerName = $session->metadata->shipping_name;
+        $customerEmail = $session->customer_email;
+        $shippingAddress = [
+            'address1' => $session->metadata->shipping_address,
+            'city' => $session->metadata->shipping_city,
+            'province' => $session->metadata->shipping_province,
+            'postal_code' => $session->metadata->shipping_postal_code,
+            'country' => $shippingPayload['to_address']['country_code'] ?? '',
+            'phone' => $shippingPayload['to_address']['phone'] ?? '',
+        ];
+        // Get products from the original cart/shipping payload
+        $products = $shippingPayload['items'] ?? [];
+        $total = $session->amount_total / 100;
+        $order = Order::create([
+            'user_id' => $userId,
+            'customer_name' => $customerName,
+            'customer_email' => $customerEmail,
+            'shipping_address' => $shippingAddress,
+            'products' => $products,
+            'total' => $total,
+            'stripe_session_id' => $sessionId,
+            'status' => 'paid',
+        ]);
 
         return view('checkout.success', [
-            'orderTotal' => $session->amount_total / 100,
-            'shippingName' => $session->metadata->shipping_name,
+            'order' => $order,
+            'orderTotal' => $total,
+            'shippingName' => $customerName,
             'shippingAddress' => $session->metadata->shipping_address,
             'shippingCity' => $session->metadata->shipping_city,
             'shippingProvince' => $session->metadata->shipping_province,
