@@ -112,6 +112,7 @@
                                  <label class="form-label">Weight</label>
                                  <select class="form-select" name="Weight" required>
                                     <option selected>Select Weight</option>
+                                    <option value="0.1kg">0.1kg</option>
                                     <option value="0.25kg">0.25kg</option>
                                     <option value="0.5kg">0.5kg</option>
                                     <option value="1kg">1kg</option>

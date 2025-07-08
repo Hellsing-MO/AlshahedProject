@@ -137,50 +137,50 @@
               @if($step == 'Payment')<i class='bx bx-credit-card'></i>@endif
               @if($step == 'Success')<i class='bx bx-check-circle'></i>@endif
             </div>
-            <div class="progress-bar-label">{{ $step }}</div>
+            <div class="progress-bar-label">{{ __('messages.' . $step) }}</div>
           </div>
         @endforeach
       </div>
-      <div class="form-title">Payment</div>
+      <div class="form-title">{{ __('messages.Payment') }}</div>
       <form action="{{ route('checkout.process') }}" method="POST" style="margin-top: 24px;">
         @csrf
         <div style="display: flex; flex-direction: column; gap: 18px;">
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Name</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Full Name') }}</label>
             <input type="text" name="name" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Address</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Address') }}</label>
             <input type="text" name="address1" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">City</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.City') }}</label>
             <input type="text" name="city" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Province Code</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Province Code') }}</label>
             <input type="text" name="province_code" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Postal Code</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Postal Code') }}</label>
             <input type="text" name="postal_code" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Country Code</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Country Code') }}</label>
             <input type="text" name="country_code" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Phone</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Phone') }}</label>
             <input type="text" name="phone" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
           <div style="display: flex; flex-direction: column; gap: 6px;">
-            <label style="font-weight: 600; color: #2c3e50;">Email</label>
+            <label style="font-weight: 600; color: #2c3e50;">{{ __('messages.Email') }}</label>
             <input type="email" name="email" required style="padding: 12px; border-radius: 8px; border: 1px solid #eee; font-size: 1rem;">
           </div>
         </div>
         <button type="submit" class="btn-main" style="margin-top: 28px;">
           <i class='bx bx-credit-card' style="font-size: 20px; vertical-align: middle; margin-right: 8px;"></i>
-          Proceed to Payment
+          {{ __('messages.Proceed to Payment') }}
         </button>
       </form>
     </div>

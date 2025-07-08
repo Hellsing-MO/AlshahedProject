@@ -202,7 +202,7 @@ public function getAllProducts()
                 ]);
             }
         }
-        return view('home.about-us', compact('count', 'cart'));
+        return view('home.about_us', compact('count', 'cart'));
     }
 
     public function delete_cart($id) {

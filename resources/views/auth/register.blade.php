@@ -27,44 +27,44 @@
     <br>
     <main class="auth-container">
         <div class="auth-card">
-            <h1>{{ __('Register') }}</h1>
+            <h1>{{ __('messages.register') }}</h1>
 
             <form method="POST" action="{{ route('register') }}">
                 @csrf
         
                 <div class="form-group">
-                    <label for="name">{{ __('Name') }}</label>
+                    <label for="name">{{ __('messages.Name') }}</label>
                     <input id="name" class="form-control mt-1" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" />
                     <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
         
                 <div class="form-group">
-                    <label for="email">{{ __('Email') }}</label>
+                    <label for="email">{{ __('messages.Email') }}</label>
                     <input id="email" class="form-control mt-1" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
         
                 <div class="form-group">
-                    <label for="password">{{ __('Password') }}</label>
+                    <label for="password">{{ __('messages.Password') }}</label>
                     <input id="password" class="form-control mt-1" type="password" name="password" required autocomplete="new-password" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
         
                 <div class="form-group">
-                    <label for="password_confirmation">{{ __('Confirm Password') }}</label>
+                    <label for="password_confirmation">{{ __('messages.Confirm Password') }}</label>
                     <input id="password_confirmation" class="form-control mt-1" type="password" name="password_confirmation" required autocomplete="new-password" />
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
         
                 <div class="flex items-center justify-end mt-4">
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                        {{ __('Already registered?') }}
+                        {{ __('messages.Already registered?') }}
                     </a>
                 </div>
 
                 <div class="form-group mt-4">
                     <button type="submit" class="primary-btn">
-                        {{ __('Register') }}
+                        {{ __('messages.register') }}
                     </button>
                 </div>
             </form>

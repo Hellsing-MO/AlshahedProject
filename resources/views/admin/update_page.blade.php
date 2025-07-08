@@ -112,9 +112,10 @@
                                  <label class="form-label">Weight</label>
                                  <select class="form-select" name="Weight" required>
                                     <option selected>Select Weight</option>
-                                    <option value="0.25kg">0.25kg</option>
-                                    <option value="0.5kg">0.5kg</option>
-                                    <option value="1kg">1kg</option>
+                                    <option value="0.1kg" {{$data->Weight == '0.1kg' ? 'selected' : ''}}>0.1kg</option>
+                                    <option value="0.25kg" {{$data->Weight == '0.25kg' ? 'selected' : ''}}>0.25kg</option>
+                                    <option value="0.5kg" {{$data->Weight == '0.5kg' ? 'selected' : ''}}>0.5kg</option>
+                                    <option value="1kg" {{$data->Weight == '1kg' ? 'selected' : ''}}>1kg</option>
                                  </select>
                               </div>
                               <div>

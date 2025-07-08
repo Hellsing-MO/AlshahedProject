@@ -223,24 +223,24 @@
               @if($step == 'Payment')<i class='bx bx-credit-card'></i>@endif
               @if($step == 'Success')<i class='bx bx-check-circle'></i>@endif
             </div>
-            <div class="progress-bar-label">{{ $step }}</div>
+            <div class="progress-bar-label">{{ __('messages.' . $step) }}</div>
           </div>
         @endforeach
       </div>
-      <div class="form-title">Order Review</div>
-      <a href="{{ url('/mycart') }}" class="edit-cart-link">← Edit Cart</a>
+      <div class="form-title">{{ __('messages.Order Review') }}</div>
+      <a href="{{ url('/mycart') }}" class="edit-cart-link">&larr; {{ __('messages.Edit Cart') }}</a>
       <div class="shipping-summary">
-        <h3>Shipping Information</h3>
+        <h3>{{ __('messages.Shipping Information') }}</h3>
           <p style="margin: 5px 0; line-height: 1.6;">
             <strong>{{ $shippingData['name'] }}</strong><br>
             {{ $shippingData['address1'] }}<br>
             {{ $shippingData['city'] }}, {{ $shippingData['province_code'] }} {{ $shippingData['postal_code'] }}<br>
             {{ $shippingData['country_code'] }}<br>
-            Phone: {{ $shippingData['phone'] }}
+            {{ __('messages.Phone') }}: {{ $shippingData['phone'] }}
           </p>
         </div>
       <div class="order-summary">
-        <h3>Order Details</h3>
+        <h3>{{ __('messages.Order Details') }}</h3>
           @foreach($cartItems as $item)
         <div class="order-details-row">
             <div>
@@ -253,25 +253,25 @@
           </div>
           @endforeach
         <div class="order-details-row">
-              <span>Subtotal:</span>
+              <span>{{ __('messages.Subtotal') }}:</span>
               <span>${{number_format($cartTotal, 2)}}</span>
             </div>
         <div class="order-details-row">
-          <span>Shipping:
+          <span>{{ __('messages.Shipping Cost') }}:
             @if($shippingCost == 0)
-              <span class="free-shipping-badge"><i class='bx bx-gift'></i> Free Shipping</span>
+              <span class="free-shipping-badge"><i class='bx bx-gift'></i> {{ __('messages.Free Shipping') }}</span>
             @endif
           </span>
           <span>
             @if($shippingCost == 0)
-              <span style="color: #2ecc71; font-weight: 600;">FREE</span>
+              <span style="color: #2ecc71; font-weight: 600;">{{ __('messages.Free Shipping') }}</span>
             @else
               ${{number_format($shippingCost, 2)}}
             @endif
           </span>
             </div>
         <div class="order-total-row">
-              <span>Total:</span>
+              <span>{{ __('messages.Total') }}:</span>
               <span>${{ number_format($cartTotal + $shippingCost, 2) }}</span>
         </div>
       </div>
@@ -285,7 +285,7 @@
           <path d="M14 11V2a5 5 0 0 0-5 5v2a1 1 0 0 1-1 1H3a1 1 0 0 0-1 1v7a5 5 0 0 0 5 5h6a5 5 0 0 0 5-5v-7a1 1 0 0 0-1-1h-3z"></path>
           <line x1="8" y1="11" x2="16" y2="11"></line>
         </svg>
-        Pay Securely with Stripe
+        {{ __('messages.Pay Securely with Stripe') }}
       </button>
     </form>
   </div>

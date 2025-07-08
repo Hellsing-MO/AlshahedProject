@@ -267,7 +267,7 @@
           </tr>
           @endforeach
             <tr class="cart-total-row">
-              <td colspan="4" class="cart-total-label">Total:</td>
+              <td colspan="4" class="cart-total-label">{{ __('messages.Total') }}:</td>
               <td class="cart-total-value">${{number_format($total, 2)}}</td>
             <td></td>
           </tr>

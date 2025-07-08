@@ -143,15 +143,15 @@
               @if($step == 'Payment')<i class='bx bx-credit-card'></i>@endif
               @if($step == 'Success')<i class='bx bx-check-circle'></i>@endif
             </div>
-            <div class="progress-bar-label">{{ $step }}</div>
+            <div class="progress-bar-label">{{ __('messages.' . $step) }}</div>
           </div>
         @endforeach
       </div>
-      <div class="form-title">Thank you for your order!</div>
+      <div class="form-title">{{ __('messages.Thank you for your order!') }}</div>
       <div class="success-icon"><i class='bx bx-check-circle'></i></div>
-      <p style="font-size: 19px; color: #2ecc71; font-weight: 600; margin-bottom: 10px;">Your payment was successful!</p>
-      <p style="font-size: 17px; color: #7f8c8d;">We are processing your order and will send you a confirmation email soon.<br>Thank you for shopping with Alshahed Honey!</p>
-      <a href="/" class="btn-main" style="margin-top: 18px;">Return to Home</a>
+      <p style="font-size: 19px; color: #2ecc71; font-weight: 600; margin-bottom: 10px;">{{ __('messages.Your payment was successful!') }}</p>
+      <p style="font-size: 17px; color: #7f8c8d;">{{ __('messages.We are processing your order and will send you a confirmation email soon.') }}<br>{{ __('messages.Thank you for shopping with Alshahed Honey!') }}</p>
+      <a href="/" class="btn-main" style="margin-top: 18px;">{{ __('messages.Return to Home') }}</a>
     </div>
   </div>
 @include('home.footer')
