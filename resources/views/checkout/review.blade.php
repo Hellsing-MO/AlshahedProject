@@ -231,31 +231,31 @@
       <a href="{{ url('/mycart') }}" class="edit-cart-link">← Edit Cart</a>
       <div class="shipping-summary">
         <h3>Shipping Information</h3>
-        <p style="margin: 5px 0; line-height: 1.6;">
-          <strong>{{ $shippingData['name'] }}</strong><br>
-          {{ $shippingData['address1'] }}<br>
-          {{ $shippingData['city'] }}, {{ $shippingData['province_code'] }} {{ $shippingData['postal_code'] }}<br>
-          {{ $shippingData['country_code'] }}<br>
-          Phone: {{ $shippingData['phone'] }}
-        </p>
-      </div>
+          <p style="margin: 5px 0; line-height: 1.6;">
+            <strong>{{ $shippingData['name'] }}</strong><br>
+            {{ $shippingData['address1'] }}<br>
+            {{ $shippingData['city'] }}, {{ $shippingData['province_code'] }} {{ $shippingData['postal_code'] }}<br>
+            {{ $shippingData['country_code'] }}<br>
+            Phone: {{ $shippingData['phone'] }}
+          </p>
+        </div>
       <div class="order-summary">
         <h3>Order Details</h3>
-        @foreach($cartItems as $item)
+          @foreach($cartItems as $item)
         <div class="order-details-row">
-          <div>
-            <strong>{{$item->product->title}}</strong>
+            <div>
+              <strong>{{$item->product->title}}</strong>
             <span style="color: #7f8c8d; font-size: 14px;">&nbsp;× {{$item->quantity}}</span>
+            </div>
+            <div style="text-align: right;">
+              ${{number_format($item->product->price * $item->quantity, 2)}}
+            </div>
           </div>
-          <div style="text-align: right;">
-            ${{number_format($item->product->price * $item->quantity, 2)}}
-          </div>
-        </div>
-        @endforeach
+          @endforeach
         <div class="order-details-row">
-          <span>Subtotal:</span>
-          <span>${{number_format($cartTotal, 2)}}</span>
-        </div>
+              <span>Subtotal:</span>
+              <span>${{number_format($cartTotal, 2)}}</span>
+            </div>
         <div class="order-details-row">
           <span>Shipping:
             @if($shippingCost == 0)
@@ -269,27 +269,27 @@
               ${{number_format($shippingCost, 2)}}
             @endif
           </span>
-        </div>
+            </div>
         <div class="order-total-row">
-          <span>Total:</span>
-          <span>${{ number_format($cartTotal + $shippingCost, 2) }}</span>
+              <span>Total:</span>
+              <span>${{ number_format($cartTotal + $shippingCost, 2) }}</span>
         </div>
       </div>
       <form action="{{ secure_url(route('checkout.process-payment')) }}" method="POST" style="text-align: center; margin-top: 24px;">
-        @csrf
-        <input type="hidden" name="shipping_data" value="{{ json_encode($shippingData) }}">
-        <input type="hidden" name="shipping_cost" value="{{ $shippingCost }}">
+      @csrf
+      <input type="hidden" name="shipping_data" value="{{ json_encode($shippingData) }}">
+      <input type="hidden" name="shipping_cost" value="{{ $shippingCost }}">
         <input type="hidden" name="shipping_payload" value="{{ json_encode($shippingPayload) }}">
         <button type="submit" class="btn-main">
           <svg style="width: 20px; height: 20px; margin-right: 10px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 11V2a5 5 0 0 0-5 5v2a1 1 0 0 1-1 1H3a1 1 0 0 0-1 1v7a5 5 0 0 0 5 5h6a5 5 0 0 0 5-5v-7a1 1 0 0 0-1-1h-3z"></path>
-            <line x1="8" y1="11" x2="16" y2="11"></line>
-          </svg>
-          Pay Securely with Stripe
-        </button>
-      </form>
-    </div>
+          <path d="M14 11V2a5 5 0 0 0-5 5v2a1 1 0 0 1-1 1H3a1 1 0 0 0-1 1v7a5 5 0 0 0 5 5h6a5 5 0 0 0 5-5v-7a1 1 0 0 0-1-1h-3z"></path>
+          <line x1="8" y1="11" x2="16" y2="11"></line>
+        </svg>
+        Pay Securely with Stripe
+      </button>
+    </form>
   </div>
+</div>
 @include('home.footer')
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="{{ asset('script.js') }}"></script>

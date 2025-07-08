@@ -239,10 +239,10 @@
   <div class="cart-card">
     <div class="cart-card-accent"></div>
     <h2 style="color: #2c3e50; border-bottom: 2px solid #ffe066; padding-bottom: 10px; margin-bottom: 25px; font-weight: 700; letter-spacing: -1px;">{{ __('messages.My Shopping Cart') }}</h2>
-    @if(count($cartItems) > 0)
-      <div style="overflow-x: auto;">
+  @if(count($cartItems) > 0)
+    <div style="overflow-x: auto;">
         <table class="cart-table">
-          <thead>
+        <thead>
             <tr>
               <th>{{ __('messages.Image') }}</th>
               <th>{{ __('messages.Product') }}</th>
@@ -250,13 +250,13 @@
               <th>{{ __('messages.Price') }}</th>
               <th>{{ __('messages.Total') }}</th>
               <th>{{ __('messages.Action') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            @php($total = 0)
-            @foreach($cartItems as $item)
-            @php($subtotal = $item->product->price * $item->quantity)
-            @php($total += $subtotal)
+          </tr>
+        </thead>
+        <tbody>
+          @php($total = 0)
+          @foreach($cartItems as $item)
+          @php($subtotal = $item->product->price * $item->quantity)
+          @php($total += $subtotal)
             <tr>
               <td><img class="cart-product-img" src="{{ asset('products/' . $item->product->image) }}" alt="{{$item->product->title}}"></td>
               <td class="cart-product-title">{{$item->product->title}}</td>
@@ -264,27 +264,27 @@
               <td class="cart-price">${{number_format($item->product->price, 2)}}</td>
               <td class="cart-total">${{number_format($subtotal, 2)}}</td>
               <td><a href="{{url('delete_cart', $item->id)}}" class="cart-remove-btn">{{ __('messages.Remove') }}</a></td>
-            </tr>
-            @endforeach
+          </tr>
+          @endforeach
             <tr class="cart-total-row">
               <td colspan="4" class="cart-total-label">Total:</td>
               <td class="cart-total-value">${{number_format($total, 2)}}</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div style="display: flex; justify-content: flex-end;">
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display: flex; justify-content: flex-end;">
         <a href="{{route('checkout.shipping')}}" class="cart-checkout-btn">{{ __('messages.Proceed to Checkout') }}</a>
-      </div>
-    @else
+    </div>
+  @else
       <div class="cart-empty">
         <div class="cart-empty-icon"><i class='bx bx-cart'></i></div>
         <div class="cart-empty-text">{{ __('messages.Your cart is empty.') }}</div>
         <a href="{{ url('/') }}" class="cart-empty-btn">{{ __('messages.Continue Shopping') }}</a>
-      </div>
-    @endif
-  </div>
+    </div>
+  @endif
+</div>
 </div>
 
     <!--features-->

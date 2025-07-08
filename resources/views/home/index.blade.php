@@ -222,19 +222,19 @@
     <div class="categories-container">
       <div class="category-box revial-lift">
         <a href="{{ url('our_shop') }}">
-          <img src="{{asset('images/قسم العسل .jpg')}}"  alt="Honey" loading="lazy" class="category-img">
+          <img src="{{asset('images/honey-category.jpg')}}"  alt="Honey" loading="lazy" class="category-img">
           <h3>قسم العسل</h3>
         </a>
       </div>
       <div class="category-box revial-top">
         <a href="{{ url('category/22') }}">
-          <img src="{{asset('images/اللوز.jpg')}}"  alt="Nuts" loading="lazy" class="category-img">
+          <img src="{{asset('images/nuts-category.jpg')}}"  alt="Nuts" loading="lazy" class="category-img">
           <h3>قسم البن, الزبيب واللوز اليمني</h3>
         </a>
       </div>
       <div class="category-box revial-right">
         <a href="{{ url('category/23') }}">
-          <img src="{{asset('images/الملجقات.jpg')}}"  alt="Dried Fruits" loading="lazy" class="category-img">
+          <img src="{{asset('images/other-category.jpg')}}"  alt="Dried Fruits" loading="lazy" class="category-img">
           <h3 style="font-size: 15px">اقسام اخرى(القسط الهندي, العكبر, قشر الرمان, حبوب اللقاح, لبان الذكر)</h3>
         </a>
       </div>
