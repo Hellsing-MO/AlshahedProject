@@ -251,8 +251,11 @@ window.addEventListener('DOMContentLoaded', function() {
   document.querySelector('.shipping-form').addEventListener('submit', function(e) {
     let valid = true;
     const postal = document.querySelector('input[name="postal_code"]').value;
-    if (!/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(postal)) {
-        alert('Please enter a valid Canadian postal code.');
+    // Accept Canadian or US postal codes
+    const caRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+    const usRegex = /^\d{5}(-\d{4})?$/;
+    if (!(caRegex.test(postal) || usRegex.test(postal))) {
+        alert('Please enter a valid Canadian or US postal code.');
         valid = false;
     }
     const requiredFields = ['name', 'address1', 'city', 'province_code', 'postal_code', 'country_code', 'phone', 'email'];
