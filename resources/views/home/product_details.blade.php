@@ -88,7 +88,7 @@
                         <!-- content -->
                         <h4 href="#!" class="mb-4 d-block">Weight : {{$data->Weight}}</h4>
                         <!-- heading -->
-                        <h1 class="mb-1">{{$data->title}}</h1>
+                        <h1 class="mb-1">{{$data->getTranslated('title')}}</h1>
                         <div class="mb-4">
                            <!-- rating -->
                            <!-- rating -->
@@ -110,7 +110,7 @@
                         <hr class="my-6" />
                         <div class="mb-5">
                            <h3>Description:</h3>
-                           <p  style="font-size: 20px">{{$data->description}}</p>
+                           <p  style="font-size: 20px">{{$data->getTranslated('description')}}</p>
                         </div>
 
                         <div class="mt-3 row justify-content-start g-2 align-items-center">

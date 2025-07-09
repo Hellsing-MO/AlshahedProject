@@ -162,7 +162,7 @@
                             <!-- heading -->
 
                             <h2 class="fs-6"><a href="shop-single.html"
-                                 class="text-inherit text-decoration-none">{{$products->title}}</a></h2>
+                                 class="text-inherit text-decoration-none">{{$products->getTranslated('title')}}</a></h2>
                             <div>
                               <!-- rating -->
                               <small class="text-warning">
