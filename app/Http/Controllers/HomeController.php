@@ -74,13 +74,33 @@ class HomeController extends Controller
 
     public function getByCategory($id)
 {
-    $products = Product::where('category_id', $id)->get();
+    $locale = app()->getLocale();
+    $products = Product::where('category_id', $id)->get()->map(function($product) use ($locale) {
+        return [
+            'id' => $product->id,
+            'title' => $product->getTranslated('title'),
+            'description' => $product->getTranslated('description'),
+            'image' => $product->image,
+            'price' => $product->price,
+            // add more fields if needed
+        ];
+    });
     return response()->json($products);
 }
 
 public function getAllProducts()
 {
-    $products = Product::all();
+    $locale = app()->getLocale();
+    $products = Product::all()->map(function($product) use ($locale) {
+        return [
+            'id' => $product->id,
+            'title' => $product->getTranslated('title'),
+            'description' => $product->getTranslated('description'),
+            'image' => $product->image,
+            'price' => $product->price,
+            // add more fields if needed
+        ];
+    });
     return response()->json($products);
 }
 

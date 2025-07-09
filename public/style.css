@@ -2631,7 +2631,7 @@ letter-spacing: 1px;
 }
 .company-swiper {
 width: 100%;
-max-width: 900px;
+max-width: 1400px;
 margin: 0 auto;
 padding-bottom: 40px;
 }
@@ -3605,7 +3605,137 @@ color: #ffb800;
 text-shadow: 0 2px 8px #fffbe6;
 }
 
+.company-slide-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  transition: transform 0.3s;
+}
+@media (min-width: 768px) {
+  .company-slide-img {
+    height: 350px;
+    max-width: 600px;
+  }
+}
+@media (min-width: 1200px) {
+  .company-slide-img {
+    height: 450px;
+    max-width: 800px;
+  }
+}
+.company-slide-img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
 
+@media (min-width: 768px) {
+  .row1 img {
+    width: 260px;
+    height: 260px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+}
+
+.privacy-policy-card {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fffbe6;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(255,184,0,0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.privacy-policy-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('/images/bee1-L.png') no-repeat 98% 98%;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+.privacy-icon {
+  background: #ff9f0d;
+  border-radius: 50%;
+  padding: 18px;
+  box-shadow: 0 2px 12px rgba(255,184,0,0.12);
+}
+.privacy-icon i {
+  font-size: 2.5rem;
+  color: #fff;
+}
+.privacy-title {
+  color: #b8860b;
+  font-weight: 700;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+.privacy-date {
+  color: #888;
+  font-size: 1rem;
+}
+.privacy-lead {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+.privacy-section {
+  color: #ff9f0d;
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  font-weight: 600;
+}
+.privacy-list {
+  margin-bottom: 1.5rem;
+  color: #444;
+  padding-left: 1.2rem;
+}
+.privacy-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+.privacy-text {
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+.fade-in {
+  animation: fadeInUp 0.8s ease;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@media (max-width: 900px) {
+  .privacy-policy-card {
+    padding: 1.5rem 0.7rem 1.5rem 0.7rem;
+  }
+  .privacy-title {
+    font-size: 1.3rem;
+  }
+  .privacy-icon i {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .privacy-policy-card {
+    padding: 1rem 0.2rem 1rem 0.2rem;
+    border-radius: 10px;
+  }
+  .privacy-title {
+    font-size: 1.1rem;
+  }
+  .privacy-icon {
+    padding: 10px;
+  }
+  .privacy-icon i {
+    font-size: 1.1rem;
+  }
+}
 
 
 

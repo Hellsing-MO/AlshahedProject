@@ -93,4 +93,9 @@ return [
         'quick_links' => 'Quick Links',
         'contact_info' => 'Contact Info',
         
+        'Weight' => 'Weight',
+        'Description' => 'Description',
+        'related_items' => 'Related Items',
+        'privacy_policy' => 'Privacy Policy',
+
 ];

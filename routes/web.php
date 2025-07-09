@@ -90,3 +90,7 @@ Route::post('/checkout/calculate-shipping', [CheckoutController::class, 'calcula
 Route::post('/checkout/process-payment', [CheckoutController::class, 'processPayment'])->name('checkout.process-payment');
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy_policy');
+})->name('privacy.policy');

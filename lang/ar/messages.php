@@ -90,4 +90,8 @@ return [
         'quick_links' => 'روابط سريعة',
         'contact_info' => 'معلومات التواصل',
         
+        'Weight' => 'الوزن',
+        'Description' => 'الوصف',
+        'related_items' => 'منتجات ذات صلة',
+        'privacy_policy' => 'سياسة الخصوصية',
 ];
