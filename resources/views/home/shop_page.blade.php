@@ -82,20 +82,23 @@
                            <div class="mb-8">
                               <!-- title -->
                               <!-- nav -->
+                              @php
+                                  $locale = app()->getLocale();
+                              @endphp
                               <ul class="nav nav-category" id="categoryCollapseMenu">
                                  <li class="nav-item border-bottom w-100">
                                    <a href="#" class="nav-link category-link d-flex align-items-center"
                                       data-category-id="all"
-                                      data-category-name="كل المنتجات">
-                                     كل المنتجات
+                                      data-category-name="{{ __('messages.all pro') }}">
+                                      {{ __('messages.all pro') }}
                                    </a>
                                  </li>
                                  @foreach ($category as $cat)
                                    <li class="nav-item border-bottom w-100">
                                     <a href="#" class="nav-link category-link d-flex align-items-center"
                                     data-category-id="{{$cat->id}}"
-                                    data-category-name="{{$cat->category_name}}">
-                                      {{$cat->category_name}}
+                                    data-category-name="{{ $cat->getTranslated('category_name') }}">
+                                      {{ $cat->getTranslated('category_name') }}
                                     </a>
                                    </li>
                                  @endforeach
@@ -113,7 +116,7 @@
                            <h2 class="mb-0 fs-1 h2-header-bee">
                               <img class="beenice1" src="{{asset('images/beenice1.png')}}">
                               <span id="selected-category" style="color: #222">
-                                 {{isset($selected_category) ? $selected_category->category_name : 'كل المنتجات'}}
+                                 {{ isset($selected_category) ? $selected_category->getTranslated('category_name') : __('messages.all pro') }}
                                </span>
                            </h2>
                         </div>

@@ -364,29 +364,53 @@
         </div>
       </article>
 
+
+      <article class="box swiper-slide" style="background: #fffbe6; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #ffe0a3;">
+        <p style="color: #b8860b; font-size: 1.1rem;">{{__('messages.review5')}}</p>
+        <div class="in-box">
+          <div class="bx-img">
+            <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Anonymous User" loading="lazy" style="border-radius: 50%; border: 2px solid #ffb800; background: #fff; width: 70px; height: 70px;">
+          </div>
+          <div class="bxx-text">
+            <h4>Mikel Jan</h4>
+          </div>
+          <div class="ratings">
+            <a href="#"><i class='bx bxs-star'></i></a>
+            <a href="#"><i class='bx bxs-star'></i></a>
+            <a href="#"><i class='bx bxs-star'></i></a>
+            <a href="#"><i class='bx bxs-star'></i></a>
+            <a href="#"><i class='bx bxs-star'></i></a>
+          </div>
+        </div>
+      </article>
+
     </div>
   </section>
 
     <!--features-->
     <section class="features-section">
       <div class="middle-text revial-top">
-        <h4><img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">Why Choose Us</h4>
-        <h2>Our Core Features</h2>
+        <h4><img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">{{__('messages.why_choose_us')}}</h4>
+        <h2>{{__('messages.shopping_with_us')}}</h2>
       </div>
       <div class="features-container">
         <div class="feature-box revial-lift">
           <div class="feature-icon"><i class='bx bx-time-five'></i></div>
-          <h3>Always Open</h3>
-          <a href="#">24/7 working</a>
+          <h3>{{__('messages.always_open')}}</h3>
+          <a href="#">{{__('messages.24/7_working')}}</a>
         </div>
         <div class="feature-box">
-          <div class="feature-icon"><i class='bx bx-map-pin'></i></div>
-          <h3>Our Location</h3>
-          <a href="https://maps.app.goo.gl/2bKE2M8vTHJuPdwz9?g_st=awb">North York, Canada</a>
+          <div class="feature-icon">
+            <i class='bx bx-lock'></i>
+          </div>
+          <h3>{{__('messages.payment_secured')}}</h3>
+          <span style="font-size: 1rem;">
+            {{__('messages.secure_payment_message')}}
+          </span>
         </div>
         <div class="feature-box revial-right">
           <div class="feature-icon"><i class='bx bxs-phone-call'></i></div>
-          <h3>Contact Us</h3>
+          <h3>{{__('messages.contact us')}}</h3>
           <a href="http://wa.me/14379951819/">+1 (437) 995-1819</a>
         </div>
       </div>
@@ -409,7 +433,7 @@
         <div class="footer-row">
           <!-- Website Links Section -->
           <div class="footer-section">
-            <h3>Quick Links</h3>
+            <h3>{{__('messages.quick_links')}}</h3>
             <ul class="footer-links">
               <li><a href="{{url('/')}}"><i class='bx bx-home-alt'></i> {{__('messages.Home')}}</a></li>
               <li><a href="{{url('about_us')}}"><i class='bx bx-info-circle'></i> {{__('messages.about us')}}</a></li>
@@ -419,7 +443,7 @@
 
           <!-- Contact Information Section -->
           <div class="footer-section">
-            <h3>Contact Info</h3>
+            <h3>{{__('messages.contact_info')}}</h3>
             <div class="contact-details">
               <div class="contact-item">
                 <a href="https://maps.google.com/?q=45+Grenoble+Dr,+North+York,+ON+M3C+1C4,+Canada" target="_blank">

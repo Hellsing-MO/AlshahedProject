@@ -171,9 +171,9 @@
                            </div>
                            <!-- heading -->
                            <div class="text-small mb-1">
-                              <a href="#!" class="text-decoration-none text-muted"><small>{{$products->category}}</small></a>
+                              <a href="#" class="text-decoration-none text-muted"><small>{{$products->getTranslated('category')}}</small></a>
                            </div>
-                           <h2 class="fs-6"><a href="#!" class="text-inherit text-decoration-none">{{$products->title}}</a></h2>
+                           <h2 class="fs-6"><a href="#" class="text-inherit text-decoration-none">{{$products->getTranslated('title')}}</a></h2>
                            <div>
                               <!-- rating -->
                               <small class="text-warning">
