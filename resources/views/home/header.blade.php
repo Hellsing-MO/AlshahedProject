@@ -75,11 +75,11 @@
                       <form style="padding: 10px" method="POST" action="{{route('logout')}}">
                         @csrf
                         <a class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                          <input type="submit" value="logout">
+                          <input type="submit" value="{{ __('messages.logout') }}">
                         </a>
                       </form>
                       <a href="{{ route('orders.index') }}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                        My Orders
+                        {{ __('messages.my_orders') }}
                       </a>
                     </div>
                   </div>

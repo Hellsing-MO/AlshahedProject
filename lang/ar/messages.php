@@ -94,4 +94,6 @@ return [
         'Description' => 'الوصف',
         'related_items' => 'منتجات ذات صلة',
         'privacy_policy' => 'سياسة الخصوصية',
+        'logout' => 'تسجيل الخروج',
+        'my_orders' => 'طلباتي',
 ];

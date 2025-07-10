@@ -96,5 +96,7 @@ return [
         'Description' => 'Description',
         'related_items' => 'Related Items',
         'privacy_policy' => 'Privacy Policy',
+        'logout' => 'Logout',
+        'my_orders' => 'My Orders',
 
 ];

@@ -92,4 +92,6 @@ return [
     'Description' => 'Description',
     'related_items' => 'Articles associés',
     'privacy_policy' => 'Politique de confidentialité',
+    'logout' => 'Déconnexion',
+    'my_orders' => 'Mes commandes',
 ];
