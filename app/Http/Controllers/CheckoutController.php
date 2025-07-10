@@ -147,7 +147,7 @@ class CheckoutController extends Controller
             'shippingCost' => $shippingCost,
             'shippingData' => $validated,
             'shippingPayload' => $shippingPayload,
-        ]);
+        ], compact('count'));
     }
 
     public function processPayment(Request $request, StallionExpressService $stallion)
