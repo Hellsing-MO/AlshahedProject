@@ -162,6 +162,10 @@
 </head>
 <body>
 @include('home.header')
+<br>
+<br>
+<br>
+<br>
 <div class="order-details-container">
   <div class="order-details-card">
     <div class="order-details-title">Order #{{ $order->id }}</div>

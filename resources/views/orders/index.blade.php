@@ -115,6 +115,10 @@
 </head>
 <body>
 @include('home.header')
+<br>
+<br>
+<br>
+<br>
 <div class="order-history-container">
   <div class="order-history-card">
     <div class="order-history-title">My Orders</div>
