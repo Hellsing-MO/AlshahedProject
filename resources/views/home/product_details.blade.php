@@ -148,7 +148,7 @@
 
                <div class="row g-4 row-cols-lg-5 row-cols-2 row-cols-md-2 mt-2">
                   <!-- col -->
-                  @foreach ($relatedProducts as $products)
+                  @foreach ($product as $products)
                      
                   <div class="col">
                      <div class="card card-product">

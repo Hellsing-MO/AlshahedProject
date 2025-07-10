@@ -14,6 +14,13 @@ class CheckoutController extends Controller
 {
     public function showShippingForm()
     {
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = count(session()->get('cart', []));
+        }
         // Support both logged-in and guest users
         if (Auth::check()) {
             $user = Auth::user();
@@ -24,11 +31,19 @@ class CheckoutController extends Controller
         if ($cartCount === 0) {
             return redirect()->route('cart')->with('error', 'Your cart is empty.');
         }
-        return view('checkout.shipping');
+        return view('checkout.shipping', compact('count'));
     }
 
     public function calculateShipping(Request $request, StallionExpressService $stallion)
     {
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = count(session()->get('cart', []));
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'address1' => 'required|string|max:255',
@@ -137,6 +152,14 @@ class CheckoutController extends Controller
 
     public function processPayment(Request $request, StallionExpressService $stallion)
     {
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = count(session()->get('cart', []));
+        }
+
         $shippingData = json_decode($request->shipping_data, true);
         $shippingCost = $request->shipping_cost;
         $shippingPayload = json_decode($request->shipping_payload, true);
@@ -224,6 +247,13 @@ class CheckoutController extends Controller
 
     public function success(Request $request,StallionExpressService $stallion)
     {
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = count(session()->get('cart', []));
+        }
         $sessionId = $request->query('session_id');
         
         if (!$sessionId) {
@@ -296,11 +326,18 @@ class CheckoutController extends Controller
             'shippingCity' => $session->metadata->shipping_city,
             'shippingProvince' => $session->metadata->shipping_province,
             'shippingPostalCode' => $session->metadata->shipping_postal_code
-        ]);
+        ], compact('count'));
     }
 
     public function cancel()
     {
-        return view('checkout.cancel');
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = count(session()->get('cart', []));
+        }
+        return view('checkout.cancel', compact('count'));
     }
 }
