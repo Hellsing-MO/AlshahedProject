@@ -75,10 +75,41 @@
       background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%);
       display: inline-block;
     }
+    /* Mobile card styles */
+    .order-card-list { display: none; }
     @media (max-width: 700px) {
       .order-history-card { padding: 16px 2vw 16px 2vw; }
       .order-history-container { max-width: 100%; padding: 0 2vw; margin-top: 40px; }
       .order-table th, .order-table td { font-size: 0.98rem; padding: 8px 6px; }
+      .order-table { display: none; }
+      .order-card-list { display: block; margin: 0; padding: 0; }
+      .order-card {
+        background: #fffdfa;
+        box-shadow: 0 2px 12px 0 rgba(255,184,0,0.07), 0 1.5px 6px 0 rgba(0,0,0,0.04);
+        border-radius: 16px;
+        margin-bottom: 18px;
+        padding: 18px 14px;
+        font-size: 1.05rem;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .order-card .order-status { font-size: 0.95rem; padding: 4px 12px; margin-bottom: 6px; }
+      .order-card .order-products { font-size: 0.97rem; color: #2c3e50; }
+      .order-card .order-view-btn {
+        background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%);
+        color: #222;
+        padding: 8px 22px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 15px;
+        box-shadow: 0 2px 8px rgba(255,184,0,0.07);
+        transition: background 0.2s;
+        margin-top: 8px;
+        text-align: center;
+        display: inline-block;
+      }
     }
   </style>
 </head>
@@ -120,6 +151,23 @@
           @endforeach
         </tbody>
       </table>
+      <!-- Mobile card list -->
+      <div class="order-card-list">
+        @foreach($orders as $order)
+          <div class="order-card">
+            <div><b>Order #</b> {{ $order->id }}</div>
+            <div><b>Date:</b> {{ $order->created_at->format('Y-m-d') }}</div>
+            <div><b>Total:</b> <span style="font-weight:700; color:#FFB800;">${{ number_format($order->total, 2) }}</span></div>
+            <div><span class="order-status">{{ ucfirst($order->status) }}</span></div>
+            <div class="order-products">
+              @foreach($order->products as $product)
+                <div>{{ $product['description'] }} <span style="color:#bbb;">×{{ $product['quantity'] }}</span></div>
+              @endforeach
+            </div>
+            <a href="{{ route('orders.show', $order->id) }}" class="order-view-btn">View</a>
+          </div>
+        @endforeach
+      </div>
     @else
       <div style="text-align:center; padding: 40px 0; color:#7f8c8d; font-size: 1.2rem; font-weight: 600;">You have not placed any orders yet.</div>
     @endif

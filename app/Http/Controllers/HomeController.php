@@ -15,8 +15,7 @@ class HomeController extends Controller
     }
 
     public function home() {
-        $query = Product::query();
-        $product = $query->paginate(3);
+        $product = Product::inRandomOrder()->paginate(5);
         if (Auth::id()) {
             $user = Auth::user();
             $userid = $user->id;
@@ -28,9 +27,19 @@ class HomeController extends Controller
         return view('home.index', compact('product', 'count'));
     }
 
+    public function privacy() {
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = count(session()->get('cart', []));
+        }
+        
+        return view('privacy_policy', compact( 'count'));
+    }
     public function login_home() {
-        $query = Product::query();
-        $product = $query->paginate(6);
+        $product = Product::inRandomOrder()->paginate(5);
         if (Auth::id()) {
             $user = Auth::user();
             $userid = $user->id;
@@ -43,8 +52,7 @@ class HomeController extends Controller
     }
 
     public function product_details($id) {
-        $query = Product::query();
-        $product = $query->paginate(5);
+        $product = Product::inRandomOrder()->paginate(5);
         $data = Product::find($id);
         if (Auth::id()) {
             $user = Auth::user();
@@ -240,35 +248,6 @@ public function getAllProducts()
         toastr()->timeOut(10000)->closeButton()->addSuccess('Cart Deleted Successfully');
         return redirect()->back();
     }
-    public function checkout() {
-        if (Auth::id()) {
-            $cart = Cart::where('user_id', Auth::id())->get();
-            $value = 0;
-            foreach($cart as $item) {
-                $value += $item->product->price * $item->quantity;
-            }
-        } else {
-            // For guest users, get cart from session
-            $sessionCart = session()->get('cart', []);
-            $cart = collect();
-            $value = 0;
-            
-            foreach($sessionCart as $id => $item) {
-                $cart->push((object)[
-                    'id' => $id,
-                    'product' => (object)[
-                        'id' => $item['product_id'],
-                        'title' => $item['title'],
-                        'price' => $item['price'],
-                        'image' => $item['image'],
-                        'Weight' => $item['Weight']
-                    ],
-                    'quantity' => $item['quantity']
-                ]);
-                $value += $item['price'] * $item['quantity'];
-            }
-        }
-        return view('home.checkout', compact('cart', 'value'));
-    }
+
 
 }

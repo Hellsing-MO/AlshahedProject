@@ -128,16 +128,26 @@
       transition: background 0.2s, transform 0.1s;
       display: inline-block;
       margin-bottom: 18px;
+      margin-right: 12px;
     }
     .back-orders-btn:hover {
       background: linear-gradient(90deg, #e6a700 60%, #ffe066 100%);
       transform: scale(1.04);
     }
     @media (max-width: 700px) {
-      .order-details-card { padding: 16px 2vw 16px 2vw; }
-      .order-details-container { max-width: 100%; padding: 0 2vw; margin-top: 40px; }
+      .order-details-card { padding: 12px 2vw 12px 2vw; }
+      .order-details-container { max-width: 100%; padding: 0 2vw; margin-top: 24px; }
+      .order-details-title { font-size: 1.3rem; }
+      .order-info-row { flex-direction: column; gap: 8px; font-size: 1rem; }
       .order-products-list { gap: 8px; }
-      .order-product-img { width: 44px; height: 44px; border-radius: 8px; }
+      .order-product-item { flex-direction: column; align-items: flex-start; gap: 6px; padding: 10px 0; }
+      .order-product-img { width: 54px; height: 54px; border-radius: 8px; }
+      .order-product-title { font-size: 1rem; }
+      .order-product-price { margin-left: 0; font-size: 1rem; }
+      .order-total-row { font-size: 1rem; flex-direction: column; gap: 4px; }
+      .back-orders-btn { width: 100%; margin-bottom: 10px; margin-right: 0; font-size: 1.1rem; padding: 12px 0; }
+      .order-details-card { margin-bottom: 18px; }
+      .order-shipping-box { font-size: 0.98rem; }
     }
     @media print {
       body { background: #fff !important; }
@@ -194,7 +204,7 @@
       <span>${{ number_format($order->total, 2) }}</span>
     </div>
     <a href="{{ route('orders.index') }}" class="back-orders-btn">← Back to Orders</a>
-    <button onclick="window.print()" class="back-orders-btn" style="margin-left: 12px; background: linear-gradient(90deg, #3498db 60%, #b6e0fe 100%); color: #fff;">🖨 Print Invoice</button>
+    <button onclick="window.print()" class="back-orders-btn" style="background: linear-gradient(90deg, #3498db 60%, #b6e0fe 100%); color: #fff;">🖨 Print Invoice</button>
   </div>
 </div>
 @include('home.footer')

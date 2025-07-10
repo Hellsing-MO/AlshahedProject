@@ -91,6 +91,4 @@ Route::post('/checkout/process-payment', [CheckoutController::class, 'processPay
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
 
-Route::get('/privacy-policy', function () {
-    return view('privacy_policy');
-})->name('privacy.policy');
+Route::get('/privacy-policy', [HomeController::class, 'privacy'])->name('privacy.policy');

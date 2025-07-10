@@ -3554,6 +3554,9 @@ letter-spacing: 1px;
   width: 48% !important;
   margin-bottom: 10px;
 }
+.secure_mess {
+  font-size: 0.6rem !important;
+}
 }
 
 /* Category Section Effects */

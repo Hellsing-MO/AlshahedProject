@@ -86,154 +86,7 @@
 </head>
 
 <body class="all">
- <!-- ////////////////
-     ***** Navigtion Bar*
-    /////////////////////-->
-    <header class="header" data-header>
-      <div class="container">
-  
-        <a href="{{url('/')}}" class="logo logo-container">
-          <img src="images/logo alshahed.png" width="66px" height="88px" alt="logo">
-          <span><span class="al-sh">Al</span>shahed</span>
-          <!-- Mobile cart icon next to logo -->
-          <a href="{{url('mycart')}}" class="mobile-cart-icon" data-count="{{$count}}">
-            <i class='bx bx-cart'></i>
-          </a>
-          <!-- Mobile WhatsApp icon next to cart -->
-          <a href="http://wa.me/14379951819/" class="mobile-whatsapp-icon" target="_blank">
-            <i class='bx bxl-whatsapp'></i>
-          </a>
-        </a>
-        <nav class="navbar" data-navbar>
-          <div class="wrapper">
-            <a href="{{url('/')}}" class="logo logo-container">
-              <img src="images/logo alshahed.png" width="66px" height="88px" alt="logo">
-              <span><span class="al-sh">Al</span>shahed</span>
-            </a>
-  
-            <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
-              {{-- <i class="bx bx-close" aria-hidden="true"></i> --}}
-              =
-            </button>
-          </div>
-  
-          <ul class="navbar-list">
-
-            <li class="navbar-item">
-              <a href="{{url('/')}}" class="navbar-link id-activ" data-nav-link>
-                <i class='bx bx-home-alt' style="margin-right: 12px; font-size: 20px;"></i>
-                {{__('messages.Home')}}
-              </a>
-            </li>
-  
-            <li class="navbar-item">
-              <a href="{{url('about_us')}}" class="navbar-link" data-nav-link>
-                <i class='bx bx-info-circle' style="margin-right: 12px; font-size: 20px;"></i>
-                {{__('messages.about us')}}
-              </a>
-            </li>
-  
-            <li class="navbar-item">
-              <a href="{{url('our_shop')}}" class="navbar-link" data-nav-link>
-                <i class='bx bx-store' style="margin-right: 12px; font-size: 20px;"></i>
-                {{__('messages.our shop')}}
-              </a>
-            </li>
-
-            <li class="navbar-item">
-              <a href="#contact" class="navbar-link" data-nav-link>
-                <i class='bx bx-phone' style="margin-right: 12px; font-size: 20px;"></i>
-                {{__('messages.contact us')}}
-              </a>
-            </li>
-
-
-            @php($Languages = ['en' => 'English', 'ar' => 'Arabic', 'fr' => 'France'])
-            @if (Route::has('login'))
-            @auth
-            <div class="nav-icons">
-              <a href="{{url('mycart')}}"><i class='bx bx-cart'>[{{$count}}]</i></a>
-              <div class="bx bx-menu" id="menu-icon"></div>
-            </div>
-
-              <div class="nav-icons flex items-center gap-4">
-                <div class="relative">
-                  <a href="#" class="user-icon text-sm"><i class='bx bx-user'></i> {{__('messages.Account')}}</a>
-                  <div class="absolute right-0 mt-2 w-40 bg-[#FFB800] rounded-md shadow-lg py-1 hidden z-50" id="userDropdown" style="display: none;">
-                    <form style="padding: 10px" method="POST" action="{{route('logout')}}">
-                      @csrf
-                      <a class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                        <input type="submit" value="logout">
-                      </a>
-                    </form>
-                  </div>
-                </div>
-                <span class="text-gray-400">/</span>
-                /
-                <div class="relative">
-                  <a href="#" class="language-icon text-sm"><i class='bx bx-globe'></i> Language: {{Session::get('locale', 'en')}}</a>
-                  <div class="absolute right-0 mt-2 w-40 bg-[#FFB800] rounded-md shadow-lg py-1 hidden z-50" id="languageDropdown" style="display: none;">
-                    <a href="{{route('lang.change', ['lang' => 'en'])}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                      <i class='bx bx-globe'></i> English
-                    </a>
-                    <a href="{{route('lang.change', ['lang' => 'ar'])}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                      <i class='bx bx-globe'></i> العربية
-                    </a>
-                    <a href="{{route('lang.change', ['lang' => 'fr'])}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                      <i class='bx bx-globe'></i> French
-                    </a>
-                  </div>
-                </div>
-              </div>
-            @else  
-              
-
-            <div class="nav-icons">
-              <a href="{{url('mycart')}}"><i class='bx bx-cart nav-cart'>[{{$count}}]</i></a>
-              <div class="bx bx-menu" id="menu-icon"></div>
-            </div>
-
-
-            <div class="nav-icons flex items-center gap-4">
-              <div class="relative">
-                <a href="#" class="user-icon text-sm"><i class='bx bx-user'></i> {{__('messages.Account')}}</a>
-                <div class="absolute right-0 mt-2 w-40 bg-[#FFB800] rounded-md shadow-lg py-1 hidden z-50" id="userDropdown" style="display: none;">
-                  <a href="{{url('login')}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">{{__('messages.login')}}</a>
-                  <a href="{{url('register')}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">{{__('messages.register')}}</a>
-                </div>
-              </div>
-              <span class="text-gray-400">/</span>
-              /
-              <div class="relative">
-                <a href="#" class="language-icon text-sm"><i class='bx bx-globe'></i>  Language: {{Session::get('locale', 'en')}}</a>
-                <div class="absolute right-0 mt-2 w-40 bg-[#FFB800] rounded-md shadow-lg py-1 hidden z-50" id="languageDropdown" style="display: none;">
-                  <a href="{{route('lang.change', ['lang' => 'en'])}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                    <i class='bx bx-globe'></i> English
-                  </a>
-                  <a href="{{route('lang.change', ['lang' => 'ar'])}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                    <i class='bx bx-globe'></i> العربية
-                  </a>
-                  <a href="{{route('lang.change', ['lang' => 'fr'])}}" class="block px-3 py-1.5 text-sm text-white hover:bg-[#111111]">
-                    <i class='bx bx-globe'></i> French
-                  </a>
-                </div>
-              </div>
-            </div>
-            @endauth
-            @endif
-       </ul>
-        </nav>
-        
-
-        <div class="header-actions">
-          <button class="header-action-btn" aria-label="open menu" data-nav-toggler>
-            {{-- <i class="bx bx-menu" id="menu-icon"></i> --}}
-            =
-          </button>
-        </div>
-        <div class="overlay" data-nav-toggler data-overlay></div>
-  </div>
-    </header>
+  @include('home.header')
     <br>
     <br>
     <br>
@@ -269,99 +122,33 @@
     <!--features-->
     <section class="features-section">
       <div class="middle-text revial-top">
-        <h4><img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">Why Choose Us</h4>
-        <h2>Our Core Features</h2>
+        <h4><img class="revial-lift" src="images/bee1-L.png" alt="bee icon" loading="lazy">{{__('messages.why_choose_us')}}</h4>
+        <h2>{{__('messages.shopping_with_us')}}</h2>
       </div>
       <div class="features-container">
         <div class="feature-box revial-lift">
           <div class="feature-icon"><i class='bx bx-time-five'></i></div>
-          <h3>Always Open</h3>
-          <a href="#">24/7 working</a>
+          <h3>{{__('messages.always_open')}}</h3>
+          <a href="#">{{__('messages.24/7_working')}}</a>
         </div>
         <div class="feature-box">
-          <div class="feature-icon"><i class='bx bx-map-pin'></i></div>
-          <h3>Our Location</h3>
-          <a href="https://maps.app.goo.gl/2bKE2M8vTHJuPdwz9?g_st=awb">North York, Canada</a>
+          <div class="feature-icon">
+            <i class='bx bx-lock'></i>
+          </div>
+          <h3>{{__('messages.payment_secured')}}</h3>
+          <span class="secure_mess">
+            {{__('messages.secure_payment_message')}}
+          </span>
         </div>
         <div class="feature-box revial-right">
           <div class="feature-icon"><i class='bx bxs-phone-call'></i></div>
-          <h3>Contact Us</h3>
+          <h3>{{__('messages.contact us')}}</h3>
           <a href="http://wa.me/14379951819/">+1 (437) 995-1819</a>
         </div>
       </div>
     </section>
     
-<!--contact-->
-  <section class="contact" id="contact">
-      <div class="contact-text">
-        <h2 class="revial-top">{{__('messages.contact us')}}</h2>
-       
-        <div class="social">
-          <a href="https://www.instagram.com/alshahedhoney?igsh=MThka284ZmdsemIxYQ=="><i class='bx bxl-instagram-alt revial-lift'></i></a>
-          <a href="https://www.facebook.com/profile.php?id=61560393087783"><i class='bx bxl-facebook revial-top'></i></a>
-          <a href="#"><i class='bx bxl-twitter revial-bottom'></i></a>
-          <a href="http://wa.me/14379951819/"><i class='bx bxl-whatsapp revial-bottom'></i></a>
-        </div>
-      </div>
-
-      <div class="footer-content">
-        <!-- Quick Links and Contact Info Row -->
-        <div class="footer-row">
-          <!-- Website Links Section -->
-          <div class="footer-section">
-            <h3>Quick Links</h3>
-            <ul class="footer-links">
-              <li><a href="{{url('/')}}"><i class='bx bx-home-alt'></i> {{__('messages.Home')}}</a></li>
-              <li><a href="#about"><i class='bx bx-info-circle'></i> {{__('messages.about us')}}</a></li>
-              <li><a href="{{url('our_shop')}}"><i class='bx bx-store'></i> {{__('messages.our shop')}}</a></li>
-              <li><a href="#contact"><i class='bx bx-phone'></i> {{__('messages.contact us')}}</a></li>
-            </ul>
-          </div>
-
-          <!-- Contact Information Section -->
-          <div class="footer-section">
-            <h3>Contact Info</h3>
-            <div class="contact-details">
-              <div class="contact-item">
-                <a href="https://maps.google.com/?q=45+Grenoble+Dr,+North+York,+ON+M3C+1C4,+Canada" target="_blank">
-                  <i class='bx bxs-location-plus'></i>
-                  <span>45 Grenoble Dr, North York, ON M3C 1C4، Canada</span>
-                </a>
-              </div>
-              <div class="contact-item">
-                <a href="tel:+14379951819">
-                  <i class='bx bx-mobile-alt'></i>
-                  <span>+1 (437) 995-1819</span>
-                </a>
-              </div>
-              <div class="contact-item">
-                <a href="mailto:info@alshahedhoney.com">
-                  <i class='bx bxs-envelope'></i>
-                  <span>info@alshahedhoney.com</span>
-                </a>
-              </div>
-              <div class="contact-item">
-                <a href="https://alshahedhoney.com" target="_blank">
-                  <i class='bx bx-globe'></i>
-                  <span>www.alshahedhoney.com</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Newsletter Section -->
-      </div>
-
-      <!-- Footer Bottom -->
-      <div class="footer-bottom">
-        <div class="container">
-          <p class="copyright">
-            Copyright by <span>Alshahed</span> With <span>LOVE</span>. All rights reserved.
-          </p>
-        </div>
-      </div>
-  </section>
+    @include('home.footer')
 
     <!--link to js-->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

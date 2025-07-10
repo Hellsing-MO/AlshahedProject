@@ -147,7 +147,7 @@
                             <!-- badge -->
                             <div class="text-center position-relative">
                               <div class="position-absolute top-0 start-0">
-                                 <span class="badge bg-danger">Sale</span>
+
                               </div>
                               <a href="{{url('product_details', $products->id)}}">
                                  <!-- img -->
@@ -172,8 +172,8 @@
                                  <i class="bi bi-star-fill"></i>
                                  <i class="bi bi-star-half"></i>
                               </small>
-                              <span class="text-muted small">4.5</span>
-                            </div>
+
+                           </div>
                             <!-- price -->
                             <div class="d-flex justify-content-between align-items-center mt-3">
                               <div>
@@ -346,7 +346,7 @@
                               <div class="card-body">
                               <div class="text-center position-relative">
                                  <div class="position-absolute top-0 start-0">
-                                    <span class="badge bg-danger">Sale</span>
+
                                  </div>
                                  <a href="/product_details/${product.id}">
                                     <img src="/products/${product.image}" 
@@ -367,7 +367,6 @@
                                     <i class="bi bi-star-fill"></i>
                                     <i class="bi bi-star-half"></i>
                                  </small>
-                                 <span class="text-muted small">4.5</span>
                               </div>
                            
                             <div class="d-flex justify-content-between align-items-center mt-3">

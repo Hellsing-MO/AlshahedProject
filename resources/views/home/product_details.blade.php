@@ -86,7 +86,6 @@
                         <br>
                         <br>
                         <!-- content -->
-                        <h4 href="#!" class="mb-4 d-block">{{ __('messages.Weight') }} : {{$data->Weight}}</h4>
                         <!-- heading -->
                         <h1 class="mb-1">{{$data->getTranslated('title')}}</h1>
                         <div class="mb-4">
@@ -146,9 +145,7 @@
                   </div>
                </div>
                <!-- row -->
-               @php
-                   $relatedProducts = $product->shuffle();
-               @endphp
+
                <div class="row g-4 row-cols-lg-5 row-cols-2 row-cols-md-2 mt-2">
                   <!-- col -->
                   @foreach ($relatedProducts as $products)
