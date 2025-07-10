@@ -5,7 +5,7 @@
         <div class="container">
     
           <a href="{{url('/')}}" class="logo logo-container">
-            <img src="images/logo alshahed.png" width="66px" height="88px" alt="logo">
+            <img src="{{asset('images/logo alshahed.png')}}" width="66px" height="88px" alt="logo">
             <span><span class="al-sh">Al</span>shahed</span>
             <!-- Mobile cart icon next to logo -->
             <a href="{{url('mycart')}}" class="mobile-cart-icon" data-count="{{$count}}">
@@ -19,7 +19,7 @@
           <nav class="navbar" data-navbar>
             <div class="wrapper">
               <a href="{{url('/')}}" class="logo logo-container">
-                <img src="images/logo alshahed.png" width="66px" height="88px" alt="logo">
+                <img src="{{asset('images/logo alshahed.png')}}" width="66px" height="88px" alt="logo">
                 <span><span class="al-sh">Al</span>shahed</span>
               </a>
     
