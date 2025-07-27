@@ -24,4 +24,16 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getTranslated($field)
+    {
+        $locale = session('locale', 'en');
+        $fieldName = $field . '_' . $locale;
+        if (!empty($this->$fieldName)) {
+            return $this->$fieldName;
+        }
+        // fallback to English
+        $fallbackField = $field . '_en';
+        return $this->$fallbackField ?? '';
+    }
 }
