@@ -23,6 +23,10 @@ class StallionExpressService
 
     public function createShipment($payload)
     {
+        if (!isset($payload['postage_type'])) {
+            $payload['postage_type'] = 'DropOff'; // You can change this to 'Pickup' if needed
+        }
+        
         $response = Http::withToken($this->apiToken)
             ->post($this->baseUrl . 'shipments', $payload);
         return $response->json();
