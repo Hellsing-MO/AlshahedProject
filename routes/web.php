@@ -2,13 +2,11 @@
 
 use App\Http\Controllers\languageController;
 use Illuminate\Support\Facades\Route;
-use App\Services\SmartShippingService;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\OrderController;
 
