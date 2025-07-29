@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use App\Models\Cart;
 use App\Services\StallionExpressService;
 use Stripe\StripeClient;
@@ -129,23 +128,8 @@ class CheckoutController extends Controller
             ]
         ];
 
-        // Get rate with error handling
+        // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
-        
-        // Check if API response is valid
-        if (!$rateResponse || !isset($rateResponse['rates']) || empty($rateResponse['rates'])) {
-            // Log the error for debugging
-            Log::error('StallionExpress API Error', [
-                'response' => $rateResponse,
-                'payload' => $shippingPayload
-            ]);
-            
-            // Return error to user
-            return back()->withErrors([
-                'shipping' => 'Unable to calculate shipping rates. Please check your address and try again.'
-            ])->withInput();
-        }
-        
         $shippingCost = $rateResponse['rates'][0]['rate'];
         if ($rateResponse['rates'][0]['currency'] == 'CAD'){
             $shippingCost = $shippingCost*0.73;
