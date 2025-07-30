@@ -140,9 +140,17 @@ class CheckoutController extends Controller
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
-        $shippingCost = $rateResponse['rates'][0]['rate'];
-        if ($rateResponse['rates'][0]['currency'] == 'CAD'){
-            $shippingCost = $shippingCost*0.73;
+        if (
+            isset($rateResponse['rates'][0]) &&
+            isset($rateResponse['rates'][0]['rate']) &&
+            isset($rateResponse['rates'][0]['currency'])
+        ) {
+            $shippingCost = $rateResponse['rates'][0]['rate'];
+            if ($rateResponse['rates'][0]['currency'] == 'CAD'){
+                $shippingCost = $shippingCost * 0.73;
+            }
+        } else {
+            return redirect()->route('cart')->with('error', 'Could not calculate shipping. Please try again.');
         }
         if($validated['country_code']=='CA' && $cartTotal >= 150){
             $shippingCost = 0;
