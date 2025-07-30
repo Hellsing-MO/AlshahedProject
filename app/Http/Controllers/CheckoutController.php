@@ -147,6 +147,7 @@ class CheckoutController extends Controller
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
+        dd($rateResponse);
 
         if (isset($rateResponse['rates']) && !empty($rateResponse['rates'])) {
             $shippingCost = $rateResponse['rates'][0]['rate'];
