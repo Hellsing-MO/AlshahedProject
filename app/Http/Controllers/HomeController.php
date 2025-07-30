@@ -191,6 +191,8 @@ public function getAllProducts()
                     'product' => (object)[
                         'id' => $item['product_id'],
                         'title' => $item['title'],
+                        'title_en' => $item['title_en'],
+                        'title_ar' => $item['title_ar'],
                         'price' => $item['price'],
                         'image' => $item['image'],
                         'Weight' => $item['Weight']
