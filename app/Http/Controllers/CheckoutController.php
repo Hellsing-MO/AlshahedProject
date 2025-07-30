@@ -130,12 +130,15 @@ class CheckoutController extends Controller
             "package_type" => "Parcel",
             "signature_confirmation" => true,
             "insured" => true,
-            "tax_identifier" => [
+        ];
+
+        if ($validated['country_code'] !== 'CA') {
+            $shippingPayload['tax_identifier'] = [
                 "tax_type" => "IOSS",
                 "number" => "IM1234567890",
                 "issuing_authority" => "GB"
-            ]
-        ];
+            ];
+        }
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
