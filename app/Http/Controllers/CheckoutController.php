@@ -287,9 +287,6 @@ class CheckoutController extends Controller
 
         $trackingInfo = null;
         try {
-            // Add the required postage_type before creating the shipment
-            $shippingPayload['postage_type'] = 'standard';
-
             $response = $stallion->createShipment($shippingPayload);
             if (is_array($response) && isset($response['tracking_number'])) {
                 $trackingInfo = [
