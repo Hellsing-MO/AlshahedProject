@@ -90,21 +90,26 @@ class CheckoutController extends Controller
             $cartTotal += $price * $item->quantity;
             $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
 
-            $items[] = [
+            $itemData = [
                 "description" => $product->title,
                 "sku" => "SKU{$product->id}",
                 "quantity" => $item->quantity,
                 "value" => $price,
                 "currency" => "CAD",
                 "country_of_origin" => "CA",
-                "hs_code" => "123456",
-                "manufacturer_name" => "Honey Supplier",
-                "manufacturer_address1" => "123 Bee Lane",
-                "manufacturer_city" => "Toronto",
-                "manufacturer_province_code" => "ON",
-                "manufacturer_postal_code" => "M5V 2H1",
-                "manufacturer_country_code" => "CA",
             ];
+
+            if ($validated['country_code'] !== 'CA') {
+                $itemData["hs_code"] = "123456";
+                $itemData["manufacturer_name"] = "Honey Supplier";
+                $itemData["manufacturer_address1"] = "123 Bee Lane";
+                $itemData["manufacturer_city"] = "Toronto";
+                $itemData["manufacturer_province_code"] = "ON";
+                $itemData["manufacturer_postal_code"] = "M5V 2H1";
+                $itemData["manufacturer_country_code"] = "CA";
+            }
+
+            $items[] = $itemData;
         }
 
         // Prepare Stallion request
@@ -125,7 +130,7 @@ class CheckoutController extends Controller
             "length" => 9,
             "width" => 12,
             "height" => 1,
-            "size_unit" => "cm",
+            "size_unit" => "in",
             "items" => $items,
             "package_type" => "Parcel",
             "signature_confirmation" => true,
