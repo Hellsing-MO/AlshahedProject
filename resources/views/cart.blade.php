@@ -255,22 +255,11 @@
         <tbody>
           @php($total = 0)
           @foreach($cartItems as $item)
-              @php
-                  $subtotal = $item->product->price * $item->quantity;
-                  $total += $subtotal;
-                  $locale = session('locale', 'en');
-                  $field = 'title_' . $locale;
-                  if (isset($item->product->$field) && $item->product->$field) {
-                      $title = $item->product->$field;
-                  } elseif (isset($item->product->title)) {
-                      $title = $item->product->title;
-                  } else {
-                      $title = __('messages.Product Not Found');
-                  }
-              @endphp
+          @php($subtotal = $item->product->price * $item->quantity)
+          @php($total += $subtotal)
             <tr>
               <td><img class="cart-product-img" src="{{ asset('products/' . $item->product->image) }}" alt="{{$item->product->title}}"></td>
-              <td class="cart-product-title">{{ $title }}</td>
+              <td class="cart-product-title">{{$item->product->title}}</td>
               <td class="cart-qty">{{$item->quantity}}</td>
               <td class="cart-price">${{number_format($item->product->price, 2)}}</td>
               <td class="cart-total">${{number_format($subtotal, 2)}}</td>
