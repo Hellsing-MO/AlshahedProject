@@ -255,13 +255,13 @@
         <tbody>
           @php($total = 0)
           @foreach($cartItems as $item)
-          @php($subtotal = $item->product->price * $item->quantity)
-          @php($total += $subtotal)
-          @php
-              $locale = session('locale', 'en');
-              $field = 'title_' . $locale;
-              $title = isset($item->product->$field) ? $item->product->$field : (isset($item->product->title) ? $item->product->title : __('messages.Product Not Found'));
-          @endphp
+              @php($subtotal = $item->product->price * $item->quantity)
+              @php($total += $subtotal)
+              @php
+                  $locale = session('locale', 'en');
+                  $field = 'title_' . $locale;
+                  $title = isset($item->product->$field) ? $item->product->$field : (isset($item->product->title) ? $item->product->title : __('messages.Product Not Found'));
+              @endphp
             <tr>
               <td><img class="cart-product-img" src="{{ asset('products/' . $item->product->image) }}" alt="{{$item->product->title}}"></td>
               <td class="cart-product-title">{{ $title }}</td>
