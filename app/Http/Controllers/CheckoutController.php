@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Services\StallionExpressService;
 use Stripe\StripeClient;
+use Illuminate\Support\Facades\Log;
 use App\Models\CheckoutSession;
 use App\Models\Order;
 
@@ -129,8 +130,18 @@ class CheckoutController extends Controller
         ];
 
         // Get rate
-        $rateResponse = $stallion->getShippingRates($shippingPayload);
-        $shippingCost = $rateResponse['rates'][0]['rate'];
+        try {
+            $rateResponse = $stallion->getShippingRates($shippingPayload);
+
+            if (!$rateResponse || !isset($rateResponse['rates']) || empty($rateResponse['rates'])) {
+                return back()->with('error', 'No shipping rates found for the provided address. Please check your details and try again.');
+            }
+
+            $shippingCost = $rateResponse['rates'][0]['rate'];
+        } catch (\Exception $e) {
+            Log::error('Stallion Express API Error (Rates): ' . $e->getMessage(), ['payload' => $shippingPayload]);
+            return back()->with('error', 'Could not retrieve shipping rates. Please try again later.');
+        }
         if ($rateResponse['rates'][0]['currency'] == 'CAD'){
             $shippingCost = $shippingCost*0.73;
         }
@@ -272,15 +283,22 @@ class CheckoutController extends Controller
             session()->forget('cart');
         }
 
-        $response = $stallion->createShipment($shippingPayload);
         $trackingInfo = null;
-        if (is_array($response) && isset($response['tracking_number'])) {
-            $trackingInfo = [
-                'tracking_number' => $response['tracking_number'],
-                'carrier' => $response['carrier'] ?? null,
-                'status' => $response['status'] ?? null,
-                'tracking_url' => $response['tracking_url'] ?? null,
-            ];
+        try {
+            $response = $stallion->createShipment($shippingPayload);
+            if (is_array($response) && isset($response['tracking_number'])) {
+                $trackingInfo = [
+                    'tracking_number' => $response['tracking_number'],
+                    'carrier' => $response['carrier'] ?? null,
+                    'status' => $response['status'] ?? null,
+                    'tracking_url' => $response['tracking_url'] ?? null,
+                ];
+            }
+        } catch (\Exception $e) {
+            Log::error('Stallion Express API Error (Shipment Creation): ' . $e->getMessage(), [
+                'stripe_session_id' => $sessionId,
+                'payload' => $shippingPayload
+            ]);
         }
 
         // --- ORDER CREATION ---
@@ -314,7 +332,7 @@ class CheckoutController extends Controller
             'products' => $products,
             'total' => $total,
             'stripe_session_id' => $sessionId,
-            'status' => 'paid',
+            'status' => $trackingInfo ? 'paid' : 'payment_complete_shipment_failed',
             'tracking_info' => $trackingInfo,
         ]);
 

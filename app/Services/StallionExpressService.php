@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class StallionExpressService
 {
@@ -18,6 +19,10 @@ class StallionExpressService
     {
         $response = Http::withToken($this->apiToken)
             ->post($this->baseUrl . 'rates', $payload);
+
+        // Throw an exception if the request failed
+        $response->throw();
+
         return $response->json();
     }
 
@@ -25,6 +30,10 @@ class StallionExpressService
     {
         $response = Http::withToken($this->apiToken)
             ->post($this->baseUrl . 'shipments', $payload);
+
+        // Throw an exception if the request failed
+        $response->throw();
+
         return $response->json();
     }
 }

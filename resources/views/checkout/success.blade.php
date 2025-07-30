@@ -151,6 +151,20 @@
       <div class="success-icon"><i class='bx bx-check-circle'></i></div>
       <p style="font-size: 19px; color: #2ecc71; font-weight: 600; margin-bottom: 10px;">{{ __('messages.Your payment was successful!') }}</p>
       <p style="font-size: 17px; color: #7f8c8d;">{{ __('messages.We are processing your order and will send you a confirmation email soon.') }}<br>{{ __('messages.Thank you for shopping with Alshahed Honey!') }}</p>
+
+      <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid #eee; text-align: left;">
+        @if($order->tracking_info && !empty($order->tracking_info['tracking_number']))
+            <h3 style="font-size: 18px; font-weight: 600; color: #2c3e50; margin-bottom: 12px;">Shipment Details:</h3>
+            <p style="color: #34495e; margin-bottom: 4px;"><strong>Tracking Number:</strong> {{ $order->tracking_info['tracking_number'] }}</p>
+            <p style="color: #34495e; margin-bottom: 8px;"><strong>Carrier:</strong> {{ $order->tracking_info['carrier'] ?? 'N/A' }}</p>
+            @if(!empty($order->tracking_info['tracking_url']))
+                <a href="{{ $order->tracking_info['tracking_url'] }}" target="_blank" style="color: #FFB800; font-weight: 600; text-decoration: none;">Track Your Order →</a>
+            @endif
+        @else
+            <h3 style="font-size: 18px; font-weight: 600; color: #2c3e50; margin-bottom: 12px;">Your order is confirmed!</h3>
+            <p style="color: #34495e;">We are currently processing your shipment. You will receive an email with your tracking number as soon as it's available.</p>
+        @endif
+      </div>
       <a href="/" class="btn-main" style="margin-top: 18px;">{{ __('messages.Return to Home') }}</a>
     </div>
   </div>
