@@ -68,6 +68,9 @@ class CheckoutController extends Controller
             $sessionCart = session()->get('cart', []);
             $cartItems = collect();
             foreach ($sessionCart as $id => $item) {
+                if (!is_array($item) || !isset($item['product_id'], $item['quantity'])) {
+                    continue; // Skip invalid or null entries
+                }
                 $cartItems->push((object)[
                     'product' => \App\Models\Product::find($item['product_id']),
                     'quantity' => $item['quantity']
