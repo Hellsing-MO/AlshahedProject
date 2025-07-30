@@ -260,20 +260,11 @@
           @php
               $locale = session('locale', 'en');
               $field = 'title_' . $locale;
+              $title = isset($item->product->$field) ? $item->product->$field : (isset($item->product->title) ? $item->product->title : __('messages.Product Not Found'));
           @endphp
             <tr>
               <td><img class="cart-product-img" src="{{ asset('products/' . $item->product->image) }}" alt="{{$item->product->title}}"></td>
-              <td class="cart-product-title">
-                @if(isset($item->product->$field) && $item->product->$field)
-                    {{ $item->product->$field }}
-                @elseif(method_exists($item->product, 'getTranslated'))
-                    {{ $item->product->getTranslated('title') }}
-                @elseif(isset($item->product->title))
-                    {{ $item->product->title }}
-                @else
-                    {{ __('messages.Product Not Found') }}
-                @endif
-              </td>
+              <td class="cart-product-title">{{ $title }}</td>
               <td class="cart-qty">{{$item->quantity}}</td>
               <td class="cart-price">${{number_format($item->product->price, 2)}}</td>
               <td class="cart-total">${{number_format($subtotal, 2)}}</td>
