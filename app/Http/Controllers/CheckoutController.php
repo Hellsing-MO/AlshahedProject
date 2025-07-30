@@ -68,15 +68,8 @@ class CheckoutController extends Controller
             $sessionCart = session()->get('cart', []);
             $cartItems = collect();
             foreach ($sessionCart as $id => $item) {
-                if (!$item || !isset($item['product_id'], $item['quantity'])) {
-                    continue; // Skip invalid items
-                }
-                $product = \App\Models\Product::find($item['product_id']);
-                if (!$product) {
-                    continue; // Skip if product doesn't exist
-                }
                 $cartItems->push((object)[
-                    'product' => $product,
+                    'product' => \App\Models\Product::find($item['product_id']),
                     'quantity' => $item['quantity']
                 ]);
             }
@@ -93,9 +86,6 @@ class CheckoutController extends Controller
 
         foreach ($cartItems as $item) {
             $product = $item->product;
-            if (!$product) {
-                continue; // skip if product is null
-            }
             $price = floatval($product->price);
             $cartTotal += $price * $item->quantity;
             $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
@@ -140,17 +130,9 @@ class CheckoutController extends Controller
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
-        if (
-            isset($rateResponse['rates'][0]) &&
-            isset($rateResponse['rates'][0]['rate']) &&
-            isset($rateResponse['rates'][0]['currency'])
-        ) {
-            $shippingCost = $rateResponse['rates'][0]['rate'];
-            if ($rateResponse['rates'][0]['currency'] == 'CAD'){
-                $shippingCost = $shippingCost * 0.73;
-            }
-        } else {
-            return redirect()->route('cart')->with('error', 'Could not calculate shipping. Please try again.');
+        $shippingCost = $rateResponse['rates'][0]['rate'];
+        if ($rateResponse['rates'][0]['currency'] == 'CAD'){
+            $shippingCost = $shippingCost*0.73;
         }
         if($validated['country_code']=='CA' && $cartTotal >= 150){
             $shippingCost = 0;
