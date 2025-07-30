@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderConfirmed;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
@@ -335,6 +337,14 @@ class CheckoutController extends Controller
             'status' => $trackingInfo ? 'paid' : 'payment_complete_shipment_failed',
             'tracking_info' => $trackingInfo,
         ]);
+
+        // Dispatch the order confirmation email to the queue
+        try {
+            Mail::to($order->customer_email)->send(new OrderConfirmed($order));
+        } catch (\Exception $e) {
+            // Log the error if the email fails to be dispatched
+            Log::error('Failed to queue order confirmation email for order ID: ' . $order->id, ['error' => $e->getMessage()]);
+        }
 
         return view('checkout.success', [
             'order' => $order,
