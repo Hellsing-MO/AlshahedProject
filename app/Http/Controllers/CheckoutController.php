@@ -90,74 +90,50 @@ class CheckoutController extends Controller
             $cartTotal += $price * $item->quantity;
             $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
 
-            $itemData = [
+            $items[] = [
                 "description" => $product->title,
                 "sku" => "SKU{$product->id}",
                 "quantity" => $item->quantity,
                 "value" => $price,
                 "currency" => "CAD",
                 "country_of_origin" => "CA",
+                "hs_code" => "123456",
+                "manufacturer_name" => "Honey Supplier",
+                "manufacturer_address1" => "123 Bee Lane",
+                "manufacturer_city" => "Toronto",
+                "manufacturer_province_code" => "ON",
+                "manufacturer_postal_code" => "M5V 2H1",
+                "manufacturer_country_code" => "CA",
             ];
-
-            if ($validated['country_code'] !== 'CA') {
-                $itemData["hs_code"] = "123456";
-                $itemData["manufacturer_name"] = "Honey Supplier";
-                $itemData["manufacturer_address1"] = "123 Bee Lane";
-                $itemData["manufacturer_city"] = "Toronto";
-                $itemData["manufacturer_province_code"] = "ON";
-                $itemData["manufacturer_postal_code"] = "M5V 2H1";
-                $itemData["manufacturer_country_code"] = "CA";
-            }
-
-            $items[] = $itemData;
         }
 
         // Prepare Stallion request
         $shippingPayload = [
-            "to_address" => [
-                'name' => $validated['name'],
-                'address1' => $validated['address1'],
-                'city' => $validated['city'],
-                'province_code' => $validated['province_code'],
-                'postal_code' => $validated['postal_code'],
-                'country_code' => $validated['country_code'],
-                'phone' => $validated['phone'],
-                'email' => $validated['email'],
-            ],
+            "to_address" => $validated,
             "is_return" => false,
             "weight_unit" => "lbs",
             "weight" => max($weight, 0.5),
             "length" => 9,
             "width" => 12,
             "height" => 1,
-            "size_unit" => "in",
+            "size_unit" => "cm",
             "items" => $items,
             "package_type" => "Parcel",
             "signature_confirmation" => true,
             "insured" => true,
-        ];
-
-        if ($validated['country_code'] !== 'CA') {
-            $shippingPayload['tax_identifier'] = [
+            "tax_identifier" => [
                 "tax_type" => "IOSS",
                 "number" => "IM1234567890",
                 "issuing_authority" => "GB"
-            ];
-        }
+            ]
+        ];
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
-        dd($rateResponse);
-
-        if (isset($rateResponse['rates']) && !empty($rateResponse['rates'])) {
-            $shippingCost = $rateResponse['rates'][0]['rate'];
-            if ($rateResponse['rates'][0]['currency'] === 'CAD') {
-                $shippingCost *= 0.73;
-            }
-        } else {
-            $shippingCost = 0;
+        $shippingCost = $rateResponse['rates'][0]['rate'];
+        if ($rateResponse['rates'][0]['currency'] == 'CAD'){
+            $shippingCost = $shippingCost*0.73;
         }
-
         if($validated['country_code']=='CA' && $cartTotal >= 150){
             $shippingCost = 0;
         }
