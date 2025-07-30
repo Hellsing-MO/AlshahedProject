@@ -93,6 +93,9 @@ class CheckoutController extends Controller
 
         foreach ($cartItems as $item) {
             $product = $item->product;
+            if (!$product) {
+                continue; // skip if product is null
+            }
             $price = floatval($product->price);
             $cartTotal += $price * $item->quantity;
             $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
