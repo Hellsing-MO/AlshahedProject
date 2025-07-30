@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
 require __DIR__.'/auth.php';
 
 
-Route::get('change', [languageController::class,'change'])->name('lang.change');
+Route::get('change', [LanguageController::class,'change'])->name('lang.change');
 
 Route::get('admin/dashboard', [HomeController::class, 'index'])->
         middleware(['auth', 'admin']);
