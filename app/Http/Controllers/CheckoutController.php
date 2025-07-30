@@ -109,7 +109,16 @@ class CheckoutController extends Controller
 
         // Prepare Stallion request
         $shippingPayload = [
-            "to_address" => $validated,
+            "to_address" => [
+                'name' => $validated['name'],
+                'address1' => $validated['address1'],
+                'city' => $validated['city'],
+                'province_code' => $validated['province_code'],
+                'postal_code' => $validated['postal_code'],
+                'country_code' => $validated['country_code'],
+                'phone' => $validated['phone'],
+                'email' => $validated['email'],
+            ],
             "is_return" => false,
             "weight_unit" => "lbs",
             "weight" => max($weight, 0.5),
@@ -130,10 +139,16 @@ class CheckoutController extends Controller
 
         // Get rate
         $rateResponse = $stallion->getShippingRates($shippingPayload);
-        $shippingCost = $rateResponse['rates'][0]['rate'];
-        if ($rateResponse['rates'][0]['currency'] == 'CAD'){
-            $shippingCost = $shippingCost*0.73;
+
+        if (isset($rateResponse['rates']) && !empty($rateResponse['rates'])) {
+            $shippingCost = $rateResponse['rates'][0]['rate'];
+            if ($rateResponse['rates'][0]['currency'] === 'CAD') {
+                $shippingCost *= 0.73;
+            }
+        } else {
+            $shippingCost = 0;
         }
+
         if($validated['country_code']=='CA' && $cartTotal >= 150){
             $shippingCost = 0;
         }
