@@ -7,6 +7,8 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
+use App\Services\StallionExpressService;
+
 
 class OrderController extends BaseController
 {
@@ -29,7 +31,7 @@ class OrderController extends BaseController
         return view('orders.index', compact('orders', 'count'));
     }
 
-    public function show(Order $order)
+    public function show(Order $order, StallionExpressService $stallionExpressService)
     {
         if (Auth::id()) {
             $user = Auth::user();
@@ -42,6 +44,12 @@ class OrderController extends BaseController
         if ($order->user_id !== $user->id) {
             abort(403, 'Unauthorized');
         }
+        $deliveryStatus=Null;
+        if (is_array($order->tracking_info) && !is_null($order->tracking_info['tracking_number'])) {
+            $response= $stallionExpressService->trackShipment($order->tracking_info['tracking_number']);
+    $deliveryStatus = $response['status'];
+    return view('orders.show', compact('order', 'count', 'deliveryStatus'));
+}
         return view('orders.show', compact('order', 'count'));
     }
 }

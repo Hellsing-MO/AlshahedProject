@@ -50,11 +50,36 @@
       display: inline-block;
       margin-bottom: 18px;
     }
+    .delivery-status {
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 0.98rem;
+      color: #fff;
+      display: inline-block;
+      margin-left: 12px;
+    }
+    .status-pending { background: linear-gradient(90deg, #f39c12 60%, #f1c40f 100%); }
+    .status-ready { background: linear-gradient(90deg, #3498db 60%, #5dade2 100%); }
+    .status-received { background: linear-gradient(90deg, #9b59b6 60%, #bb8fce 100%); }
+    .status-processing { background: linear-gradient(90deg, #e67e22 60%, #f5b041 100%); }
+    .status-in-transit { background: linear-gradient(90deg, #2980b9 60%, #5dade2 100%); }
+    .status-delivered { background: linear-gradient(90deg, #27ae60 60%, #58d68d 100%); }
+    .status-exception { background: linear-gradient(90deg, #e74c3c 60%, #ec7063 100%); }
+    .status-contact { background: linear-gradient(90deg, #95a5a6 60%, #bdc3c7 100%); }
+    
     .order-info-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
       font-size: 1.08rem;
+    }
+    .status-container {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .order-section-title {
       color: #3498db;
@@ -138,7 +163,9 @@
       .order-details-card { padding: 12px 2vw 12px 2vw; }
       .order-details-container { max-width: 100%; padding: 0 2vw; margin-top: 24px; }
       .order-details-title { font-size: 1.3rem; }
-      .order-info-row { flex-direction: column; gap: 8px; font-size: 1rem; }
+      .order-info-row { flex-direction: column; gap: 8px; font-size: 1rem; align-items: flex-start; }
+      .status-container { margin-top: 8px; }
+      .delivery-status { margin-left: 0; }
       .order-products-list { gap: 8px; }
       .order-product-item { flex-direction: column; align-items: flex-start; gap: 6px; padding: 10px 0; }
       .order-product-img { width: 54px; height: 54px; border-radius: 8px; }
@@ -153,9 +180,9 @@
       body { background: #fff !important; }
       .order-details-container, .order-details-card { box-shadow: none !important; border: none !important; background: #fff !important; }
       .order-details-title, .order-section-title { color: #222 !important; border: none !important; }
-      .order-status, .back-orders-btn, .order-product-img, .order-shipping-box { box-shadow: none !important; background: none !important; color: #222 !important; }
-      .back-orders-btn, .order-status, .order-section-title, .order-details-title { color: #222 !important; background: none !important; }
-      .back-orders-btn, .order-status { display: none !important; }
+      .order-status, .delivery-status, .back-orders-btn, .order-product-img, .order-shipping-box { box-shadow: none !important; background: none !important; color: #222 !important; }
+      .back-orders-btn, .order-status, .delivery-status, .order-section-title, .order-details-title { color: #222 !important; background: none !important; }
+      .back-orders-btn, .order-status, .delivery-status { display: none !important; }
       .order-product-img { width: 40px !important; height: 40px !important; }
     }
   </style>
@@ -171,7 +198,61 @@
     <div class="order-details-title">Order #{{ $order->id }}</div>
     <div class="order-info-row">
       <div><b>Date:</b> {{ $order->created_at->format('Y-m-d') }}</div>
-      <div><span class="order-status">{{ ucfirst($order->status) }}</span></div>
+      <div class="status-container">
+        <span class="order-status">{{ ucfirst($order->status) }}</span>
+        @if(isset($deliveryStatus) && !is_null($deliveryStatus))
+          @php
+            $displayStatus = '';
+            $statusClass = '';
+            
+            switch(strtolower($deliveryStatus)) {
+              case 'pending':
+                $displayStatus = 'Pending';
+                $statusClass = 'status-pending';
+                break;
+              case 'ready':
+                $displayStatus = 'Ready to Ship';
+                $statusClass = 'status-ready';
+                break;
+              case 'received':
+                $displayStatus = 'Order Received';
+                $statusClass = 'status-received';
+                break;
+              case 'processing':
+                $displayStatus = 'Processing';
+                $statusClass = 'status-processing';
+                break;
+              case 'in transit':
+                $displayStatus = 'In Transit';
+                $statusClass = 'status-in-transit';
+                break;
+              case 'delivered':
+                $displayStatus = 'Delivered';
+                $statusClass = 'status-delivered';
+                break;
+              case 'exception':
+                $displayStatus = 'Delivery Issue';
+                $statusClass = 'status-exception';
+                break;
+              case 'complete':
+                $displayStatus = 'Complete';
+                $statusClass = 'status-delivered';
+                break;
+              case 'postage expired':
+              case 'incomplete':
+              case 'void requested':
+              case 'voided':
+                $displayStatus = 'Contact Support';
+                $statusClass = 'status-contact';
+                break;
+              default:
+                $displayStatus = ucwords($deliveryStatus);
+                $statusClass = 'status-pending';
+            }
+          @endphp
+          <span class="delivery-status {{ $statusClass }}">{{ $displayStatus }}</span>
+        @endif
+      </div>
     </div>
     @if($order->tracking_info && $order->tracking_info['tracking_number'])
       <div class="order-section-title">Tracking Information</div>
@@ -215,4 +296,4 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="{{ asset('script.js') }}"></script>
 </body>
-</html> 
+</html>

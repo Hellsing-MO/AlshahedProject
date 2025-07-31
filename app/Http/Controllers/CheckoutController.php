@@ -285,24 +285,17 @@ class CheckoutController extends Controller
             session()->forget('cart');
         }
 
-        $trackingInfo = null;
-        try {
-            $response = $stallion->createShipment($shippingPayload);
-            if (is_array($response) && isset($response['tracking_number'])) {
-                $trackingInfo = [
-                    'tracking_number' => $response['tracking_number'],
-                    'carrier' => $response['carrier'] ?? null,
-                    'status' => $response['status'] ?? null,
-                    'tracking_url' => $response['tracking_url'] ?? null,
-                ];
-            }
-        } catch (\Exception $e) {
-            Log::error('Stallion Express API Error (Shipment Creation): ' . $e->getMessage(), [
-                'stripe_session_id' => $sessionId,
-                'payload' => $shippingPayload
-            ]);
+       $trackingInfo = null;
+       $shippingPayload["postage_types"]="Cheapest Tracked";
+       $response = $stallion->createShipment($shippingPayload);
+       if (!is_null($response['success'])&&$response['success']) {
+            $trackingInfo = [
+                'tracking_number' => $response['tracking_code'],
+                'carrier' => $response['carrier'] ?? null,
+                'status' => $response['status'] ?? null,
+                'tracking_url' => $response['tracking_url'] ?? null,
+            ];
         }
-
         // --- ORDER CREATION ---
         $userId = Auth::id();
         $customerName = $session->metadata->shipping_name;

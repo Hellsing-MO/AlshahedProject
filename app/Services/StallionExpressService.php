@@ -28,6 +28,7 @@ class StallionExpressService
 
     public function createShipment($payload)
     {
+        
         $response = Http::withToken($this->apiToken)
             ->post($this->baseUrl . 'shipments', $payload);
 
@@ -36,4 +37,14 @@ class StallionExpressService
 
         return $response->json();
     }
+
+    public function trackShipment($trackingCode)
+    {
+        $url = $this->baseUrl . 'track?tracking_code=' . urlencode($trackingCode);
+
+        $response = Http::withToken($this->apiToken)
+            ->get($url);
+        return $response->json(); 
+    }
+
 }
