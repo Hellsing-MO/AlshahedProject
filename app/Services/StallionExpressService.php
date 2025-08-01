@@ -15,28 +15,34 @@ class StallionExpressService
         $this->baseUrl = config('services.stallion.base');
     }
 
-    public function getShippingRates($payload)
-    {
-        $response = Http::withToken($this->apiToken)
-            ->post($this->baseUrl . 'rates', $payload);
+        public function getShippingRates($payload)
+{
+    $response = Http::withToken($this->apiToken)
+        ->withHeaders([
+            'Content-Type' => 'application/json',
+        ])
+        ->post($this->baseUrl . 'rates', $payload);
 
-        // Throw an exception if the request failed
-        $response->throw();
 
-        return $response->json();
-    }
+    $response->throw();
+
+    return $response->json();
+}
+
 
     public function createShipment($payload)
-    {
-        
-        $response = Http::withToken($this->apiToken)
-            ->post($this->baseUrl . 'shipments', $payload);
+{
+    $response = Http::withToken($this->apiToken)
+        ->withHeaders([
+            'Content-Type' => 'application/json',
+        ])
+        ->post($this->baseUrl . 'shipments', $payload);
 
-        // Throw an exception if the request failed
-        $response->throw();
+    $response->throw();
 
-        return $response->json();
-    }
+    return $response->json();
+}
+
 
     public function trackShipment($trackingCode)
     {

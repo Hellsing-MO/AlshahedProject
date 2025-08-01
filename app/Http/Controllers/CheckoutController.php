@@ -286,7 +286,7 @@ class CheckoutController extends Controller
         }
 
        $trackingInfo = null;
-       $shippingPayload["postage_types"]="Cheapest Tracked";
+       $shippingPayload['postage_type']="Cheapest Tracked";
        $response = $stallion->createShipment($shippingPayload);
        if (!is_null($response['success'])&&$response['success']) {
             $trackingInfo = [
