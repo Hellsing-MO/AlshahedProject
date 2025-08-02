@@ -1281,6 +1281,7 @@ font-weight: 700;
 margin: -65px 6px 0;
 color: #111;
 text-align: center;
+padding-top: 45px;
 }
 .row1 p {
 font-size: 0.97rem;
@@ -3597,7 +3598,7 @@ box-shadow: 0 8px 32px rgba(255,191,0,0.18);
 }
 .category-box h3 {
 margin: 1.2rem 0 1.2rem 0;
-color: #b8860b;
+color: #212121;
 font-weight: 700;
 font-size: 1.2rem;
 letter-spacing: 0.5px;
