@@ -259,7 +259,7 @@
           @php($total += $subtotal)
             <tr>
               <td><img class="cart-product-img" src="{{ asset('products/' . $item->product->image) }}" alt="{{$item->product->title}}"></td>
-              <td class="cart-product-title">{{$item->product->title}}</td>
+              <td class="cart-product-title">{{$item->product->getTranslated('title')}}</td>
               <td class="cart-qty">{{$item->quantity}}</td>
               <td class="cart-price">${{number_format($item->product->price, 2)}}</td>
               <td class="cart-total">${{number_format($subtotal, 2)}}</td>
