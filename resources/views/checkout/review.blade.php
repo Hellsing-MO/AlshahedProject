@@ -244,7 +244,7 @@
           @foreach($cartItems as $item)
         <div class="order-details-row">
             <div>
-              <strong>{{$item->product->title}}</strong>
+              <strong>{{$item->product->getTranslated('title')}}</strong>
             <span style="color: #7f8c8d; font-size: 14px;">&nbsp;× {{$item->quantity}}</span>
             </div>
             <div style="text-align: right;">
