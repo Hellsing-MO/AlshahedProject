@@ -94,7 +94,7 @@ class CheckoutController extends Controller
             $weight += floatval($product->Weight ?? 0.5) * $item->quantity;
 
             $items[] = [
-                "description" => $product->title,
+                "description" => $product->getTranslated('title'),
                 "sku" => "SKU{$product->id}",
                 "quantity" => $item->quantity,
                 "value" => $price,
@@ -212,7 +212,7 @@ class CheckoutController extends Controller
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
-                    'product_data' => ['name' => $product->title],
+                    'product_data' => ['name' => $product->getTranslated('title')],
                     'unit_amount' => intval($price * 100),
                 ],
                 'quantity' => $item->quantity,

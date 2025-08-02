@@ -59,13 +59,32 @@ addEventOnElem(window, "scroll", activeElem);
 var swiper = new Swiper(".mySwiper", {
     slidesPerView: 1,
     spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    effect: "slide",
+    speed: 800,
+    grabCursor: true,
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
+      dynamicBullets: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
     },
     breakpoints: {
       600: {
-        slidesPerView: 3
+        slidesPerView: 2,
+        spaceBetween: 40,
+      },
+      900: {
+        slidesPerView: 3,
+        spaceBetween: 50,
       },
     },
   });
