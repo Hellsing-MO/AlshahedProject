@@ -186,17 +186,14 @@ public function getAllProducts()
             $sessionCart = session()->get('cart', []);
             $cartItems = collect();
             foreach ($sessionCart as $id => $item) {
-                $cartItems->push((object)[
-                    'id' => $id,
-                    'product' => (object)[
-                        'id' => $item['product_id'],
-                        'title' => $item['title'],
-                        'price' => $item['price'],
-                        'image' => $item['image'],
-                        'Weight' => $item['Weight']
-                    ],
-                    'quantity' => $item['quantity']
-                ]);
+                $product = Product::find($item['product_id']);
+                if ($product) {
+                    $cartItems->push((object)[
+                        'id' => $id,
+                        'product' => $product,
+                        'quantity' => $item['quantity']
+                    ]);
+                }
             }
             $count = count($sessionCart);
         }
