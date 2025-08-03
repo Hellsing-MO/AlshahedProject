@@ -1279,7 +1279,8 @@ transition: box-shadow 0.3s;
 font-size: 1.3rem;
 font-weight: 700;
 margin: -65px 6px 0;
-color: #111;
+color: #ff9f0d;
+text-shadow: 0 2px 10px rgba(255, 159, 13, 0.3);
 text-align: center;
 padding-top: 45px;
 }
@@ -1298,7 +1299,8 @@ width: 100%;
 margin-top: auto;
 }
 .price h6 {
-color: #FFB800;
+color: #222;
+text-shadow: 0 2px 10px rgb(255, 203, 0);
 font-size: 1.3rem;
 font-weight: 700;
 margin: 0;
@@ -3597,15 +3599,16 @@ transform: scale(1.07) rotate(-1deg);
 box-shadow: 0 8px 32px rgba(255,191,0,0.18);
 }
 .category-box h3 {
+color: #ffb800;
 margin: 1.2rem 0 1.2rem 0;
-color: #212121;
 font-weight: 700;
 font-size: 1.2rem;
 letter-spacing: 0.5px;
 transition: color 0.3s;
 }
 .category-box:hover h3 {
-color: #ffb800;
+color: #ff9f0d;
+text-shadow: 0 2px 10px rgba(255, 159, 13, 0.3);
 text-shadow: 0 2px 8px #fffbe6;
 }
 
