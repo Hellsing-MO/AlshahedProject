@@ -96,6 +96,7 @@ return [
         'privacy_policy' => 'سياسة الخصوصية',
         'logout' => 'تسجيل الخروج',
         'my_orders' => 'طلباتي',
+
         
         // New messages for login prompts and order linking
         'Tip: Create an account to track your orders and save your shipping information!' => 'نصيحة: أنشئ حسابًا لتتبع طلباتك وحفظ معلومات الشحن!',
