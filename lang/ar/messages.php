@@ -96,4 +96,23 @@ return [
         'privacy_policy' => 'سياسة الخصوصية',
         'logout' => 'تسجيل الخروج',
         'my_orders' => 'طلباتي',
+        
+        // New messages for login prompts and order linking
+        'Tip: Create an account to track your orders and save your shipping information!' => 'نصيحة: أنشئ حسابًا لتتبع طلباتك وحفظ معلومات الشحن!',
+        'Create Account' => 'إنشاء حساب',
+        'Create an account with the same email address to automatically link this order and track all your future orders!' => 'أنشئ حسابًا بنفس عنوان البريد الإلكتروني لربط هذا الطلب تلقائيًا وتتبع جميع طلباتك المستقبلية!',
+        'Create an account to easily track all your orders and save your shipping information for future purchases!' => 'أنشئ حسابًا لتتبع جميع طلباتك بسهولة وحفظ معلومات الشحن للمشتريات المستقبلية!',
+        'My Orders' => 'طلباتي',
+        'You have not placed any orders yet.' => 'لم تضع أي طلبات بعد.',
+        'Order #' => 'رقم الطلب #',
+        'Date' => 'التاريخ',
+        'Status' => 'الحالة',
+        'Products' => 'المنتجات',
+        'View' => 'عرض',
+        'Shipment Details:' => 'تفاصيل الشحنة:',
+        'Tracking Number:' => 'رقم التتبع:',
+        'Carrier:' => 'شركة الشحن:',
+        'Track Your Order →' => 'تتبع طلبك →',
+        'Your order is confirmed!' => 'تم تأكيد طلبك!',
+        'We are currently processing your shipment. You will receive an email with your tracking number as soon as it\'s available.' => 'نقوم حاليًا بمعالجة شحنتك. ستتلقى بريدًا إلكترونيًا برقم التتبع بمجرد توافره.',
 ];

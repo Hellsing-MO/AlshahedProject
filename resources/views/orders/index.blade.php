@@ -135,11 +135,11 @@
       <table class="order-table">
         <thead>
           <tr>
-            <th>Order #</th>
-            <th>Date</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Products</th>
+            <th>{{ __('messages.Order #') }}</th>
+            <th>{{ __('messages.Date') }}</th>
+            <th>{{ __('messages.Total') }}</th>
+            <th>{{ __('messages.Status') }}</th>
+            <th>{{ __('messages.Products') }}</th>
             <th></th>
           </tr>
         </thead>
@@ -158,7 +158,7 @@
                 @endforeach
               </td>
               <td>
-                <a href="{{ route('orders.show', $order->id) }}" style="background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%); color: #222; padding: 8px 22px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 2px 8px rgba(255,184,0,0.07); transition: background 0.2s;">View</a>
+                <a href="{{ route('orders.show', $order->id) }}" style="background: linear-gradient(90deg, #FFB800 60%, #ffe066 100%); color: #222; padding: 8px 22px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 2px 8px rgba(255,184,0,0.07); transition: background 0.2s;">{{ __('messages.View') }}</a>
               </td>
             </tr>
           @endforeach
@@ -168,21 +168,21 @@
       <div class="order-card-list">
         @foreach($orders as $order)
           <div class="order-card">
-            <div><b>Order #</b> {{ $order->id }}</div>
-            <div><b>Date:</b> {{ $order->created_at->format('Y-m-d') }}</div>
-            <div><b>Total:</b> <span style="font-weight:700; color:#FFB800;">${{ number_format($order->total, 2) }}</span></div>
+            <div><b>{{ __('messages.Order #') }}</b> {{ $order->id }}</div>
+            <div><b>{{ __('messages.Date') }}:</b> {{ $order->created_at->format('Y-m-d') }}</div>
+            <div><b>{{ __('messages.Total') }}:</b> <span style="font-weight:700; color:#FFB800;">${{ number_format($order->total, 2) }}</span></div>
             <div><span class="order-status">{{ ucfirst($order->status) }}</span></div>
             <div class="order-products">
               @foreach($order->products as $product)
                 <div>{{ $product['description'] }} <span style="color:#bbb;">×{{ $product['quantity'] }}</span></div>
               @endforeach
             </div>
-            <a href="{{ route('orders.show', $order->id) }}" class="order-view-btn">View</a>
+            <a href="{{ route('orders.show', $order->id) }}" class="order-view-btn">{{ __('messages.View') }}</a>
           </div>
         @endforeach
       </div>
     @else
-      <div style="text-align:center; padding: 40px 0; color:#7f8c8d; font-size: 1.2rem; font-weight: 600;">You have not placed any orders yet.</div>
+      <div style="text-align:center; padding: 40px 0; color:#7f8c8d; font-size: 1.2rem; font-weight: 600;">{{ __('messages.You have not placed any orders yet.') }}</div>
     @endif
   </div>
 </div>

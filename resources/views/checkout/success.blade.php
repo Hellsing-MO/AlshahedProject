@@ -174,7 +174,7 @@
           </p>
           <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
             <a href="{{ route('login') }}" style="background: #3498db; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">
-              <i class='bx bx-log-in'></i> {{ __('messages.Login') }}
+              <i class='bx bx-log-in'></i> {{ __('messages.login') }}
             </a>
             <a href="{{ route('register') }}" style="background: #27ae60; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">
               <i class='bx bx-user-plus'></i> {{ __('messages.Create Account') }}

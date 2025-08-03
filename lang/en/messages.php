@@ -98,5 +98,24 @@ return [
         'privacy_policy' => 'Privacy Policy',
         'logout' => 'Logout',
         'my_orders' => 'My Orders',
+        
+        // New messages for login prompts and order linking
+        'Tip: Create an account to track your orders and save your shipping information!' => 'Tip: Create an account to track your orders and save your shipping information!',
+        'Create Account' => 'Create Account',
+        'Create an account with the same email address to automatically link this order and track all your future orders!' => 'Create an account with the same email address to automatically link this order and track all your future orders!',
+        'Create an account to easily track all your orders and save your shipping information for future purchases!' => 'Create an account to easily track all your orders and save your shipping information for future purchases!',
+        'My Orders' => 'My Orders',
+        'You have not placed any orders yet.' => 'You have not placed any orders yet.',
+        'Order #' => 'Order #',
+        'Date' => 'Date',
+        'Status' => 'Status',
+        'Products' => 'Products',
+        'View' => 'View',
+        'Shipment Details:' => 'Shipment Details:',
+        'Tracking Number:' => 'Tracking Number:',
+        'Carrier:' => 'Carrier:',
+        'Track Your Order →' => 'Track Your Order →',
+        'Your order is confirmed!' => 'Your order is confirmed!',
+        'We are currently processing your shipment. You will receive an email with your tracking number as soon as it\'s available.' => 'We are currently processing your shipment. You will receive an email with your tracking number as soon as it\'s available.',
 
 ];

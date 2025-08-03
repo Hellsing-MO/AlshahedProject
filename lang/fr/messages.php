@@ -94,4 +94,23 @@ return [
     'privacy_policy' => 'Politique de confidentialité',
     'logout' => 'Déconnexion',
     'my_orders' => 'Mes commandes',
+    
+    // New messages for login prompts and order linking
+    'Tip: Create an account to track your orders and save your shipping information!' => 'Conseil : Créez un compte pour suivre vos commandes et sauvegarder vos informations de livraison !',
+    'Create Account' => 'Créer un compte',
+    'Create an account with the same email address to automatically link this order and track all your future orders!' => 'Créez un compte avec la même adresse e-mail pour lier automatiquement cette commande et suivre toutes vos commandes futures !',
+    'Create an account to easily track all your orders and save your shipping information for future purchases!' => 'Créez un compte pour suivre facilement toutes vos commandes et sauvegarder vos informations de livraison pour les achats futurs !',
+    'My Orders' => 'Mes commandes',
+    'You have not placed any orders yet.' => 'Vous n\'avez pas encore passé de commande.',
+    'Order #' => 'Commande #',
+    'Date' => 'Date',
+    'Status' => 'Statut',
+    'Products' => 'Produits',
+    'View' => 'Voir',
+    'Shipment Details:' => 'Détails de l\'expédition :',
+    'Tracking Number:' => 'Numéro de suivi :',
+    'Carrier:' => 'Transporteur :',
+    'Track Your Order →' => 'Suivre votre commande →',
+    'Your order is confirmed!' => 'Votre commande est confirmée !',
+    'We are currently processing your shipment. You will receive an email with your tracking number as soon as it\'s available.' => 'Nous traitons actuellement votre expédition. Vous recevrez un e-mail avec votre numéro de suivi dès qu\'il sera disponible.',
 ];
