@@ -277,6 +277,25 @@
     <div style="display: flex; justify-content: flex-end;">
         <a href="{{route('checkout.shipping')}}" class="cart-checkout-btn">{{ __('messages.Proceed to Checkout') }}</a>
     </div>
+    
+    @if(!Auth::check())
+        <div style="margin-top: 20px; text-align: center;">
+            <div style="background: #e8f5e8; border: 1px solid #4caf50; border-radius: 12px; padding: 15px; margin-top: 20px;">
+                <i class='bx bx-info-circle' style="color: #2e7d32; font-size: 20px; margin-bottom: 8px;"></i>
+                <p style="color: #2e7d32; font-weight: 600; margin: 0 0 10px 0; font-size: 14px;">
+                    💡 {{ __('messages.Tip: Create an account to track your orders and save your shipping information!') }}
+                </p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ route('login') }}" style="background: #3498db; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                        <i class='bx bx-log-in'></i> {{ __('messages.Login') }}
+                    </a>
+                    <a href="{{ route('register') }}" style="background: #27ae60; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">
+                        <i class='bx bx-user-plus'></i> {{ __('messages.Create Account') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
   @else
       <div class="cart-empty">
         <div class="cart-empty-icon"><i class='bx bx-cart'></i></div>

@@ -114,14 +114,23 @@
   </style>
 </head>
 <body>
-@include('home.header')
-<br>
-<br>
-<br>
-<br>
-<div class="order-history-container">
-  <div class="order-history-card">
-    <div class="order-history-title">My Orders</div>
+  @include('home.header')
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="order-history-container">
+    <div class="order-history-card">
+      <h2 class="order-history-title">{{ __('messages.My Orders') }}</h2>
+      
+      @if(session('orders_linked'))
+        <div style="background: #d4edda; border: 1px solid #c3e6cb; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center;">
+          <i class='bx bx-check-circle' style="color: #155724; font-size: 20px; margin-bottom: 8px;"></i>
+          <p style="color: #155724; font-weight: 600; margin: 0; font-size: 14px;">
+            🎉 {{ session('orders_linked')['message'] }}
+          </p>
+        </div>
+      @endif
     @if($orders->count())
       <table class="order-table">
         <thead>

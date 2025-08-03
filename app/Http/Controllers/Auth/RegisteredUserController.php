@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Providers\RouteServiceProvider;
 
 class RegisteredUserController extends Controller
 {
@@ -31,11 +32,11 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -49,9 +50,33 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        // Merge guest cart with user cart after successful registration
-        $this->mergeGuestCartWithUserCart();
+        // Link any existing guest orders with the same email address
+        $this->linkGuestOrdersToUser($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(RouteServiceProvider::HOME);
+    }
+
+    /**
+     * Link existing guest orders to the newly created user account
+     */
+    private function linkGuestOrdersToUser($user)
+    {
+        // Find orders with the same email address that don't have a user_id
+        $guestOrders = \App\Models\Order::where('customer_email', $user->email)
+            ->whereNull('user_id')
+            ->get();
+
+        if ($guestOrders->count() > 0) {
+            // Update all matching orders to link them to this user
+            \App\Models\Order::where('customer_email', $user->email)
+                ->whereNull('user_id')
+                ->update(['user_id' => $user->id]);
+
+            // Show a success message to the user
+            session()->flash('orders_linked', [
+                'message' => "We found {$guestOrders->count()} previous order(s) with your email address and linked them to your account!",
+                'count' => $guestOrders->count()
+            ]);
+        }
     }
 }

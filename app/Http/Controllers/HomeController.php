@@ -188,11 +188,11 @@ public function getAllProducts()
             foreach ($sessionCart as $id => $item) {
                 $product = Product::find($item['product_id']);
                 if ($product) {
-                    $cartItems->push((object)[
-                        'id' => $id,
+                $cartItems->push((object)[
+                    'id' => $id,
                         'product' => $product,
-                        'quantity' => $item['quantity']
-                    ]);
+                    'quantity' => $item['quantity']
+                ]);
                 }
             }
             $count = count($sessionCart);

@@ -165,6 +165,24 @@
             <p style="color: #34495e;">We are currently processing your shipment. You will receive an email with your tracking number as soon as it's available.</p>
         @endif
       </div>
+      
+      @if(!Auth::check())
+        <div style="margin-top: 20px; padding: 15px; background: #e8f5e8; border: 1px solid #4caf50; border-radius: 12px; text-align: center;">
+          <i class='bx bx-info-circle' style="color: #2e7d32; font-size: 18px; margin-bottom: 8px;"></i>
+          <p style="color: #2e7d32; font-weight: 600; margin: 0 0 10px 0; font-size: 14px;">
+            💡 {{ __('messages.Create an account with the same email address to automatically link this order and track all your future orders!') }}
+          </p>
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ route('login') }}" style="background: #3498db; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">
+              <i class='bx bx-log-in'></i> {{ __('messages.Login') }}
+            </a>
+            <a href="{{ route('register') }}" style="background: #27ae60; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600;">
+              <i class='bx bx-user-plus'></i> {{ __('messages.Create Account') }}
+            </a>
+          </div>
+        </div>
+      @endif
+      
       <a href="/" class="btn-main" style="margin-top: 18px;">{{ __('messages.Return to Home') }}</a>
     </div>
   </div>
