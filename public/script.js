@@ -152,6 +152,121 @@ document.addEventListener('DOMContentLoaded', function() {
     categoryBoxes.forEach((box, index) => {
         console.log(`Category box ${index + 1}:`, box.className);
     });
+
+    // Navigation active state management
+    const contactNavLink = document.querySelector('.contact-nav-link');
+    const contactSection = document.getElementById('contact');
+    
+    if (contactNavLink && contactSection) {
+        // Function to check if contact section is in view
+        function isContactInView() {
+            const rect = contactSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Check if the contact section is visible in the viewport
+            return rect.top <= windowHeight * 0.3 && rect.bottom >= windowHeight * 0.3;
+        }
+        
+        // Function to update contact nav link active state
+        function updateContactNavState() {
+            if (isContactInView()) {
+                contactNavLink.classList.add('id-activ');
+            } else {
+                contactNavLink.classList.remove('id-activ');
+            }
+        }
+        
+        // Add scroll event listener with throttling for better performance
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(updateContactNavState, 10);
+        });
+        
+        // Initial check
+        updateContactNavState();
+        
+        // Smooth scroll to contact section when clicking the nav link
+        contactNavLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            contactSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+
+    // Enhanced navigation highlighting for all nav links
+    const navLinks = document.querySelectorAll('.navbar-link');
+    
+    // Function to remove active class from all nav links
+    function clearActiveStates() {
+        navLinks.forEach(l => l.classList.remove('id-activ'));
+    }
+    
+    // Function to set active state for a specific link
+    function setActiveState(link) {
+        clearActiveStates();
+        if (link && !link.classList.contains('contact-nav-link')) {
+            link.classList.add('id-activ');
+        }
+    }
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Set active state for clicked link (except contact which is handled by scroll)
+            if (!this.classList.contains('contact-nav-link')) {
+                setActiveState(this);
+            }
+        });
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function() {
+        // Check current route and set appropriate active state
+        const currentPath = window.location.pathname;
+        const currentHash = window.location.hash;
+        
+        clearActiveStates();
+        
+        if (currentHash === '#contact') {
+            if (contactNavLink) {
+                contactNavLink.classList.add('id-activ');
+            }
+        } else {
+            // Find the matching nav link and set it as active
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPath || href === currentPath + '/') {
+                    setActiveState(link);
+                }
+            });
+        }
+    });
+
+    // Initialize active state based on current page
+    function initializeActiveState() {
+        const currentPath = window.location.pathname;
+        const currentHash = window.location.hash;
+        
+        if (currentHash === '#contact') {
+            if (contactNavLink) {
+                contactNavLink.classList.add('id-activ');
+            }
+        } else {
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPath || href === currentPath + '/') {
+                    setActiveState(link);
+                }
+            });
+        }
+    }
+    
+    // Initialize on page load
+    initializeActiveState();
 });
 
 console.log("ScrollReveal initialization complete");

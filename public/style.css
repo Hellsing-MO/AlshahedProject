@@ -703,10 +703,38 @@ body{
     border: 1px solid rgba(255, 159, 13, 0.3);
     color: #ff9f0d !important;
     font-weight: 600;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(255, 159, 13, 0.2);
+    position: relative;
+    z-index: 2;
   }
 
   .navbar-link.id-activ::before {
     background: linear-gradient(90deg, rgba(255, 159, 13, 0.3), transparent);
+    width: 100%;
+  }
+
+  .navbar-link.id-activ i {
+    color: #ff9f0d !important;
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+  }
+
+  /* Enhanced hover effects for active state */
+  .navbar-link.id-activ:hover {
+    background: linear-gradient(135deg, rgba(255, 159, 13, 0.25), rgba(255, 159, 13, 0.15));
+    border-color: rgba(255, 159, 13, 0.4);
+    transform: translateX(8px);
+    box-shadow: 0 6px 20px rgba(255, 159, 13, 0.3);
+  }
+
+  /* Smooth transitions for all nav links */
+  .navbar-link {
+    transition: all 0.3s ease;
+  }
+
+  .navbar-link i {
+    transition: all 0.3s ease;
   }
 
   /* Arrow indicators */

@@ -32,28 +32,28 @@
             <ul class="navbar-list">
   
               <li class="navbar-item">
-                <a href="{{url('/')}}" class="navbar-link id-activ" data-nav-link>
+                <a href="{{url('/')}}" class="navbar-link {{ Request::is('/') ? 'id-activ' : '' }}" data-nav-link>
                   <i class='bx bx-home-alt' style="margin-right: 12px; font-size: 20px;"></i>
                   {{__('messages.Home')}}
                 </a>
               </li>
     
               <li class="navbar-item">
-                <a href="{{url('about_us')}}" class="navbar-link" data-nav-link>
+                <a href="{{url('about_us')}}" class="navbar-link {{ Request::is('about_us') ? 'id-activ' : '' }}" data-nav-link>
                   <i class='bx bx-info-circle' style="margin-right: 12px; font-size: 20px;"></i>
                   {{__('messages.about us')}}
                 </a>
               </li>
     
               <li class="navbar-item">
-                <a href="{{url('our_shop')}}" class="navbar-link" data-nav-link>
+                <a href="{{url('our_shop')}}" class="navbar-link {{ Request::is('our_shop') ? 'id-activ' : '' }}" data-nav-link>
                   <i class='bx bx-store' style="margin-right: 12px; font-size: 20px;"></i>
                   {{__('messages.our shop')}}
                 </a>
               </li>
   
               <li class="navbar-item">
-                <a href="#contact" class="navbar-link" data-nav-link>
+                <a href="#contact" class="navbar-link contact-nav-link" data-nav-link>
                   <i class='bx bx-phone' style="margin-right: 12px; font-size: 20px;"></i>
                   {{__('messages.contact us')}}
                 </a>
