@@ -41,7 +41,7 @@
             </a>
           </div>
           <div class="contact-item">
-            <a href="mailto:alshahedhoney@gmail.com">
+            <a href="mailto:alshahedhoney@gmail.com" target="_blank" rel="noopener" title="Send email to alshahedhoney@gmail.com">
               <i class='bx bxs-envelope'></i>
               <span>alshahedhoney@gmail.com</span>
             </a>

@@ -15,7 +15,7 @@ class HomeController extends Controller
     }
 
     public function home() {
-        $product = Product::inRandomOrder()->paginate(5);
+        $product = Product::paginate(5);
         if (Auth::id()) {
             $user = Auth::user();
             $userid = $user->id;
@@ -39,7 +39,7 @@ class HomeController extends Controller
         return view('privacy_policy', compact( 'count'));
     }
     public function login_home() {
-        $product = Product::inRandomOrder()->paginate(5);
+        $product = Product::paginate(5);
         if (Auth::id()) {
             $user = Auth::user();
             $userid = $user->id;
